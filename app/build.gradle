@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
+
+    defaultConfig {
+        applicationId "com.grupio"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+
+
+        buildConfigField "String", "EVENT_ID", "\"${EVENT_ID}\""
+        buildConfigField "String", "ORG_ID", "\"${ORG_ID}\""
+        buildConfigField "String", "EVENT_NAME", "\"${EVENT_NAME}\""
+        buildConfigField "String", "BASE_FOLDER", "\"${BASE_FOLDER}\""
+        buildConfigField "String", "MAP_FOLDER", "\"${MAP_FOLDER}\""
+        buildConfigField "String", "LOG_FOLDER", "\"${LOG_FOLDER}\""
+        buildConfigField "String", "TWITTER_CONSUMER_KEY", "\"${TWITTER_CONSUMER_KEY}\""
+        buildConfigField "String", "TWITTER_SECRET_KEY", "\"${TWITTER_SECRET_KEY}\""
+        buildConfigField "String", "UA_PRODUCTIONAPPKEY", "\"${UA_PRODUCTIONAPPKEY}\""
+        buildConfigField "String", "UA_PRODUCTIONAPPSECRET", "\"${UA_PRODUCTIONAPPSECRET}\""
+        buildConfigField "String", "GCMSENDER", "\"${GCMSENDER}\""
+        buildConfigField "Boolean", "SINGLE_EVENT", "${SINGLE_EVENT}"
+        buildConfigField "Boolean", "SHOW_POWERED_BY_TEXT", "${SHOW_POWERED_BY_TEXT}"
+        buildConfigField "String", "APP_NAME", "\"${APP_NAME}\""
+
+        resValue "string", "map_key", "\"${MAP_KEY}\""
+        resValue "string", "app_id", "\"${APP_ID}\""
+        resValue "string", "app_name", "\"${APP_NAME}\""
+        resValue "string", "google_app_id", "\"${APP_ID}\""
+        resValue "string", "TEXT_COLOR_DARK", "\"${TEXT_COLOR_DARK}\""
+        resValue "string", "TEXT_COLOR_LIGHT", "\"${TEXT_COLOR_LIGHT}\""
+
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dexOptions {
+        incremental true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.android.support:multidex:1.0.1'
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+}

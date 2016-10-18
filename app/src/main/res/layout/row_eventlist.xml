@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/LinearLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/event_list_item_height"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/imageLay"
+        android:layout_width="@dimen/left_padding"
+        android:layout_height="@dimen/event_list_item_height"
+        >
+
+        <ImageView
+            android:id="@+id/eventImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/image_padding"
+            />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/imageLay"
+        android:paddingRight="@dimen/right_padding"
+        android:paddingTop="16dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/txtEventName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="TEST \n abc"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_16"
+                grupio:font="roboto.regular.ttf"
+                />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/txtDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|left"
+                android:text="android \n abc"
+                grupio:font="roboto.regular.ttf"
+                android:textColor="@color/darkgrey"
+                android:textSize="@dimen/text_14"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

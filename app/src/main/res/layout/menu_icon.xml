@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="100dp"
+    android:layout_height="120dp"
+   >
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dash_i2i"
+        android:background="@drawable/circle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        />
+
+    <com.grupio.Utils.CustomTextView
+        android:id="@+id/menuName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert"
+        android:layout_below="@+id/menuIcon"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        grupio:font="roboto.regular.ttf"
+        />
+
+    <com.grupio.Utils.CustomTextView
+        android:id="@+id/alertText"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:text="99"
+       android:layout_alignParentRight="true"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:background="@drawable/circle"
+        android:layout_centerHorizontal="true"
+        grupio:font="roboto.regular.ttf"
+        />
+
+</RelativeLayout>

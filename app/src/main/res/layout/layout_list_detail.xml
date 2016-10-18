@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/qdelegate_background"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/messageHeaderId"
+        layout="@layout/layout_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/detail_frame_height"
+                android:background="@drawable/info_bg">
+
+                <RelativeLayout
+                    android:id="@+id/attImageLay"
+                    android:layout_width="@dimen/speaker_att_img_size"
+                    android:layout_height="@dimen/speaker_att_img_size"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <com.grupio.pubnub.CircularImageView
+                        android:id="@+id/image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="0dp"
+                        android:adjustViewBounds="true"
+                        app:border="true"
+                        app:border_color="#ffffff"
+                        app:border_width="0.5dp" />
+
+                    <TextView
+                        android:id="@+id/presenceStatusTextView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/presence_symbol_margin"
+                        android:layout_marginRight="@dimen/presence_symbol_margin"
+                        android:background="@drawable/grey_round"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:paddingRight="0dp"
+                        android:text="\?"
+                        android:textColor="#fff"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/attImageLay"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="User"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/general_heading_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dip"
+                        android:text="title"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        android:textSize="@dimen/general_subheading_size" />
+
+                    <TextView
+                        android:id="@+id/company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Company"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/general_subheading_size"
+                        android:visibility="gone"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    >
+                    <Button
+                        android:id="@+id/addSessionBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/msg_btn_ht"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/btn_addtoschedule_off_detail"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/exbWebBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/msg_btn_ht"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:layout_marginTop="20dp"
+                        android:text="Go to Website"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:textSize="@dimen/website_txt_size"
+                        android:textColor="@color/white"
+                        android:background="@drawable/webpage_btn"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/chatMsgBtnslay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/sendMessageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/btn_send_message1"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/chatButton"
+                        android:layout_width="@dimen/chat_button_width"
+                        android:layout_height="@dimen/chat_button_height"
+                        android:layout_marginTop="10dp"
+                        android:background="#aa3366aa"
+                        android:text="CHAT"
+                        android:textColor="#fff"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/connectBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/match_small"
+                    android:text="Connect"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/sessionBtnsLay"
+                layout="@layout/layout_session_buttons" />
+
+            <include
+                android:id="@+id/infoLay"
+                layout="@layout/layout_info" />
+
+            <include
+                android:id="@+id/interestLay"
+                layout="@layout/layout_interest" />
+
+            <include
+                android:id="@+id/bioLay"
+                layout="@layout/layout_bio" />
+
+            <include
+                android:id="@+id/sessionListLay"
+                layout="@layout/layout_session_list" />
+
+            <include
+                android:id="@+id/resourceListLay"
+                layout="@layout/layout_resource_list" />
+
+            <include
+                android:id="@+id/attendeeListLay"
+                layout="@layout/layout_attendee_list" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

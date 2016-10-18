@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/bannerImageViewId"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/app_header_height"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/bannerImageViewId2"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/app_header_height"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/searchBarBgId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/LightGray"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/exhibitor_filter_edtTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/searchbar_ht"
+            android:layout_centerInParent="true"
+            android:background="@drawable/edit_search"
+            android:editable="true"
+            android:ellipsize="end"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="@dimen/searchbar_padd_left"
+            android:paddingRight="10dp"
+            android:singleLine="true" />
+    </RelativeLayout>
+
+</LinearLayout>
