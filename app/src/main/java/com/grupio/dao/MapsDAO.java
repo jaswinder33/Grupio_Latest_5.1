@@ -1,14 +1,13 @@
 package com.grupio.dao;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteStatement;
 
-
 import com.grupio.data.MapsData;
-import com.grupio.db.MyDbHandler;
+import com.grupio.db.MapsTable;
 import com.grupio.helper.MapDataProcessor;
-import com.grupio.dao.BaseDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class MapsDAO extends BaseDAO {
         deleteData();
 
         List<MapsData> mDatalist = new ArrayList<>();
-        mDatalist.addAll(MapDataProcessor.getSponsorListFromJSON(response));
+        mDatalist.addAll(MapDataProcessor.getSponsorListFromJSON(mContext, response));
 
         openDB(1);
 
@@ -44,14 +43,14 @@ public class MapsDAO extends BaseDAO {
         db.beginTransaction();
 
         try {
-            stmt = db.compileStatement("INSERT INTO " + MyDbHandler.MAPS_TABLE
-                            + " ( "
-                            + MyDbHandler.MAP_ID + ","
-                            + MyDbHandler.MAP_NAME + ","
-                            + MyDbHandler.MAP_URL + ","
-                            + MyDbHandler.INTERACTIVE + ","
-                            + MyDbHandler.MAP_ORDER +
-                            ") VALUES(?,?,?,?,?)"
+            stmt = db.compileStatement("INSERT INTO " + MapsTable.MAPS_TABLE
+                    + " ( "
+                    + MapsTable.MAP_ID + ","
+                    + MapsTable.MAP_NAME + ","
+                    + MapsTable.MAP_URL + ","
+                    + MapsTable.INTERACTIVE + ","
+                    + MapsTable.MAP_ORDER +
+                    ") VALUES(?,?,?,?,?)"
             );
 
             if (mDatalist != null && mDatalist.size() > 0) {
@@ -81,10 +80,45 @@ public class MapsDAO extends BaseDAO {
 
     }
 
+    public List<MapsData> getMapList() {
+
+        List<MapsData> mMapsList = new ArrayList<>();
+        openDB(0);
+        String query = "select * from " + MapsTable.MAPS_TABLE + " order by " + MapsTable.MAP_ORDER;
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null) {
+                mCursor.moveToNext();
+                MapsData mData;
+                do {
+                    mData = new MapsData();
+                    mData.setMapId(mCursor.getString(0));
+                    mData.setName(mCursor.getString(1));
+                    mData.setUrl(mCursor.getString(2));
+                    mData.setInteractive(mCursor.getString(3));
+
+                    mMapsList.add(mData);
+                } while (mCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return mMapsList;
+    }
+
     public void deleteData() {
         openDB(1);
         try {
-            db.delete(MyDbHandler.MAPS_TABLE, null, null);
+            db.delete(MapsTable.MAPS_TABLE, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

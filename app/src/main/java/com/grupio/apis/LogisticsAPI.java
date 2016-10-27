@@ -1,10 +1,13 @@
 package com.grupio.apis;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.LogisticsDAO;
 import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
@@ -19,15 +22,18 @@ public class LogisticsAPI extends BaseApiCall {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getString(R.string.logistics_api) + ConstantData.EVENT_ID;
+    }
 
-        String url = ConstantData.LOGISTICS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
-
+    @Override
+    public void callApi() {
         APIRequest request = new GetRequest();
-        String result =  request.requestResponse(url, new HashMap<String, String>(),mContext);
+        String result = request.requestResponse(url, new HashMap<>(), mContext);
 
-//        String result = GridHome.ut_obj.postData(url, new ArrayList<NameValuePair>(),mContext);
+        if (result != null && !TextUtils.isEmpty(result)) {
+            LogisticsDAO.getInstance(mContext).insertData(result);
+        }
 
         Log.i("API", "LogisticsAPI");
     }

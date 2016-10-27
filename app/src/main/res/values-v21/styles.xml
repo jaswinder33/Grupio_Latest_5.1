@@ -10,7 +10,7 @@
     <style name="AppTheme.Splash">
         <item name="android:background">@drawable/splashimage</item>
         <item name="android:windowTranslucentStatus">true</item>
-    <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
 

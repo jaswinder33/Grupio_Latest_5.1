@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridHomeRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,8 @@
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_header_height"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent">
 
         <ImageButton
             android:id="@+id/switchEvent"
@@ -41,6 +43,7 @@
         android:layout_above="@+id/footer"
         android:layout_below="@+id/headerLay"
         android:layout_marginTop="8dp"
+        android:clipToPadding="false"
         />
 
 </RelativeLayout>

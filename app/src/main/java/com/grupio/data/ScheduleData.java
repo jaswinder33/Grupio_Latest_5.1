@@ -1,11 +1,14 @@
 package com.grupio.data;
 
+import com.grupio.interfaces.Person;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 
-public class ScheduleData{
+public class ScheduleData implements Person {
+	public String has_child = "";
 	String name="";
 	String track="";
 	String color = "";
@@ -19,7 +22,6 @@ public class ScheduleData{
 	String location="";
 	String summary="",parent_session_name="";
 	boolean showChild;
-	public String has_child="";
 	String parent_session_id="";
 	boolean plusminus=false;
 	int childLen=0;
@@ -33,6 +35,7 @@ public class ScheduleData{
 	String maxSeatsAvailable;
 	String speakerListAsString="";
 	String resourceListAsString="";
+	String session_id;
 
 	public String getSpeakerListAsString() {
 		return speakerListAsString;
@@ -57,76 +60,88 @@ public class ScheduleData{
 	public void setMaxSeatsAvailable(String maxSeatsAvailable) {
 		this.maxSeatsAvailable = maxSeatsAvailable;
 	}
-	
-	
-	
+
 	public String getOrder() {
 		return order;
 	}
+
 	public void setOrder(String order) {
 		this.order = order;
 	}
+
 	public String getColor() {
 		return color;
 	}
+
 	public void setColor(String color) {
 		if(!color.contains("#") && !color.equals(""))
 			color= "#" + color;
 		this.color = color;
 	}
-	
-	
+
 	public String getMeetingId() {
 		return meetingId;
 	}
+
 	public void setMeetingId(String meetingId) {
 		this.meetingId = meetingId;
 	}
+
 	public String getMeetingTitle() {
 		return meetingTitle;
 	}
+
 	public void setMeetingTitle(String meetingTitle) {
 		this.meetingTitle = meetingTitle;
 	}
-	
+
 	public int getChildLen() {
 		return childLen;
 	}
+
 	public void setChildLen(int childLen) {
 		this.childLen = childLen;
 	}
+
 	public boolean isPlusminus() {
 		return plusminus;
 	}
+
 	public void setPlusminus(boolean plusminus) {
 		this.plusminus = plusminus;
 	}
+
 	public String getParent_session_id() {
 		return parent_session_id;
 	}
+
 	public void setParent_session_id(String parent_session_id) {
 		this.parent_session_id = parent_session_id;
 	}
+
 	public String getSummary() {
 		return summary;
 	}
+
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 	public String[] getSpeakes() {
 		return speakes;
 	}
+
 	public void setSpeakes(String [] speakes) {
 		this.speakes = speakes;
 	}
-
-	String session_id;
 	
 	public String getSession_id() {
 		return session_id;

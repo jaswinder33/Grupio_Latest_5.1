@@ -11,22 +11,31 @@ import java.util.List;
  */
 public interface GridInteractorImp {
 
+    void fetchMenuList(OnInteractComplete listener, Context context);
+
+    void fetchMessageCount(OnInteractComplete listener, Context context);
+
+    void fetchAlertCount(OnInteractComplete listener, Context context);
+
+    void fetchCalendarCount(OnInteractComplete listener, Context context);
+
+    void updateMeeting(OnInteractComplete listener, Context context);
+
+    void updateEvent(OnInteractComplete listener, Context context);
     interface OnInteractComplete {
 
         void onMenuList(List<MenuData> menuList);
-        void onMessageCount(String msgCount);
-        void onAlertCount(String alertCount);
-        void onCalendarCount(String calCount);
+
+        void onMessageCount(String msgCount, int position);
+
+        void onAlertCount(String alertCount, int position);
+
+        void onCalendarCount(String calCount, int position);
+
+        void onChatCount(String count, int position);
         void onUpdateMeeting();
         void onUpdateEvent();
 
     }
-
-    void fetchMenuList(OnInteractComplete listener, Context context);
-    void fetchMessageCount(OnInteractComplete listener, Context context);
-    void fetchAlertCount(OnInteractComplete listener, Context context);
-    void fetchCalendarCount(OnInteractComplete listener, Context context);
-    void updateMeeting(OnInteractComplete listener, Context context);
-    void updateEvent(OnInteractComplete listener, Context context);
 
 }

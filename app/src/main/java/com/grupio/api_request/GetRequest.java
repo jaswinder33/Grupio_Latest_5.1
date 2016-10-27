@@ -20,7 +20,6 @@ public class GetRequest extends APIRequest {
 	
 	public String requestResponse(String endPoint, Map<String, String> params, Context mContext) {
 		
-//		String url = "https://conf.dharanet.com/conf/v1/main/attendees.php?event_id=151&format=json";
 
 		URL url = null;
 		try {
@@ -42,14 +41,12 @@ public class GetRequest extends APIRequest {
 			e.printStackTrace();
 		}
 
-		int responseCode = 0;
-		try {
-			responseCode = con.getResponseCode();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-//		System.out.println("\nSending 'GET' request to URL : " + url);
-//		System.out.println("Response Code : " + responseCode);
+//		int responseCode = 0;
+//		try {
+//			responseCode = con.getResponseCode();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
 		BufferedReader in = null;
 		try {

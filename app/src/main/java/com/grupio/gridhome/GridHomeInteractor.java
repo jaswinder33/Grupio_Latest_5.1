@@ -2,10 +2,11 @@ package com.grupio.gridhome;
 
 import android.content.Context;
 
-import com.grupio.dao.MapsDAO;
+import com.grupio.dao.EventDAO;
 import com.grupio.dao.MenuDAO;
 import com.grupio.data.MenuData;
-import com.nostra13.universalimageloader.utils.L;
+import com.grupio.db.EventTable;
+import com.grupio.session.ConstantData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class GridHomeInteractor implements GridInteractorImp{
 
     @Override
     public void fetchMenuList(OnInteractComplete listener, Context context) {
+
+        ConstantData.EVENT_ID = EventDAO.getInstance(context).getValue(EventTable.EVENT_ID);
 
         List<MenuData> mList = new ArrayList<>();
         mList.addAll(MenuDAO.getInstance(context).fetchMenu());

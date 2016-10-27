@@ -9,9 +9,11 @@ import java.util.List;
  */
 public interface EventControllerInter {
 
+    void fetchEventListFromServer(String query, onEventController mListener);
+
     interface onEventController {
         void onEventListFetch(List<EventData> mList);
-    }
 
-    void fetchEventListFromServer(String query, onEventController mListener);
+        void onFailure(String msg);
+    }
 }

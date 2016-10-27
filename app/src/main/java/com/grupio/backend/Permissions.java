@@ -2,13 +2,10 @@ package com.grupio.backend;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,6 +35,17 @@ public class Permissions {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         return this;
+    }
+
+    public Permissions checkCallPermission(Activity mActivity) {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.CALL_PHONE);
+        }
+        return this;
+    }
+
+    public boolean hasCallPermission(Activity mActivity) {
+        return ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void askForPermissions(Activity activity, int requestcode){

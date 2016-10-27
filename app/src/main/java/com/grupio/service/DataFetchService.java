@@ -28,6 +28,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class DataFetchService extends IntentService {
 
+    public static final String TAG = "DataFetchService";
+    static long startTime;
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
@@ -35,18 +38,13 @@ public class DataFetchService extends IntentService {
         super("DataFetchService");
     }
 
-    public static final String TAG ="DataFetchService";
-
-    static long startTime ;
     @Override
     protected void onHandleIntent(Intent intent) {
-
 
         if(!Utility.hasInternet(this)){
             Toast.makeText(this, getResources().getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
             return;
         }
-
 
          startTime = System.currentTimeMillis();
 

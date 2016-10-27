@@ -6,9 +6,10 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.grupio.R;
 import com.grupio.dao.VersionDao;
 import com.grupio.data.VersionData;
-import com.grupio.services.DataFetchService;
+import com.grupio.service.DataFetchService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +51,7 @@ public class GraphicsProcessor {
             try {
                 String version = mJobj.getString("version");
                 VersionData vData = new VersionData();
-                vData.name = "graphics";
+                vData.name = VersionDao.GRAPHICS_VERSION;
                 vData.oldVersion = version;
                 VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
             } catch (JSONException e) {
@@ -84,45 +85,45 @@ public class GraphicsProcessor {
                 if (jsonObject != null) {
 
                     try {
-                        urlList.put("splash_image", jsonObject.getString(splash_image));
+                        urlList.put(mContext.getString(R.string.splash), jsonObject.getString(splash_image));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     try {
-                        urlList.put("menu_background", jsonObject.getString(menu_background_image));
+                        urlList.put(mContext.getString(R.string.menu_background), jsonObject.getString(menu_background_image));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-                        urlList.put("main_top_nav_img", jsonObject.getString(main_top_nav_img));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        urlList.put("top_nav_img", jsonObject.getString(top_nav_img));
+                        urlList.put(mContext.getString(R.string.main_header), jsonObject.getString(main_top_nav_img));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     try {
-                        urlList.put("app_background_img", jsonObject.getString(app_background_img));
+                        urlList.put(mContext.getString(R.string.top_nav), jsonObject.getString(top_nav_img));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        urlList.put(mContext.getString(R.string.app_background), jsonObject.getString(app_background_img));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-                        urlList.put("app_back_button_img", jsonObject.getString(app_back_button_img));
+                        urlList.put(mContext.getString(R.string.app_back_button), jsonObject.getString(app_back_button_img));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-                        urlList.put("app_dashboard_button_img", jsonObject.getString(app_dashboard_button_img));
+                        urlList.put(mContext.getString(R.string.app_dashboard_button), jsonObject.getString(app_dashboard_button_img));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-                        urlList.put("dlscreen_background", jsonObject.getString(dlscreen_background));
+                        urlList.put(mContext.getString(R.string.dlscreen_background), jsonObject.getString(dlscreen_background));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -137,7 +138,7 @@ public class GraphicsProcessor {
 
         DisplayMetrics metrics = new DisplayMetrics();
 
-        WindowManager windowManager = (WindowManager) ((DataFetchService) mContext).getApplication().getSystemService(mContext.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) ((DataFetchService) mContext).getApplication().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
         switch (metrics.densityDpi) {

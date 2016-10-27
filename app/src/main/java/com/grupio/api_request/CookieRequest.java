@@ -2,6 +2,10 @@ package com.grupio.api_request;
 
 import android.content.Context;
 
+import com.grupio.BuildConfig;
+import com.grupio.session.ConstantData;
+import com.grupio.session.Preferences;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -21,6 +25,22 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class CookieRequest extends APIRequest {
 
+	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
+		StringBuilder result = new StringBuilder();
+		boolean first = true;
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			if (first)
+				first = false;
+			else
+				result.append("&");
+
+			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+			result.append("=");
+			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+		}
+		return result.toString();
+	}
+
 	@Override
 	public String requestResponse(String endPoint, Map<String, String> params, Context mContext) {
 
@@ -36,9 +56,8 @@ public class CookieRequest extends APIRequest {
 			conn.setReadTimeout(30000);
 			conn.setConnectTimeout(30000);
 			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Cookie", "attendee_id=73412501");
+			conn.setRequestProperty("Cookie", "attendee_id=" + Preferences.getInstances(mContext).getAttendeeId() + ";" + "event_id=" + ConstantData.EVENT_ID + ";" + "organization_id=" + BuildConfig.ORG_ID);
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("ClientVersion", "" + 1);
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 
@@ -50,9 +69,6 @@ public class CookieRequest extends APIRequest {
 			writer.close();
 			os.close();
 			int responseCode = conn.getResponseCode();
-
-//			System.out.println("\nSending 'POST' request to URL : " + url);
-//			System.out.println("Response Code : " + responseCode);
 
 			if (responseCode == HttpsURLConnection.HTTP_OK) {
 				String line;
@@ -71,22 +87,6 @@ public class CookieRequest extends APIRequest {
 
 		return response.toString();
 
-	}
-
-	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			if (first)
-				first = false;
-			else
-				result.append("&");
-
-			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-		}
-		return result.toString();
 	}
 
 }

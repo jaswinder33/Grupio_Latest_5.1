@@ -14,9 +14,19 @@
         android:id="@+id/lstEvent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingTop="8dp"
         android:paddingBottom="10dp"
+        android:paddingTop="8dp"
         android:scrollbars="vertical"></ListView>
+
+    <TextView
+        android:id="@+id/txtNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No Data Available"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

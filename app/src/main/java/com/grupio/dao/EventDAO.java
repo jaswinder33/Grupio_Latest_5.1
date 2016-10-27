@@ -3,12 +3,11 @@ package com.grupio.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.grupio.helper.EventDataProcessor;
 import com.grupio.data.EventData;
-import com.grupio.db.MyDbHandler;
+import com.grupio.db.EventTable;
+import com.grupio.helper.EventDataProcessor;
 
 
 /**
@@ -42,75 +41,75 @@ public class EventDAO extends BaseDAO{
         db.beginTransaction();
 
         try {
-            stmt = db.compileStatement("INSERT INTO " + MyDbHandler.EVENT_TABLE
+            stmt = db.compileStatement("INSERT INTO " + EventTable.EVENT_TABLE
                             + " ( "
-                            + MyDbHandler.EVENT_ID + ","
-                            + MyDbHandler.EVENT_NAME + ","
-                            + MyDbHandler.START_DATE + ","
-                            + MyDbHandler.END_DATE + ","
+                    + EventTable.EVENT_ID + ","
+                    + EventTable.EVENT_NAME + ","
+                    + EventTable.START_DATE + ","
+                    + EventTable.END_DATE + ","
 
-                            + MyDbHandler.DESCRIPTION + ","
-                            + MyDbHandler.IMAGEURL + ","
-                            + MyDbHandler.LARGE_IMAGE + ","
+                    + EventTable.DESCRIPTION + ","
+                    + EventTable.IMAGEURL + ","
+                    + EventTable.LARGE_IMAGE + ","
 
-                            + MyDbHandler.WEB_LOGO_IMAGE + ","
-                            + MyDbHandler.STATIC_MAP_URL + ","
+                    + EventTable.WEB_LOGO_IMAGE + ","
+                    + EventTable.STATIC_MAP_URL + ","
 
-                            + MyDbHandler.ADDRESS1 + ","
-                            + MyDbHandler.ADDRESS2 + ","
+                    + EventTable.ADDRESS1 + ","
+                    + EventTable.ADDRESS2 + ","
 
-                            + MyDbHandler.VENUE + ","
-                            + MyDbHandler.CITY + ","
-                            + MyDbHandler.STATE + ","
-                            + MyDbHandler.COUNTRY + ","
-                            + MyDbHandler.ZIPCODE + ","
+                    + EventTable.VENUE + ","
+                    + EventTable.CITY + ","
+                    + EventTable.STATE + ","
+                    + EventTable.COUNTRY + ","
+                    + EventTable.ZIPCODE + ","
 
-                            + MyDbHandler.TIMEZONE + ","
-                            + MyDbHandler.REGISTER_URL + ","
+                    + EventTable.TIMEZONE + ","
+                    + EventTable.REGISTER_URL + ","
 
-                            + MyDbHandler.HASHTAG + ","
-                            + MyDbHandler.LOGINREQUIRED + ","
+                    + EventTable.HASHTAG + ","
+                    + EventTable.LOGINREQUIRED + ","
 
-                            + MyDbHandler.REGISTRATION_REQUIRED + ","
-                            + MyDbHandler.ABOUT_TEXT + ","
-                            + MyDbHandler.LATTITUDE + ","
-                            + MyDbHandler.LONGITUDE + ","
+                    + EventTable.REGISTRATION_REQUIRED + ","
+                    + EventTable.ABOUT_TEXT + ","
+                    + EventTable.LATTITUDE + ","
+                    + EventTable.LONGITUDE + ","
 
-                            + MyDbHandler.ABOUT_SECTION_TEXT + ","
-                            + MyDbHandler.SOCIAL_SECTION_TEXT + ","
-                            + MyDbHandler.SURVEY_LOGIN_REQ + ","
-                            + MyDbHandler.MYCALENDAR_LOGIN_REQUIRED + ","
-                            + MyDbHandler.MYSCHEDULE_LOGIN_ENABLED + ","
+                    + EventTable.ABOUT_SECTION_TEXT + ","
+                    + EventTable.SOCIAL_SECTION_TEXT + ","
+                    + EventTable.SURVEY_LOGIN_REQ + ","
+                    + EventTable.MYCALENDAR_LOGIN_REQUIRED + ","
+                    + EventTable.MYSCHEDULE_LOGIN_ENABLED + ","
 
-                            + MyDbHandler.HIDE_ATTENDEE_INFO + ","
-                            + MyDbHandler.HIDE_SPEAKER_INFO + ","
-                            + MyDbHandler.HIDE_EXHIBITOR_IMAGES + ","
-                            + MyDbHandler.HIDE_SPONSOR_IMAGES + ","
-                            + MyDbHandler.HIDE_SPEAKER_IMAGES + ","
-                            + MyDbHandler.HIDE_ATTENDEE_IMAGES + ","
+                    + EventTable.HIDE_ATTENDEE_INFO + ","
+                    + EventTable.HIDE_SPEAKER_INFO + ","
+                    + EventTable.HIDE_EXHIBITOR_IMAGES + ","
+                    + EventTable.HIDE_SPONSOR_IMAGES + ","
+                    + EventTable.HIDE_SPEAKER_IMAGES + ","
+                    + EventTable.HIDE_ATTENDEE_IMAGES + ","
 
-                            + MyDbHandler.COLOR_THEME + ","
-                            + MyDbHandler.NOTES_LOGIN_REQUIRED + ","
-                            + MyDbHandler.ATTENDEE_LOGIN_REQUIRED + ","
+                    + EventTable.COLOR_THEME + ","
+                    + EventTable.NOTES_LOGIN_REQUIRED + ","
+                    + EventTable.ATTENDEE_LOGIN_REQUIRED + ","
 
-                            + MyDbHandler.LOCALE + ","
-                            + MyDbHandler.SHOW_ATTENDEE_SESSIONS + ","
-                            + MyDbHandler.SHOW_SCHEDULE_BUTTON + ","
-                            + MyDbHandler.SHOW_MYSCHEDULE_BUTTON + ","
-                            + MyDbHandler.SHOW_NOTES_BUTTON + ","
+                    + EventTable.LOCALE + ","
+                    + EventTable.SHOW_ATTENDEE_SESSIONS + ","
+                    + EventTable.SHOW_SCHEDULE_BUTTON + ","
+                    + EventTable.SHOW_MYSCHEDULE_BUTTON + ","
+                    + EventTable.SHOW_NOTES_BUTTON + ","
 
-                            + MyDbHandler.NAME_ORDER + ","
-                            + MyDbHandler.SORT_ORDER + ","
-                            + MyDbHandler.EVENT_WEBSITE_URL + ","
+                    + EventTable.NAME_ORDER + ","
+                    + EventTable.SORT_ORDER + ","
+                    + EventTable.EVENT_WEBSITE_URL + ","
 
-                            + MyDbHandler.ENABLE_ACTIVIT_YFEED + ","
-                            + MyDbHandler.ALLOWED_TOPOST_FEED + ","
-                            + MyDbHandler.IS_MODERATORAVAILABLE + ","
+                    + EventTable.ENABLE_ACTIVIT_YFEED + ","
+                    + EventTable.ALLOWED_TOPOST_FEED + ","
+                    + EventTable.IS_MODERATORAVAILABLE + ","
 
-                            + MyDbHandler.SHOWTRACKS + ","
-                            + MyDbHandler.APP_VERSION + ","
-                            + MyDbHandler.FORCE_DELETE + ","
-                            + MyDbHandler.FORCE_UPGRADE + ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                    + EventTable.SHOWTRACKS + ","
+                    + EventTable.APP_VERSION + ","
+                    + EventTable.FORCE_DELETE + ","
+                    + EventTable.FORCE_UPGRADE + ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
             );
 
@@ -206,7 +205,7 @@ public class EventDAO extends BaseDAO{
         openDB(0);
 
         String value = "";
-        String query = "select "+ columnName + " from " + MyDbHandler.EVENT_TABLE;
+        String query = "select " + columnName + " from " + EventTable.EVENT_TABLE;
 
         Cursor mCursor = null;
         try {
@@ -230,7 +229,7 @@ public class EventDAO extends BaseDAO{
 
         openDB(1);
         try {
-            db.delete(MyDbHandler.EVENT_TABLE, null, null);
+            db.delete(EventTable.EVENT_TABLE, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

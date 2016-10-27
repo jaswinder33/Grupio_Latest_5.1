@@ -23,10 +23,16 @@ public class EventListPresenter implements EventListPresenterImp, EventControlle
 
 
     @Override
-    public void fetchEventListFromServer(String query) {
+    public void fetchEventListFromServer(final String query) {
         if (mListener != null) {
             mListener.showProgess();
-            mController.fetchEventListFromServer(query, this);
+
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    mController.fetchEventListFromServer(query, EventListPresenter.this);
+                }
+            };
+            new Thread(runnable).start();
         }
     }
 
@@ -35,6 +41,14 @@ public class EventListPresenter implements EventListPresenterImp, EventControlle
         if (mListener != null) {
             mListener.hideProgress();
             mListener.showEventList(mList);
+        }
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        if (mListener != null) {
+            mListener.hideProgress();
+            mListener.onFailure(msg);
         }
     }
 }

@@ -6,7 +6,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteStatement;
 
 import com.grupio.data.ScheduleData;
-import com.grupio.db.MyDbHandler;
+import com.grupio.db.EventTable;
+import com.grupio.db.SessionTable;
+import com.grupio.db.SessionTracksTable;
 import com.grupio.helper.ScheduleHelper;
 import com.grupio.helper.SessionWatcher;
 
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Created by JSN on 24/8/16.
  */
-public class SessionDAO extends BaseDAO{
+public class SessionDAO extends BaseDAO {
 
     /**
      * private constructor
@@ -42,7 +44,7 @@ public class SessionDAO extends BaseDAO{
         List<ScheduleData> mDatalist = new ArrayList<>();
 
         ScheduleHelper sHelper = new ScheduleHelper();
-        mDatalist.addAll(sHelper.parseJSON(response));
+        mDatalist.addAll(sHelper.parseJSON(mContext, response));
 
         openDB(1);
 
@@ -51,21 +53,21 @@ public class SessionDAO extends BaseDAO{
         db.beginTransaction();
 
         try {
-            stmt = db.compileStatement("INSERT INTO " + MyDbHandler.SESSION_TABLE
-                            + " ( "
-                            + MyDbHandler.ID + ","
-                            + MyDbHandler.NAME + ","
-                            + MyDbHandler.START_TIME + ","
-                            + MyDbHandler.END_TIME + ","
-                            + MyDbHandler.TRACK + ","
-                            + MyDbHandler.SUMMARY + ","
-                            + MyDbHandler.LOCATION + ","
-                            + MyDbHandler.PARENT_SESSION_ID + ","
-                            + MyDbHandler.HAS_CHILD + ","
-                            + MyDbHandler.ATTENDEE_LIMIT + ","
-                            + MyDbHandler.SPEAKER_LIST + ","
-                            + MyDbHandler.SESSION_LIST +
-                            ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
+            stmt = db.compileStatement("INSERT INTO " + SessionTable.SESSION_TABLE
+                    + " ( "
+                    + SessionTable.ID + ","
+                    + SessionTable.NAME + ","
+                    + SessionTable.START_TIME + ","
+                    + SessionTable.END_TIME + ","
+                    + SessionTable.TRACK + ","
+                    + SessionTable.SUMMARY + ","
+                    + SessionTable.LOCATION + ","
+                    + SessionTable.PARENT_SESSION_ID + ","
+                    + SessionTable.HAS_CHILD + ","
+                    + SessionTable.ATTENDEE_LIMIT + ","
+                    + SessionTable.SPEAKER_LIST + ","
+                    + SessionTable.SESSION_LIST +
+                    ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
             );
 
             if (mDatalist != null && mDatalist.size() > 0) {
@@ -130,20 +132,20 @@ public class SessionDAO extends BaseDAO{
 
         String[] dateArr = dateNow.split(" ");
 
-        String query  ="select sessions.*,session_tracks.color from " + MyDbHandler.SESSION_TABLE+ " left join "+ MyDbHandler.SESSION_TRACKS_TABLE+" on  sessions.track=session_tracks.track where " +
+        String query = "select sessions.*,session_tracks.color from " + SessionTable.SESSION_TABLE + " left join " + SessionTracksTable.SESSION_TRACKS_TABLE + " on  sessions.track=session_tracks.track where " +
                 " case " +
-                " when (select exists(select sessions.start_time from sessions where sessions.start_time  like  '"+dateArr[0]+"%' and sessions.track = '"+trackName+"' ) ) " +
-                " then sessions.start_time like '"+dateArr[0]+"%' " +
+                " when (select exists(select sessions.start_time from sessions where sessions.start_time  like  '" + dateArr[0] + "%' and sessions.track = '" + trackName + "' ) ) " +
+                " then sessions.start_time like '" + dateArr[0] + "%' " +
                 " else sessions.start_time like " +
                 "   (case     " +
                 "   when    " +
-                "   (select exists(select sessions.start_time from sessions where date(sessions.start_time) > date("+dateArr[0]+") and sessions.track = '"+trackName+"') ) " +
-                "   then  (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) > date("+dateArr[0]+") and sessions.track = '"+trackName+"')   " +
-                "   else    (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) < date("+dateArr[0]+") and sessions.track='"+trackName+"')   end    )  " +
-                " end " ;
+                "   (select exists(select sessions.start_time from sessions where date(sessions.start_time) > date(" + dateArr[0] + ") and sessions.track = '" + trackName + "') ) " +
+                "   then  (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) > date(" + dateArr[0] + ") and sessions.track = '" + trackName + "')   " +
+                "   else    (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) < date(" + dateArr[0] + ") and sessions.track='" + trackName + "')   end    )  " +
+                " end ";
 
-        if(!trackName.equals("")){
-            query +=  "and sessions.track = '"+trackName+"';";
+        if (!trackName.equals("")) {
+            query += "and sessions.track = '" + trackName + "';";
         }
 
         Cursor mCursor = null;
@@ -184,7 +186,7 @@ public class SessionDAO extends BaseDAO{
             closeDb();
         }
 
-        if(mScheduleDataList.size() > 0){
+        if (mScheduleDataList.size() > 0) {
             String startDAte = mScheduleDataList.get(0).getStart_time();
 
             String[] dateArray = startDAte.split(" ");
@@ -208,10 +210,10 @@ public class SessionDAO extends BaseDAO{
     }
 
 
-    public List<String> getDateList(){
-        String query = "select distinct strftime('%d-%m-%Y',"+ MyDbHandler.START_TIME+") from "+ MyDbHandler.SESSION_TABLE+" ";
+    public List<String> getDateList() {
+        String query = "select distinct strftime('%d-%m-%Y'," + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " ";
 
-        query += " order by date("+ MyDbHandler.START_TIME+") ";
+        query += " order by date(" + SessionTable.START_TIME + ") ";
 
         List<String> dateslist = new ArrayList<>();
 
@@ -221,11 +223,11 @@ public class SessionDAO extends BaseDAO{
         try {
             mcursor = db.rawQuery(query, null);
 
-            if(mcursor != null && mcursor.moveToFirst()){
+            if (mcursor != null && mcursor.moveToFirst()) {
 
                 do {
                     dateslist.add(mcursor.getString(0));
-                }while (mcursor.moveToNext());
+                } while (mcursor.moveToNext());
 
             }
 
@@ -248,7 +250,7 @@ public class SessionDAO extends BaseDAO{
     public void deleteData() {
         openDB(1);
         try {
-            db.delete(MyDbHandler.SESSION_TABLE, null, null);
+            db.delete(SessionTable.SESSION_TABLE, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -256,6 +258,62 @@ public class SessionDAO extends BaseDAO{
                 closeDb();
             }
         }
+    }
+
+    public ScheduleData getSessionWithId(String id) {
+
+        boolean showTracks = EventDAO.getInstance(mContext).getValue(EventTable.SHOWTRACKS).equals("y");
+
+        openDB(0);
+        ScheduleData sd = new ScheduleData();
+        String query;
+        if (showTracks) {
+            query = "select sessions.*, session_tracks.color " +
+                    "from " + SessionTable.SESSION_TABLE + " " +
+                    "left join " + SessionTracksTable.SESSION_TRACKS_TABLE + " on sessions.track = session_tracks.track where sessions.id ='" + id + "' order by name collate nocase;";
+//            query = "Select * from " + SessionTable.SESSION_TABLE + " where " + SessionTable.ID + "='" + id + "';";
+        } else {
+            query = "Select * from " + SessionTable.SESSION_TABLE + " where " + SessionTable.ID + "='" + id + "' order by name collate nocase;";
+        }
+
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.moveToFirst()) {
+                do {
+                    sd.setSession_id(mCursor.getString(0));
+                    sd.setName(mCursor.getString(1));
+                    sd.setStart_time(mCursor.getString(2));
+                    sd.setEnd_time(mCursor.getString(3));
+                    sd.setTrack(mCursor.getString(4));
+                    sd.setSummary(mCursor.getString(5));
+                    sd.setLocation(mCursor.getString(6));
+                    sd.setParent_session_id(mCursor.getString(7));
+                    sd.setHas_child(mCursor.getString(8));
+                    sd.setMaxSeatsAvailable(mCursor.getString(9));
+                    sd.setSpeakerListAsString(mCursor.getString(10));
+                    sd.setResourceListAsString(mCursor.getString(11));
+
+                    try {
+                        sd.setColor(mCursor.getString(12));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } while (mCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return sd;
     }
 
 }

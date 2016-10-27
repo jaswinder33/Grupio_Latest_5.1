@@ -8,11 +8,11 @@ import android.content.SharedPreferences;
  */
 public class Preferences {
 
-    private static Preferences mPreferences;
-    private Context mContext;
     private static final String SHARED_PREFRENCES = "GrupioPrefs";
+    private static Preferences mPreferences;
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
+    private Context mContext;
 
     private Preferences(Context mContext) {
         this.mContext = mContext;
@@ -50,32 +50,96 @@ public class Preferences {
     }
 
     public Boolean isAppVisited() {
-//        return true;
         return pref.getBoolean("isvisited", false);
     }
 
-    public void setEventId(String eventId){
+    public String getEventId() {
+//        return "151";
+        return pref.getString("event_id", "");
+    }
+
+    public void setEventId(String eventId) {
         editor.putString("event_id", eventId).commit();
     }
 
-    public String getEventId(){
-        return "151";
-//        return pref.getString("event_id", null);
-    }
-
-    public void setLoginRequired(boolean loginRequired){
+    public void setLoginRequired(boolean loginRequired) {
         editor.putBoolean("loginRequired", loginRequired).commit();
     }
 
-    public boolean getIsLoginRequired(){
+    public boolean getIsLoginRequired() {
         return pref.getBoolean("loginRequired", false);
     }
 
-    public void setLocale(String localeStr){
+    public String getLocale() {
+        return pref.getString("locale_string", "");
+    }
+
+    public void setLocale(String localeStr) {
         editor.putString("locale_string", localeStr).commit();
     }
 
-    public String getLocale(){
-        return pref.getString("locale_string", "");
+    public String getAlertCount() {
+        return pref.getString("alert_count", "");
+    }
+
+    public void setAlertCount(String count) {
+        editor.putString("alert_count", count).commit();
+    }
+
+    public void setCalenderCount(String count) {
+        editor.putString("calendar_count", count).commit();
+    }
+
+    public String getCalendarCount() {
+        return pref.getString("calendar_count", "");
+    }
+
+    public String getChatCount() {
+        return pref.getString("chat_count", "");
+    }
+
+    public void setChatCount(String count) {
+        editor.putString("chat_count", count).commit();
+    }
+
+    public String getAttendeeId() {
+        return pref.getString("attendee_id", null);
+    }
+
+    public void setAttendeeId(String attendeeId) {
+        editor.putString("attendee_id", attendeeId).commit();
+    }
+
+    public void saveUserInfo(String userInfo) {
+        editor.putString("user_info", userInfo).commit();
+    }
+
+    public String getUserInfo() {
+        return pref.getString("user_info", null);
+    }
+
+    public void saveDeviceID(String token) {
+        editor.putString("deviceID", token).commit();
+    }
+
+    public String getDeviceID() {
+        return pref.getString("deviceID", "");
+    }
+
+
+    public void saveDeviceToken(String token) {
+        editor.putString("deviceToken", token).commit();
+    }
+
+    public String getDeviceToken() {
+        return pref.getString("deviceToken", "");
+    }
+
+    public String getUnreadAlertCount() {
+        return pref.getString("unreadAlertCount", "0");
+    }
+
+    public void setUnreadAlertCount(String count) {
+        editor.putString("unreadAlertCount", count).commit();
     }
 }

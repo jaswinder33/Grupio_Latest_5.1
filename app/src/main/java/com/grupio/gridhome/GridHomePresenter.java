@@ -51,23 +51,30 @@ public class GridHomePresenter implements GridHomePresenterImp, GridInteractorIm
     }
 
     @Override
-    public void onMessageCount(String msgCount) {
+    public void onMessageCount(String msgCount, int position) {
         if (listener != null) {
-            listener.messageCount(msgCount);
+            listener.messageCount(msgCount, position);
         }
     }
 
     @Override
-    public void onAlertCount(String alertCount) {
+    public void onAlertCount(String alertCount, int position) {
         if (listener != null) {
-            listener.alertCount(alertCount);
+            listener.alertCount(alertCount, position);
         }
     }
 
     @Override
-    public void onCalendarCount(String calCount) {
+    public void onCalendarCount(String calCount, int position) {
         if (listener != null) {
-            listener.showCalendarCount(calCount);
+            listener.showCalendarCount(calCount, position);
+        }
+    }
+
+    @Override
+    public void onChatCount(String count, int position) {
+        if (listener != null) {
+            listener.chatCount(count, position);
         }
     }
 

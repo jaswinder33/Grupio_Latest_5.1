@@ -22,34 +22,32 @@ import java.util.List;
  */
 public class MenuProcessor {
 
+    public static final String TAG = "MenuProcessoe";
+
     public List<MenuData> processResult(String response, Context mcontext) {
 
         List<MenuData> mDataList = new ArrayList<>();
 
-//        JSONArray jArray ;
+        JSONObject jObj = null;
+        try {
+            jObj = new JSONObject(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-
-
-//        JSONObject jObj = null;
-//        try {
-//            jObj = new JSONObject(response);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-//        try {
-//            VersionData vData = new VersionData();
-//            vData.name = "menu";
-//            vData.oldVersion = jObj.getString("version");
-//
-//            VersionDao.getInstance(mcontext).insertDataInOldColumn(vData);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            VersionData vData = new VersionData();
+            vData.name = VersionDao.MENU_VERSION;
+            vData.newVersion = "";
+            vData.oldVersion = jObj.getString("version");
+            VersionDao.getInstance(mcontext).insertDataInOldColumn(vData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         JSONArray mArray = null;
         try {
-            mArray = new JSONArray(response);
+            mArray = jObj.getJSONArray("data");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -86,7 +84,6 @@ public class MenuProcessor {
         return mDataList;
     }
 
-    public static final String TAG ="MenuProcessoe";
     public List<ApiInter> fetchMenuListToDownload(Context mContext) {
 
         Log.i(TAG, "fetchMenuListToDownload: ");

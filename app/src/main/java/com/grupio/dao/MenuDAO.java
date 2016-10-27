@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteStatement;
 
 import com.grupio.data.MenuData;
-import com.grupio.db.MyDbHandler;
+import com.grupio.db.MenuTable;
 import com.grupio.helper.MenuProcessor;
 
 import java.util.ArrayList;
@@ -48,12 +48,12 @@ public class MenuDAO extends BaseDAO {
         db.beginTransaction();
 
         try {
-            stmt = db.compileStatement("INSERT INTO " + MyDbHandler.MENU_TABLE
-                            + " ( "
-                            + MyDbHandler.MENU_NAME + ","
-                            + MyDbHandler.MENU_ORDER + ","
-                            + MyDbHandler.DISPLAY_NAME + ","
-                            + MyDbHandler.ICON_URL + ") VALUES(?,?,?,?)"
+            stmt = db.compileStatement("INSERT INTO " + MenuTable.MENU_TABLE
+                    + " ( "
+                    + MenuTable.MENU_NAME + ","
+                    + MenuTable.MENU_ORDER + ","
+                    + MenuTable.DISPLAY_NAME + ","
+                    + MenuTable.ICON_URL + ") VALUES(?,?,?,?)"
 
             );
 
@@ -90,7 +90,7 @@ public class MenuDAO extends BaseDAO {
 
         openDB(0);
 
-        String query = "Select * from " + MyDbHandler.MENU_TABLE + " order by cast("+MyDbHandler.MENU_ORDER+" as Integer);";
+        String query = "Select * from " + MenuTable.MENU_TABLE + " order by cast(" + MenuTable.MENU_ORDER + " as Integer);";
 
         Cursor mCursor = db.rawQuery(query, null);
 
@@ -121,7 +121,7 @@ public class MenuDAO extends BaseDAO {
     public void deleteMenus() {
         openDB(1);
         try {
-            db.delete(MyDbHandler.MENU_TABLE, null, null);
+            db.delete(MenuTable.MENU_TABLE, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -129,5 +129,34 @@ public class MenuDAO extends BaseDAO {
                 closeDb();
             }
         }
+    }
+
+    public boolean checkIfMenuExists(String menuName) {
+
+        boolean flag = false;
+
+        openDB(0);
+        String query = "select exists (select  * from " + MenuTable.MENU_TABLE + " where " + MenuTable.MENU_NAME + " = '" + menuName + "' );";
+
+        Cursor mCursor = null;
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.moveToFirst()) {
+                flag = mCursor.getInt(0) == 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+
+            closeDb();
+        }
+
+
+        return flag;
     }
 }

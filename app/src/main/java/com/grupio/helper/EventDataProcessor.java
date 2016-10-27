@@ -1,7 +1,7 @@
 package com.grupio.helper;
 
 import android.content.Context;
-
+import android.graphics.Color;
 
 import com.grupio.Utils.Utility;
 import com.grupio.dao.VersionDao;
@@ -36,7 +36,7 @@ public class EventDataProcessor {
         if(jObj != null){
             try {
                 VersionData vData = new VersionData();
-                vData.name="event";
+                vData.name = VersionDao.EVENT_VERSION;
                 vData.oldVersion=jObj.getString("version");
                 VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
             } catch (JSONException e) {
@@ -136,7 +136,7 @@ public class EventDataProcessor {
                     try {
                         loginRequired = jObject.getString("login_required");
                         data.setLoginRequired(loginRequired);
-                        Preferences.getInstances(mContext).setLoginRequired(loginRequired.equals("y") ? true : false);
+                        Preferences.getInstances(mContext).setLoginRequired(loginRequired.equals("y"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -199,6 +199,12 @@ public class EventDataProcessor {
                     }
                     try {
                         data.setEvent_color(jObject.getString("color_theme").trim());
+
+                        int EVENT_COLOR = Color.parseColor(data.getEvent_color());
+                        ConstantData.R_VAULE = Color.red(EVENT_COLOR);
+                        ConstantData.G_VAULE = Color.green(EVENT_COLOR);
+                        ConstantData.B_VAULE = Color.blue(EVENT_COLOR);
+
                     } catch (Exception e) {
                     }
                     try {

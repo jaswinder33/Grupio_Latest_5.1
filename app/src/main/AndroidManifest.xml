@@ -2,9 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.grupio">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".application.UAApplication"
@@ -15,8 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.SplashScreen"
-            android:theme="@style/AppTheme.Splash"
-            >
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +37,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
 
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
+
         <service
-            android:name=".services.DataFetchService"
+            android:name=".service.DataFetchService"
             android:exported="false" />
 
         <activity
@@ -44,6 +56,72 @@
         <activity
             android:name=".gridhome.GridHome"
             android:label="@string/title_activity_grid_home"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:parentActivityName=".activities.BaseActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.grupio.activities.BaseActivity" />
+        </activity>
+        <activity
+            android:name=".activities.WebViewActivity"
+            android:label="@string/title_activity_web_view"
+            android:theme="@style/AppTheme" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".home.MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".message.MessageActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.MessageDetail"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".attendee.ListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".attendee.ListDetailActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity android:name=".attendee.message.SendMessageActivity" />
+        <activity
+            android:name=".attendee.message.ChooseAttendeeActivity"
+            android:label="@string/title_activity_choose_attendee"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".schedule.ScheduleDetail" />
+        <activity
+            android:name=".logistics.LogisticsActivity"
+            android:label="@string/title_activity_logistics"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".venuemaps.VenueMapActivity"
+            android:label="@string/title_activity_venue_map"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".venuemaps.SimpleListActivity"
+            android:label="@string/title_activity_simple_list"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".schedule.ScheduleTrackListActivity"
+            android:label="@string/title_activity_schedule_track_list"
             android:theme="@style/AppTheme"></activity>
     </application>
 

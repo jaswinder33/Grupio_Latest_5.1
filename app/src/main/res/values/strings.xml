@@ -1,6 +1,170 @@
 <resources>
+
+
+    <!-- ################################################################### -->
+    <!-- ###################### API End Points ############################# -->
+    <!-- ################################################################### -->
+
+    <string name="base_url">https://conf.dharanet.com/conf/v1/main</string>
+    <string name="api_format">&amp;format=json</string>
+    <string name="api_event">&amp;event_id=</string>
+    <string name="ads_api">/getads.php?event_id=</string>
+    <string name="event_details">/eventdetails.php?event_id=</string>
+    <string name="event_list">/search.php</string>
+    <string name="exhibitor_apis">/exhibitors.php?event_id=</string>
+    <string name="graphics_apis">/event_graphics.php?event_id=</string>
+    <string name="locale_api">/getlanguage.php?locale=</string>
+    <string name="logistics_api">/logistics.php?event_id=</string>
+    <string name="maps_api">/maps.php?event_id=</string>
+    <string name="menu_api">/getmenuitems_new.php?event_id=</string>
+    <string name="attendee_api">/attendees.php?event_id=</string>
+    <string name="tracks_list_api">/gettracks.php?event_id=</string>
+
+    <string name="sessions_api">/sessions.php?event_id=</string>
+    <string name="speakers_api">/speakers.php?event_id=</string>
+    <string name="sponsors_api">/sponsors.php?event_id=</string>
+    <string name="survey_apis">/getsurveys.php?event_id=</string>
+    <string name="versions_api">/getversions.php?format=json&amp;event_id=</string>
+
+    <!--Message APIs-->
+    <string name="message_inbox_api">/getmessages.php?format=json&amp;threads_per_page=10&amp;page_num=</string>
+    <string name="message_count">/getmessagecount.php?format=json</string>
+    <string name="message_sent_api">/getmessages.php?format=json</string>
+    <string name="load_more_msg_api">/getmessages.php?format=json</string>
+    <string name="mark_msg_as_read_api">/markmessagesread.php?format=json</string>
+    <string name="send_msg_api">/sendmessage.php?format=json</string>
+
+    <!--Login API-->
+    <string name="login_api">/login.php?format=json</string>
+
+    <string name="send_contact_api">/sendcontact.php?format=json</string>
+
+    <!--dicussion board-->
+    <string name="discussion_board_api">/discussion.php?event_id=</string>
+
+    <!-- Alerts API-->
+    <string name="alerts_api">/getnotifications.php?event_id=</string>
+    <string name="alerts_count_api">/getunreadalertcount.php?event_id=</string>
+    <string name="mark_alert_read_api">/markalertsread.php?event_id=</string>
+
+
+    <!-- ################################################################### -->
+    <!-- ################################################################### -->
+    <!-- ################################################################### -->
+
+
+    <!-- ################################################################### -->
+    <!-- #################### Screen Name ################################## -->
+    <!-- ################################################################### -->
+
+
+    <string name="activity_feed">activity_feed</string>
+    <string name="detail">detail</string>
+    <string name="schedule">schedule</string>
+    <string name="mycalendar">mycalendar</string>
+    <string name="speakers">speakers</string>
+    <string name="exhibitors">exhibitors</string>
+    <string name="sponsors">sponsors</string>
+    <string name="maps">maps</string>
+    <string name="live">live</string>
+    <string name="social">social</string>
+    <string name="logistics">logistics</string>
+    <string name="logistics2">logistics2</string>
+    <string name="logistics3">logistics3</string>
+    <string name="my_account">my account</string>
+    <string name="survey">survey</string>
+    <string name="attendees">attendees</string>
+    <string name="matches">matches</string>
+    <string name="messages">messages</string>
+    <string name="Alerts">Alerts</string>
+    <string name="downloads">downloads</string>
+    <string name="qrcode">qrcode</string>
+    <string name="search">search</string>
+    <string name="discussion_board">discussion_board</string>
+    <string name="my_notes">my_notes</string>
+    <string name="things_to_do">things_to_do</string>
+    <string name="photo_gallery">photo_gallery</string>
+    <string name="i2i">i2i</string>
+    <string name="chat">chat</string>
+    <string name="game">game</string>
+
+    <!-- ################################################################### -->
+    <!-- ################################################################### -->
+
+
+    <!-- Resources -->
+    <string name="splash">splash_image</string>
+    <string name="main_header">main_top_nav_img</string>
+    <string name="top_nav">top_nav_img</string>
+    <string name="menu_background">menu_background</string>
+
+    <string name="app_background">app_background_img</string>
+    <string name="app_back_button">app_back_button_img</string>
+    <string name="app_dashboard_button">app_dashboard_button_img</string>
+    <string name="dlscreen_background">dlscreen_background</string>
+
+
+    <!-- Sd card Params-->
+    <string name="Resources">Resources</string>
+    <string name="Maps">Maps</string>
+    <string name="menus">Menus</string>
+
+
+    <string name="no_internet">You are offline</string>
+
+
+    <!--Activity Names-->
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_event_specific_splash">EventSpecificSplash</string>
     <string name="title_activity_grid_home">GridHome</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- ################################################################### -->
+    <!-- ######################## App params ############################### -->
+    <!-- ################################################################### -->
+
+    <!--Home Screen-->
+    <string name="information">Information</string>
+    <string name="venue">Venue :</string>
+    <string name="address">Address :</string>
+    <string name="get_direction">Get Directions</string>
+    <string name="get_ticket">Get Ticket</string>
+    <string name="event_website">Event Website</string>
+    <string name="description">Description</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!--Attendee Screen-->
+    <string name="no_data">No Data Available</string>
+    <string name="send_info_request">Would you like to connect with the company representative?</string>
+    <string name="contact_sent">Your request to connect has been sent to the company representative via email.</string>
+
+
+    <!-- Logistics Constants-->
+    <string name="session_resources">Session Resources</string>
+    <string name="attendee_resources">Attendee Resources</string>
+    <string name="exhibitor_resources">Exhibitor Resources</string>
+    <string name="sponsor_resources">Sponsors Resources</string>
+    <string name="speaker_resources">Speakers Resources</string>
+    <string name="logistics_resources">Logistics Resources</string>
+
+    <!--Document Controller-->
+    <string name="file_downloaded">File successfully downloaded</string>
+    <string name="file_download_failed">Problem Loading Request</string>
+    <string name="title_activity_choose_attendee">ChooseAttendeeActivity</string>
+
+    <!--Choose Attendee Screen-->
+    <string name="erroor_occured">Error Occured...</string>
+    <string name="title_activity_logistics">LogisticsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_venue_map">VenueMapActivity</string>
+    <string name="title_activity_simple_list">SimpleListActivity</string>
+    <string name="title_activity_schedule_track_list">ScheduleTrackListActivity</string>
+
 </resources>

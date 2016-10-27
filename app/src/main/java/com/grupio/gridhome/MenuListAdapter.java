@@ -1,14 +1,8 @@
 package com.grupio.gridhome;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +12,11 @@ import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
-import com.grupio.activities.EventSpecificSplash;
-import com.grupio.animation.SlideOut;
-import com.grupio.data.EventData;
+import com.grupio.dao.EventDAO;
 import com.grupio.data.MenuData;
-import com.grupio.eventlist.EventListActivity;
-import com.grupio.session.ConstantData;
+import com.grupio.db.EventTable;
+import com.grupio.session.Preferences;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,30 +27,29 @@ import java.util.List;
  */
 public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHolder> {
 
+    String eventColor;
     private Context mContext;
     private List<MenuData> menuList = new ArrayList<>();
     private boolean showAlertCount = false;
 
     public MenuListAdapter(Context mContext) {
         this.mContext = mContext;
+        eventColor = EventDAO.getInstance(mContext).getValue(EventTable.COLOR_THEME);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.menu_icon, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        String menuName  = menuList.get(position).getMenuName();
+        String menuName = menuList.get(position).getMenuName();
         holder.menuName.setText(menuName);
-        if(menuName.equalsIgnoreCase("mycalendar") || menuName.equalsIgnoreCase("chat")  || menuName.equalsIgnoreCase("messages") || menuName.equalsIgnoreCase("Alerts")){
-            showAlertCount = true;
-        }else{
-            showAlertCount = false;
-        }
+        showAlertCount = menuName.equalsIgnoreCase("mycalendar") || menuName.equalsIgnoreCase("chat") || menuName.equalsIgnoreCase("messages") || menuName.equalsIgnoreCase("Alerts");
 
         displayIcon(holder, showAlertCount, menuName, position);
 
@@ -68,17 +60,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         return menuList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView menuIcon;
-        TextView menuName, alertText;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            menuIcon = (ImageView) itemView.findViewById(R.id.menuIcon);
-            menuName = (TextView) itemView.findViewById(R.id.menuName);
-            alertText = (TextView) itemView.findViewById(R.id.alertText);
-        }
+    public MenuData getItemAtPos(int pos) {
+        return menuList.get(pos);
     }
 
     public void addItem(MenuData menuData) {
@@ -93,15 +76,19 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         menuList.remove(position);
     }
 
-    public void getTheme(){
+    public void getTheme() {
 
     }
 
-    public void displayIcon(ViewHolder mHolder, boolean showCountLayout, String menuName, int position){
+    public void displayIcon(ViewHolder mHolder, boolean showCountLayout, String menuName, int position) {
 
-        if(showCountLayout){
-            mHolder.alertText.setVisibility(View.VISIBLE);
-        }else{
+        if (showCountLayout) {
+            String count = getAlertCount(menuName);
+            if (!count.equals("0") && !count.equals("")) {
+                mHolder.alertText.setVisibility(View.VISIBLE);
+                mHolder.alertText.setText(count);
+            }
+        } else {
             mHolder.alertText.setVisibility(View.GONE);
         }
 
@@ -115,28 +102,32 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
         String imageIconUrl = menuList.get(position).getMenuIconUrl();
 
-        if(imageIconUrl.equalsIgnoreCase("") || imageIconUrl == null){
+        if (imageIconUrl.equalsIgnoreCase("") || imageIconUrl == null) {
             mHolder.menuIcon.setImageResource(getMenuIcon(menuName));
-        }else{
-            File fileDir = Utility.getBaseFolder(mContext, ConstantData.RESOURCES + File.separator + ConstantData.MENUS);
-            File file = new File(fileDir,menuList.get(position).getMenuName());
-            if(file.exists()){
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
-                bitmap = Bitmap.createBitmap(bitmap);
-                mHolder.menuIcon.setImageBitmap(bitmap);
-            }else{
+        } else {
+            File fileDir = Utility.getBaseFolder(mContext, mContext.getString(R.string.Resources) + File.separator + mContext.getString(R.string.menus));
+            File file = new File(fileDir, menuList.get(position).getMenuName());
+            if (file.exists()) {
+                ImageLoader.getInstance().displayImage("file://" + file.getAbsolutePath(), mHolder.menuIcon);
+            } else {
                 mHolder.menuIcon.setImageResource(getMenuIcon(displayMenuName));
             }
-
         }
 
+        try {
+            int color = Color.parseColor(eventColor);
+            GradientDrawable drawable = (GradientDrawable) mHolder.menuIcon.getBackground();
+            drawable.setColor(color);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+//       mHolder.menuIcon.getBackground().(color, PorterDuff.Mode.MULTIPLY);
     }
 
-    public String getMenuName(String menuDisplayName){
+    public String getMenuName(String menuDisplayName) {
 
-        switch (menuDisplayName){
+        switch (menuDisplayName) {
 
             case "schedule":
                 return "Schedule";
@@ -225,11 +216,11 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             default:
                 return "";
         }
-    };
+    }
 
-    public int getMenuIcon(String menuDisplayName){
+    public int getMenuIcon(String menuDisplayName) {
 
-        switch (menuDisplayName){
+        switch (menuDisplayName) {
 
             case "schedule":
                 return R.drawable.dash_schedule_blue;
@@ -241,10 +232,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                 return R.drawable.dash_speakers_blue;
 
             case "exhibitors":
-            return R.drawable.dash_exhibitor_blue;
+                return R.drawable.dash_exhibitor_blue;
 
             case "sponsors":
-            return R.drawable.dash_sponsor_blue;
+                return R.drawable.dash_sponsor_blue;
 
             case "maps":
                 return R.drawable.dash_maps_blue;
@@ -273,7 +264,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                 return R.drawable.dash_attendees_icon_blue;
 
             case "matches":
-            return R.drawable.dash_schedule_blue;
+                return R.drawable.dash_schedule_blue;
 
             case "messages":
                 return R.drawable.dash_messages_blue;
@@ -293,8 +284,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                 return R.drawable.my_note;
             case "things_to_do":
                 return R.drawable.todo;
-           case "photo_gallery":
-               return R.drawable.dash_photo_galler_white;
+            case "photo_gallery":
+                return R.drawable.dash_photo_galler_white;
             case "i2i":
                 return R.drawable.dash_i2i;
             case "chat":
@@ -305,6 +296,44 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             default:
                 return R.drawable.dash_home_new_blue;
         }
+
+    }
+
+    public String getAlertCount(String menu) {
+
+        switch (menu) {
+
+            case "mycalendar":
+                return Preferences.getInstances(mContext).getCalendarCount();
+
+            case "messages":
+                return Preferences.getInstances(mContext).getUnreadMessages();
+
+            case "Alerts":
+                return Preferences.getInstances(mContext).getAlertCount();
+
+            case "chat":
+                return Preferences.getInstances(mContext).getChatCount();
+
+            default:
+                return "";
+        }
+
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView menuIcon;
+        TextView menuName, alertText;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            menuIcon = (ImageView) itemView.findViewById(R.id.menuIcon);
+            menuName = (TextView) itemView.findViewById(R.id.menuName);
+            alertText = (TextView) itemView.findViewById(R.id.alertText);
+        }
+
+
 
     }
 }

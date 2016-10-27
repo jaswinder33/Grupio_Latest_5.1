@@ -5,4 +5,5 @@ package com.grupio.apis;
  */
 public interface ApiInter {
     void netNotAvailable(ApiCallBack mListener);
+//    void run();
 }

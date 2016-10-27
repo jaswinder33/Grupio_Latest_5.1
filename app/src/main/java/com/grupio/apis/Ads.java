@@ -3,9 +3,9 @@ package com.grupio.apis;
 import android.content.Context;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
-import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
 
@@ -19,21 +19,19 @@ public class Ads extends BaseApiCall {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getResources().getString(R.string.ads_api);
+    }
 
-
-        String url = ConstantData.ADS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
+    @Override
+    public void callApi() {
 
         APIRequest request = new GetRequest();
-        String result = request.requestResponse(url, new HashMap<String, String>(), mContext);
+        String result = request.requestResponse(url, new HashMap<>(), mContext);
 
         if (result != null){
-
         }
 
-
         Log.i("API", "Ads API");
-
     }
 }

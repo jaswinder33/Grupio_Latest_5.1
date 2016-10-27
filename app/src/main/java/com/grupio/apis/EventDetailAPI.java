@@ -3,6 +3,7 @@ package com.grupio.apis;
 import android.content.Context;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
 import com.grupio.dao.EventDAO;
@@ -16,22 +17,19 @@ import java.util.HashMap;
  */
 public class EventDetailAPI extends BaseApiCall {
 
-    private String result;
-//    protected Context mContext;
-
-
     public EventDetailAPI(Context mContext){
         this.mContext = mContext;
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getString(R.string.event_details) + ConstantData.EVENT_ID;
+    }
 
-        String eventUrl = ConstantData.EVENT_DETAILS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
-
+    @Override
+    public void callApi() {
         APIRequest request = new GetRequest();
-        String result = request.requestResponse(eventUrl, new HashMap<String, String>(), mContext);
+        String result = request.requestResponse(url, new HashMap<>(), mContext);
 
         Log.i("API", "EventDetailAPI");
 

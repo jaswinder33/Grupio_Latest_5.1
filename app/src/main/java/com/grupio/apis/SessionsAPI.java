@@ -3,8 +3,10 @@ package com.grupio.apis;
 import android.content.Context;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.SessionDAO;
 import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
@@ -18,22 +20,19 @@ public class SessionsAPI extends BaseApiCall {
         super(mContext);
     }
 
+    @Override
+    public String getEndPoint() {
+        return mContext.getString(R.string.sessions_api) + ConstantData.EVENT_ID;
+    }
 
     @Override
-    public void run() {
-        super.run();
-
-        String url = ConstantData.SESSIONS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
+    public void callApi() {
         APIRequest request = new GetRequest();
-        String response = request.requestResponse(url, new HashMap<String, String>(),mContext);
+        String response = request.requestResponse(url, new HashMap<>(), mContext);
 
-
-//        String resposne = GridHome.ut_obj.postData(url, new ArrayList<NameValuePair>(), mContext);
-//
-//        if (resposne != null) {
-//            SessionDAO.getInstance(mContext).insertData(resposne);
-//        }
-
+        if (response != null) {
+            SessionDAO.getInstance(mContext).insertData(response);
+        }
 
         Log.i("API", "SessionsAPI");
     }

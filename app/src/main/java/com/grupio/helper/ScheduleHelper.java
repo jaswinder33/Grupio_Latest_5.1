@@ -1,7 +1,11 @@
 package com.grupio.helper;
 
+import android.content.Context;
+
+import com.grupio.dao.VersionDao;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.TrackData;
+import com.grupio.data.VersionData;
 import com.grupio.data.mapList;
 
 import org.json.JSONArray;
@@ -17,7 +21,7 @@ import java.util.List;
 public class ScheduleHelper {
 
 
-    public  List<ScheduleData> parseJSON(String response) {
+    public List<ScheduleData> parseJSON(Context mContext, String response) {
 
         List<ScheduleData> mList = new ArrayList<>();
 
@@ -30,8 +34,13 @@ public class ScheduleHelper {
         }
 
         if (jsonObject != null) {
+
             try {
-                String version = jsonObject.getString("version");
+                VersionData vData = new VersionData();
+                vData.name = VersionDao.SCHEDULE_VERSION;
+                vData.newVersion = "";
+                vData.oldVersion = jsonObject.getString("version");
+                VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -150,7 +159,7 @@ public class ScheduleHelper {
                                     mapdata.setMapUrl(sessionMapObject.getString("url").trim());
                                     mapdata.setMapType(sessionMapObject.getString("type").trim());
                                     try {
-                                        mapdata.setLoginRequired(sessionMapObject.getString("login_required") );
+                                        mapdata.setLoginRequired(sessionMapObject.getString("login_required"));
                                     } catch (Exception e) {
 
                                     }
@@ -178,20 +187,20 @@ public class ScheduleHelper {
         return mList;
     }
 
-    public ArrayList<ScheduleData> getTrackListFromJSON(String str) throws Exception{
+    public ArrayList<ScheduleData> getTrackListFromJSON(String str) throws Exception {
 
         ArrayList<ScheduleData> trackDataList = null;
 
-        try{
+        try {
             trackDataList = new ArrayList<ScheduleData>();
 
             JSONArray jArray = new JSONObject(str).getJSONArray("data");
 
-            if(jArray!=null && jArray.length()>0){
+            if (jArray != null && jArray.length() > 0) {
                 ScheduleData data = null;
 
-                for(int i=0;i<jArray.length();i++){
-                    JSONObject jObject=jArray.getJSONObject(i);
+                for (int i = 0; i < jArray.length(); i++) {
+                    JSONObject jObject = jArray.getJSONObject(i);
                     data = new ScheduleData();
 
                     try {
@@ -214,14 +223,15 @@ public class ScheduleHelper {
 
                     trackDataList.add(data);
                 }
-            }}catch (Exception e) {
+            }
+        } catch (Exception e) {
 
         }
 
         return trackDataList;
     }
 
-    public  List<TrackData> parseTrackList(String response){
+    public List<TrackData> parseTrackList(String response) {
 
 
         List<TrackData> mList = new ArrayList<>();
@@ -229,12 +239,12 @@ public class ScheduleHelper {
 
         JSONObject jsonObject = null;
         try {
-             jsonObject =  new JSONObject(response);
+            jsonObject = new JSONObject(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        if(jsonObject != null){
+        if (jsonObject != null) {
 
             JSONArray jArray = null;
             try {
@@ -243,22 +253,22 @@ public class ScheduleHelper {
                 e.printStackTrace();
             }
 
-            if(jArray != null && jArray.length() > 0){
+            if (jArray != null && jArray.length() > 0) {
 
-                TrackData td ;
+                TrackData td;
 
-                for(int i=0; i<jArray.length(); i++){
+                for (int i = 0; i < jArray.length(); i++) {
 
                     td = new TrackData();
 
                     try {
-                        td.id=jArray.getJSONObject(i).getString("id");
+                        td.id = jArray.getJSONObject(i).getString("id");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     try {
-                        td.track=jArray.getJSONObject(i).getString("track");
+                        td.track = jArray.getJSONObject(i).getString("track");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -276,7 +286,7 @@ public class ScheduleHelper {
                     }
 
                     try {
-                        td.order=jArray.getJSONObject(i).getString("order_no");
+                        td.order = jArray.getJSONObject(i).getString("order_no");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -290,7 +300,7 @@ public class ScheduleHelper {
 
     }
 
-    public List<String> getSpeakerList(String resposne){
+    public List<String> getSpeakerList(String resposne) {
 
         List<String> mList = new ArrayList<>();
 
@@ -301,8 +311,8 @@ public class ScheduleHelper {
             e.printStackTrace();
         }
 
-        if(jArray != null && jArray.length() > 0){
-            for(int i=0; i<jArray.length();i++){
+        if (jArray != null && jArray.length() > 0) {
+            for (int i = 0; i < jArray.length(); i++) {
                 try {
                     mList.add(jArray.getString(i));
                 } catch (JSONException e) {
@@ -315,7 +325,7 @@ public class ScheduleHelper {
 
     }
 
-    public List<mapList>  getSessionLinks(String response){
+    public List<mapList> getSessionLinks(String response) {
 
         List<mapList> mapList = new ArrayList<>();
 
@@ -328,42 +338,42 @@ public class ScheduleHelper {
 
         if (jarray != null && jarray.length() > 0) {
 
-                for (int j = 0; j < jarray.length(); j++) {
+            for (int j = 0; j < jarray.length(); j++) {
 
-                    JSONObject sessionMapObject = null;
-                    try {
-                        sessionMapObject = jarray.getJSONObject(j);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    mapList mapdata = new mapList();
-                    mapdata.setMapId(j + "");
-                    try {
-                        mapdata.setMapName(sessionMapObject.getString("name").trim());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        mapdata.setMapUrl(sessionMapObject.getString("url").trim());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        mapdata.setMapType(sessionMapObject.getString("type").trim());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        mapdata.setLoginRequired(sessionMapObject.getString("login_required") );
-                    } catch (Exception e) {
-
-                    }
-
-                    mapList.add(mapdata);
+                JSONObject sessionMapObject = null;
+                try {
+                    sessionMapObject = jarray.getJSONObject(j);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+                mapList mapdata = new mapList();
+                mapdata.setMapId(j + "");
+                try {
+                    mapdata.setMapName(sessionMapObject.getString("name").trim());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mapdata.setMapUrl(sessionMapObject.getString("url").trim());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mapdata.setMapType(sessionMapObject.getString("type").trim());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mapdata.setLoginRequired(sessionMapObject.getString("login_required"));
+                } catch (Exception e) {
+
+                }
+
+                mapList.add(mapdata);
             }
-           return mapList;
+        }
+        return mapList;
     }
 
 }

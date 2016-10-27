@@ -1,6 +1,10 @@
 package com.grupio.apis;
 
 import android.content.Context;
+import android.widget.Toast;
+
+import com.grupio.R;
+import com.grupio.Utils.Utility;
 
 /**
  * Created by JSN on 19/8/16.
@@ -23,16 +27,12 @@ public class APICall<T extends ApiInter> {
         doCall(mContext, null);
     }
 
-    public void doCall(Context mContext, ApiCallBack mListener) {
-//        if (Utils.haveNetwork(mContext)) {
-//            if (mListener == null) {
-////                type.doCall(mContext);
-//            } else {
-////                type.doCall(mContext, mListener);
-//            }
-//        } else {
-//            type.netNotAvailable(mListener);
-//        }
+    public void doCall(Context mContext, T param) {
+        if (Utility.hasInternet(mContext)) {
+//           param.run();
+        } else {
+            Toast.makeText(mContext, mContext.getResources().getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

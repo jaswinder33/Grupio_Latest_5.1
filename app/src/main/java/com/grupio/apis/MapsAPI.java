@@ -3,6 +3,7 @@ package com.grupio.apis;
 import android.content.Context;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
@@ -25,19 +26,20 @@ public class MapsAPI extends BaseApiCall {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getString(R.string.maps_api) + ConstantData.EVENT_ID;
+    }
 
-        String url = ConstantData.MAPS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
+    @Override
+    public void callApi() {
+//        String url = ConstantData.MAPS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
 
         APIRequest request = new GetRequest();
         String resposne = request.requestResponse(url, new HashMap<String, String>(), mContext);
 
-//        String resposne = GridHome.ut_obj.postData(url, new ArrayList<NameValuePair>(), mContext);
-//
         if (resposne != null) {
             MapsDAO.getInstance(mContext).insertData(resposne);
-            ArrayList<MapsData> mmapdata = MapDataProcessor.getSponsorListFromJSON(resposne);
+            ArrayList<MapsData> mmapdata = MapDataProcessor.getSponsorListFromJSON(mContext, resposne);
 
             if(mmapdata != null && mmapdata.size() > 0){
                 for(int i=0; i<mmapdata.size();i++){
@@ -61,7 +63,7 @@ public class MapsAPI extends BaseApiCall {
             @Override
             public void run() {
                 // Dot is used to hide the folder
-                Utility.downloadFile(mContext, url, fileName, ConstantData.RESOURCES + File.separator + ConstantData.MAPS, "");
+                Utility.downloadFile(mContext, url, fileName, mContext.getString(R.string.Resources) + File.separator + mContext.getString(R.string.Maps), "");
             }
         }).start();
     }

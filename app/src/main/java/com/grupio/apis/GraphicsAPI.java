@@ -3,6 +3,7 @@ package com.grupio.apis;
 import android.content.Context;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
@@ -20,22 +21,21 @@ import java.util.Map;
  */
 public class GraphicsAPI extends BaseApiCall {
 
-//    protected Context mContext;
     public GraphicsAPI(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getString(R.string.graphics_apis) + ConstantData.EVENT_ID;
+    }
 
-        String graphicUrl =  ConstantData.GRAPHICS_API + ConstantData.EVENT_ID +  ConstantData.API_FORMAT;
+    @Override
+    public void callApi() {
+//        String graphicUrl =  ConstantData.GRAPHICS_API + ConstantData.EVENT_ID +  ConstantData.API_FORMAT;
 
         APIRequest request = new GetRequest();
-        String response = request.requestResponse(graphicUrl, new HashMap<String, String>(), mContext);
-
-
-//        String response = GridHome.ut_obj.postData(graphicUrl,new ArrayList<NameValuePair>(),mContext);
+        String response = request.requestResponse(url, new HashMap<String, String>(), mContext);
 
         if(response != null){
 
@@ -59,7 +59,6 @@ public class GraphicsAPI extends BaseApiCall {
             }
         }
         Log.i("API", "GraphicsAPI");
-
     }
 
 
@@ -68,7 +67,7 @@ public class GraphicsAPI extends BaseApiCall {
             @Override
             public void run() {
                 // Dot is used to hide the folder
-                Utility.downloadFile(mContext, url, fileName, ConstantData.RESOURCES + File.separator + ConstantData.RESOURCES, "");
+                Utility.downloadFile(mContext, url, fileName, mContext.getString(R.string.Resources) + File.separator + mContext.getString(R.string.Resources), "");
             }
         }).start();
     }

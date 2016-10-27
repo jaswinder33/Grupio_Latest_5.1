@@ -1,13 +1,12 @@
 package com.grupio.data;
 
-public class MapsData {
+public class MapsData implements DocInter {
 
+	private String Interactive = "";
+	private String order = "";
 	private String mapId="";
 	private String name="";
 	private String url = "";
-	public String Interactive = "";
-
-	public String order="";
 
 	public String getOrder() {
 		return order;

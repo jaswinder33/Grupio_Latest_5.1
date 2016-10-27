@@ -1,10 +1,13 @@
 package com.grupio.apis;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.ExhibitorDAO;
 import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
@@ -20,20 +23,19 @@ public class ExhibitorAPI extends BaseApiCall {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public String getEndPoint() {
+        return mContext.getResources().getString(R.string.exhibitor_apis) + ConstantData.EVENT_ID;
+    }
 
-        String url = ConstantData.EXHIBITORS_API + ConstantData.EVENT_ID + "&format=json";
-
+    @Override
+    public void callApi() {
         APIRequest request = new GetRequest();
-        String response =  request.requestResponse(url, new HashMap<String, String>(), mContext);
-
-//        if (response != null) {
-//            ExhibitorDAO.getInstance(mContext).insert(response);
-//        }
-
-
+        String response = request.requestResponse(url, new HashMap<>(), mContext);
         Log.i("API", "ExhibitorAPI");
+
+        if (response != null && !TextUtils.isEmpty(response)) {
+            ExhibitorDAO.getInstance(mContext).insert(response);
+        }
 
     }
 }

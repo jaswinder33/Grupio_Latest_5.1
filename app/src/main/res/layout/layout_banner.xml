@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bannerLay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:background="@color/LightGray"
         android:padding="10dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/exhibitor_filter_edtTxt"
@@ -30,7 +31,6 @@
             android:layout_height="@dimen/searchbar_ht"
             android:layout_centerInParent="true"
             android:background="@drawable/edit_search"
-            android:editable="true"
             android:ellipsize="end"
             android:hint="Search"
             android:imeOptions="actionSearch"

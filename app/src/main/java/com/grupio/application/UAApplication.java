@@ -2,20 +2,19 @@ package com.grupio.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import android.telephony.TelephonyManager;
 
+import com.grupio.session.ConstantData;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-import dalvik.system.DexFile;
 
 /**
  * Created by JSN on 20/9/16.
  */
 public class UAApplication extends Application{
-
 
     public static void initImageLoader(Context context) {
         /**
@@ -40,13 +39,19 @@ public class UAApplication extends Application{
     public void onCreate() {
         super.onCreate();
         initImageLoader(this);
+
+        try {
+            TelephonyManager tManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            ConstantData.DEVICE_ID = tManager.getDeviceId();
+        } catch (Exception e) {
+        }
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
 //        MultiDex.install(base);
-    }
+//    }
 
 
 }

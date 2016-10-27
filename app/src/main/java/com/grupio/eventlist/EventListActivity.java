@@ -1,12 +1,11 @@
 package com.grupio.eventlist;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,71 +13,29 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.grupio.BuildConfig;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
 import com.grupio.activities.EventSpecificSplash;
-import com.grupio.animation.SlideIn;
 import com.grupio.animation.SlideOut;
 import com.grupio.backend.Permissions;
 import com.grupio.data.EventData;
+import com.grupio.gridhome.GridHome;
 import com.grupio.login.LoginActivity;
-import com.grupio.services.DataFetchService;
+import com.grupio.service.DataFetchService;
 import com.grupio.session.ConstantData;
+import com.grupio.session.Preferences;
 
 import java.io.File;
 import java.util.List;
 
-public class EventListActivity extends BaseActivity implements View.OnClickListener, EventListView {
-
-    private ListView lstEvent;
-    private EventListPresenter mPresenter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
-        init();
-
-        View view = getWindow().getDecorView().getRootView();
-        doInitialThings(view);
-        sendReport("EVENT_LIST_VIEW");
-        handleLeftBtn(false, true);
-        handleRightBtn(true, "refresh");
-        setUpSearchBar(true,"");
-        setListener();
-        searchEditTxt.setOnEditorActionListener(editor);
-
-        mPresenter = new EventListPresenter(this, this);
-    }
-
-    private void init() {
-        header = (TextView) findViewById(R.id.header);
-        leftBtn = (ImageView) findViewById(R.id.leftBtn);
-        rightBtn = (TextView) findViewById(R.id.rightBtn);
-        lstEvent = (ListView) findViewById(R.id.lstEvent);
-    }
-
-    public void setListener() {
-        lstEvent.setOnItemClickListener(onItemClickListener);
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-
-        switch (v.getId()) {
-            case R.id.rightBtn:
-                mPresenter.fetchEventListFromServer("");
-                break;
-        }
-    }
+public class EventListActivity extends BaseActivity<EventListPresenter> implements View.OnClickListener, EventListView {
 
     EditText.OnEditorActionListener editor = new TextView.OnEditorActionListener() {
         @Override
@@ -91,7 +48,7 @@ public class EventListActivity extends BaseActivity implements View.OnClickListe
                 if (searchQuery.equals("")) {
                     onSearchError("Please Enter an Event Name!");
                 } else {
-                    mPresenter.fetchEventListFromServer(searchQuery);
+                    getPresenter().fetchEventListFromServer(searchQuery);
                 }
 
                 return true;
@@ -99,6 +56,116 @@ public class EventListActivity extends BaseActivity implements View.OnClickListe
             return false;
         }
     };
+    private ListView lstEvent;
+    private TextView noDataAvailableTxt;
+    private boolean isLoginRequired = false;
+    ListView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Preferences.getInstances(EventListActivity.this).setIsAppVisited(false);
+
+            deleteDatabase(ConstantData.DATABASE);
+
+            File cacheDir;
+
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                cacheDir = new File(Environment.getExternalStorageDirectory(), BuildConfig.BASE_FOLDER);
+
+                if (cacheDir.exists()) {
+                    Utility.deleteRecursive(cacheDir);
+                }
+            }
+
+            EventData eData = (EventData) parent.getAdapter().getItem(position);
+            ConstantData.EVENT_ID = eData.getEvent_id();
+            Preferences.getInstances(EventListActivity.this).setEventId(eData.getEvent_id());
+
+            isLoginRequired = eData.getLoginRequired().equals("y");
+            showProgess();
+            startService();
+        }
+    };
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            hideProgress();
+
+
+            Intent mIntent;
+            if (isLoginRequired) {
+                mIntent = new Intent(EventListActivity.this, LoginActivity.class);
+            } else {
+                File fileDir = Utility.getBaseFolder(EventListActivity.this, getString(R.string.Resources));
+                File file = new File(fileDir, getString(R.string.Resources) + File.separator + getString(R.string.splash));
+
+                String filePath = file.getAbsolutePath();
+                Log.i(TAG, "onReceive: SplashExists on " + filePath);
+
+                if (new File(filePath).exists()) {
+                    System.out.println("exist");
+                    mIntent = new Intent(EventListActivity.this, EventSpecificSplash.class);
+                } else {
+                    System.out.println("dsn't exist");
+                    mIntent = new Intent(EventListActivity.this, GridHome.class);
+                }
+            }
+
+            startActivity(mIntent);
+            finish();
+            SlideOut.getInstance().startAnimation(EventListActivity.this);
+        }
+    };
+
+    @Override
+    public int getLayout() {
+        return R.layout.activity_event_list;
+    }
+
+    @Override
+    public void setUp() {
+        handleLeftBtn(false, true);
+        handleRightBtn(true, "refresh");
+        setupSearchBar(true, "");
+        searchEditTxt.setOnEditorActionListener(editor);
+    }
+
+    @Override
+    public void initIds() {
+        lstEvent = (ListView) findViewById(R.id.lstEvent);
+        noDataAvailableTxt = (TextView) findViewById(R.id.txtNoData);
+        lstEvent.setEmptyView(noDataAvailableTxt);
+    }
+
+    @Override
+    public boolean isHeaderForGridPage() {
+        return false;
+    }
+
+    @Override
+    public EventListPresenter setPresenter() {
+        return new EventListPresenter(this, this);
+    }
+
+    @Override
+    public void setListeners() {
+        lstEvent.setOnItemClickListener(onItemClickListener);
+    }
+
+    @Override
+    public String getScreenName() {
+        return "EVENT_LIST_VIEW";
+    }
+
+    @Override
+    public String getBannerName() {
+        return null;
+    }
+
+    @Override
+    public void handleRightBtnClick() {
+        getPresenter().fetchEventListFromServer("");
+    }
 
     @Override
     public void hideKeyboard(View view) {
@@ -113,34 +180,35 @@ public class EventListActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
+    public void onFailure(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void showProgess() {
-        showProgress("Loading Events...");
+        showProgressDialog("Loading Events...");
+    }
+
+    @Override
+    public void hideProgress() {
+        hideProgressDialog();
     }
 
     @Override
     public void showEventList(List<EventData> mlist) {
-        Log.i("Event List Size", mlist.size() + "");
 
-        checkForPermissions();
-
-        EventListAdapter mAdapter = new EventListAdapter(this);
-        mAdapter.addAll(mlist);
-        lstEvent.setAdapter(mAdapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("Event List Size", mlist.size() + "");
+                checkForPermissions();
+                EventListAdapter mAdapter = new EventListAdapter(EventListActivity.this);
+                mAdapter.addAll(mlist);
+                lstEvent.setAdapter(mAdapter);
+            }
+        });
 
     }
-
-    private boolean isLoginRequired = false;
-
-    ListView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            EventData eData = (EventData) parent.getAdapter().getItem(position);
-            ConstantData.EVENT_ID = eData.getEvent_id();
-
-            isLoginRequired = eData.getLoginRequired().equals("y") ? true : false;
-            startService();
-        }
-    };
 
     @Override
     protected void onStart() {
@@ -154,40 +222,40 @@ public class EventListActivity extends BaseActivity implements View.OnClickListe
         unregisterReceiver(broadcastReceiver);
     }
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            hideProgress();
-
-            Intent myintent;
-            if(isLoginRequired){
-//                 intent = new Intent(EventListActivity.this, LoginActivity.class);
-                startActivity(new Intent(EventListActivity.this, LoginActivity.class));
-            }else{
-
-                File fileDir = Utility.getBaseFolder(EventListActivity.this, ConstantData.RESOURCES);
-                File file = new File(fileDir,ConstantData.RESOURCES + File.separator + ConstantData.SPLASH);
-                if(file.exists()){
-                    startActivity(new Intent(EventListActivity.this, EventSpecificSplash.class));
-                    finish();
-                    SlideOut.getInstance().startAnimation(EventListActivity.this);
-                }else{
-
-                }
-
-
-            }
-
-        }
-    };
-
     public void startService() {
         Intent mIntent = new Intent(EventListActivity.this, DataFetchService.class);
         startService(mIntent);
     }
 
-    public void checkForPermissions(){
+    public void checkForPermissions() {
         Permissions.getInstance().checkForAllPermissions(this).askForPermissions(this, 100);
+    }
+
+    /**
+     * Override searchBar behaviour of baseclass
+     *
+     * @param showSearchBar
+     * @param locale
+     */
+    @Override
+    public void setupSearchBar(boolean showSearchBar, String locale) {
+        View searchBarBgId = findViewById(R.id.searchBarBgId);
+        searchEditTxt = (EditText) findViewById(R.id.exhibitor_filter_edtTxt);
+        if (showSearchBar) {
+            searchBarBgId.setVisibility(View.VISIBLE);
+        } else {
+            searchBarBgId.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Override header setup behaviour of baseclass.
+     *
+     * @param isGridHome
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    protected void setUpHeader(boolean isGridHome) {
+
     }
 
 }

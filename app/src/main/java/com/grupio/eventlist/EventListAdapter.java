@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.data.EventData;
-import com.grupio.session.ConstantData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -38,7 +37,7 @@ public class EventListAdapter extends ArrayAdapter<EventData> {
 
         mHolder.txtEventName.setText(getItem(position).getEvent_name());
         try {
-            String url = ConstantData.BASE_URL  +getItem(position).getImageURL();
+            String url = getContext().getString(R.string.base_url) + getItem(position).getImageURL();
             ImageLoader.getInstance().displayImage(url, mHolder.img, Utility.getDisplayOptionsEventList());
 
         } catch (Exception e) {

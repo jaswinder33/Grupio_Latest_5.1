@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/qdelegate_background"
     android:orientation="vertical">
 
     <include
@@ -24,20 +24,20 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/detail_frame_height"
-                android:background="@drawable/info_bg">
+                android:background="@drawable/pattern_bg">
 
                 <RelativeLayout
                     android:id="@+id/attImageLay"
-                    android:layout_width="@dimen/speaker_att_img_size"
-                    android:layout_height="@dimen/speaker_att_img_size"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_height"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
-                    <com.grupio.pubnub.CircularImageView
+                    <com.grupio.backend.CircularImageView
                         android:id="@+id/image"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="0dp"
                         android:adjustViewBounds="true"
@@ -54,7 +54,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="@dimen/presence_symbol_margin"
                         android:layout_marginRight="@dimen/presence_symbol_margin"
-                        android:background="@drawable/grey_round"
+                        android:background="@drawable/circle"
                         android:gravity="center"
                         android:maxLines="1"
                         android:minLines="1"
@@ -73,17 +73,17 @@
                     android:layout_toRightOf="@+id/attImageLay"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.grupio.Utils.CustomTextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="User"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/general_heading_size"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/text_16"
+                        grupio:font="Roboto-Bold.ttf" />
 
-                    <TextView
+                    <com.grupio.Utils.CustomTextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -91,18 +91,19 @@
                         android:layout_marginTop="10dip"
                         android:text="title"
                         android:textColor="@color/white"
+                        android:textSize="@dimen/text_14"
                         android:visibility="gone"
-                        android:textSize="@dimen/general_subheading_size" />
+                        grupio:font="roboto.regular.ttf" />
 
-                    <TextView
+                    <com.grupio.Utils.CustomTextView
                         android:id="@+id/company"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Company"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/general_subheading_size"
+                        android:textSize="@dimen/text_14"
                         android:visibility="gone"
-                        android:textStyle="normal" />
+                        grupio:font="roboto.regular.ttf" />
 
                 </LinearLayout>
 
@@ -118,24 +119,25 @@
                         android:layout_height="@dimen/msg_btn_ht"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
                         android:background="@drawable/btn_addtoschedule_off_detail"
                         android:visibility="gone"/>
-
+                    <!--android:background="@drawable/btn_addtoschedule_off_detail"-->
                     <Button
                         android:id="@+id/exbWebBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/msg_btn_ht"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dip"
+                        android:layout_marginRight="0dip"
                         android:layout_marginTop="20dp"
+                        android:background="@drawable/header_background"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:text="Go to Website"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        android:textSize="@dimen/website_txt_size"
                         android:textColor="@color/white"
-                        android:background="@drawable/webpage_btn"/>
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -151,7 +153,7 @@
                     <Button
                         android:id="@+id/sendMessageButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/chat_button_height"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/btn_send_message1"
                         android:visibility="gone" />
@@ -171,13 +173,14 @@
                 <Button
                     android:id="@+id/connectBtn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/match_small"
+                    android:background="@drawable/rectangle"
                     android:text="Connect"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:visibility="gone"/>

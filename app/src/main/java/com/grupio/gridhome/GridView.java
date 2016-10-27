@@ -12,15 +12,17 @@ public interface GridView {
 
     void notifyAdapter();
 
+    void notifyItem(int position);
+
     void showHeader(boolean flag);
 
-    void showCalendarCount(String count);
+    void showCalendarCount(String count, int position);
 
-    void alertCount(String count);
+    void alertCount(String count, int position);
 
-    void chatCount(String count);
+    void chatCount(String count, int position);
 
-    void messageCount(String count);
+    void messageCount(String count, int position);
 
     void startUpdater();
 }

@@ -2,6 +2,8 @@ package com.grupio.eventlist;
 
 import android.content.Context;
 
+import com.grupio.R;
+import com.grupio.Utils.Utility;
 import com.grupio.apis.EventListAPI;
 import com.grupio.data.EventData;
 
@@ -24,19 +26,20 @@ public class EventListController implements EventControllerInter {
     @Override
     public void fetchEventListFromServer(String query, onEventController mListener) {
 
-        ExecutorService es = Executors.newSingleThreadExecutor();
-        Future<List<EventData>> task = es.submit(new EventListAPI(mContext, query));
+        if (Utility.hasInternet(mContext)) {
+            ExecutorService es = Executors.newSingleThreadExecutor();
+            Future<List<EventData>> task = es.submit(new EventListAPI(mContext, query));
 
-        try {
-            mListener.onEventListFetch(task.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            try {
+                mListener.onEventListFetch(task.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mListener.onFailure(mContext.getResources().getText(R.string.no_internet).toString());
         }
-
-
-
 
     }
 

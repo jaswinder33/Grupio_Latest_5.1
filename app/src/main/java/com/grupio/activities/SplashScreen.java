@@ -5,24 +5,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.grupio.BuildConfig;
-import com.grupio.R;
 import com.grupio.animation.SlideOut;
 import com.grupio.eventlist.EventListActivity;
 import com.grupio.gridhome.GridHome;
-import com.grupio.services.DataFetchService;
+import com.grupio.service.DataFetchService;
 import com.grupio.session.Preferences;
 
 
-public class SplashScreen extends BaseActivity {
+public class SplashScreen extends AppCompatActivity {
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            startActivity(new Intent(SplashScreen.this, GridHome.class));
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
 
-        sendReport("APP_LAUNCH");
+//        sendReport("APP_LAUNCH");
         if (Preferences.getInstances(this).isAppVisited() || BuildConfig.SINGLE_EVENT) {
             startService();
         } else {
@@ -31,9 +38,7 @@ public class SplashScreen extends BaseActivity {
             SlideOut.getInstance().startAnimation(this);
             finish();
         }
-
     }
-
 
     public void startService() {
         Intent mIntent = new Intent(SplashScreen.this, DataFetchService.class);
@@ -51,13 +56,5 @@ public class SplashScreen extends BaseActivity {
         super.onStop();
         unregisterReceiver(broadcastReceiver);
     }
-
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            startActivity(new Intent(SplashScreen.this, GridHome.class));
-            finish();
-        }
-    };
 
 }

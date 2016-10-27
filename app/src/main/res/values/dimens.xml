@@ -1,6 +1,6 @@
 <resources>
 
-    <dimen name="app_header_height">50dp</dimen>
+    <dimen name="app_header_height">56dp</dimen>
     <dimen name="searchbar_ht">30dp</dimen>
 
     <!--Search bar params-->
@@ -11,18 +11,49 @@
     <!--List child params-->
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_14">14sp</dimen>
-
     <dimen name="left_padding">72dp</dimen>
     <dimen name="right_padding">16dp</dimen>
-
     <dimen name="image_padding">16dp</dimen>
-
     <dimen name="image_top_padding">30dp</dimen>
     <dimen name="image_left_padding">30dp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <!--Grid Home Screen-->
+    <dimen name="grid_child_padding">10dp</dimen>
+
+    <!--Home Screen-->
+    <dimen name="text_18">18sp</dimen>
+
+    <!-- Message Screen-->
+    <dimen name="message_icon">30dp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="send_btn_ht">50dp</dimen>
+
+    <!--Attendee Screen-->
+    <dimen name="attendee_image_height">80dp</dimen>
+    <dimen name="attendee_image_width">72dp</dimen>
+    <dimen name="presence_symbol_margin">5dp</dimen>
+    <dimen name="search_bar_left_padding">25dp</dimen>
+    <dimen name="list_item_text_1_size">16sp</dimen>
+    <dimen name="list_item_text_2_size">14sp</dimen>
+
+    <!--Attendee Detail Screen-->
+    <dimen name="detail_frame_height">190dp</dimen>
+    <dimen name="image_height">80dp</dimen>
+    <dimen name="image_width">80dp</dimen>
+    <dimen name="msg_btn_ht">30dp</dimen>
+    <dimen name="chat_button_width">131dp</dimen>
+    <dimen name="chat_button_height">30dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="session_list_height">72dp</dimen>
+
+    <!-- Logistics List -->
+    <dimen name="logistics_child_height">48dp</dimen>
 
 
 </resources>

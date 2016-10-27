@@ -22,4 +22,8 @@ public interface EventListView {
 
     void onSearchError(String errorMsg);
 
+    void onFailure(String msg);
+
+
+
 }
