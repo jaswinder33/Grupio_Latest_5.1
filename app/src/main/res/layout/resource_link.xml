@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/logistics_child_height"
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <ImageView
+        android:id="@+id/resource_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/web_icon" />
+
+    <com.grupio.Utils.CustomTextView
+        android:id="@+id/map_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/buttonLayout"
+        android:layout_toRightOf="@+id/resource_image"
+        android:maxLines="2"
+        android:paddingLeft="5dp"
+        android:text="Web Page "
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16"
+        grupio:font="roboto.regular.ttf" />
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/resourceViewbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/view_resource_btn" />
+
+        <Button
+            android:id="@+id/resourceDownloadbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/download_resource_btn" />
+
+        <Button
+            android:id="@+id/shareDownloadbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/downloadshare"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <!--<RelativeLayout
+        android:id="@+id/resource_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+        <ImageView
+            android:id="@+id/resource_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/web_icon" />
+
+        <TextView
+            android:id="@+id/map_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@id/resource_image"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:text="Web Page"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_18" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/right_arrow"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/resourceViewbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/view_resource_btn" />
+
+        <Button
+            android:id="@+id/resourceDownloadbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/download_resource_btn" />
+
+        <Button
+            android:id="@+id/shareDownloadbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/downloadshare"
+            android:visibility="gone" />
+
+    </LinearLayout>-->
+
+
+</RelativeLayout>

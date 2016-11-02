@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <com.grupio.Utils.CustomTextView
+        android:id="@+id/sessionListTxtHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/greytransparent"
+        android:drawableLeft="@drawable/sessions_icon_disable"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:padding="10dip"
+        android:text="Sessions"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18"
+        grupio:font="Roboto-Bold.ttf" />
+
+    <ListView
+        android:id="@+id/sessionsList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

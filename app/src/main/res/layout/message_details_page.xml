@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messageLayoutId"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/messageHeaderId"
+        layout="@layout/layout_header" />
+
+
+    <RelativeLayout
+        android:id="@+id/searchBarBgId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageHeaderId"
+        android:background="@color/LightGray">
+
+        <EditText
+            android:id="@+id/exhibitor_filter_edtTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/searchbar_ht"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/edit_search"
+            android:editable="true"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="@dimen/searchbar_padd_left"
+            android:paddingRight="30dp"
+            android:singleLine="true"
+            android:text=""
+            android:textSize="@dimen/text_16"
+            android:visibility="gone"></EditText>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/messagebuttonId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchBarBgId"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/inboxMessageButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/inbox_on" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/send_off" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/meesageMenuInner"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/sentId"
+        android:layout_below="@+id/messagebuttonId">
+
+        <ListView
+            android:id="@+id/messageDetailsList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:scrollbars="vertical"></ListView>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/sentId"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/sendMessageButton"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rectangle_stroke_only"
+        android:paddingLeft="30dip"
+        android:scrollbars="vertical"
+        android:singleLine="false" />
+
+    <Button
+        android:id="@+id/sendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/send_btn_ht"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/send_btn" />
+
+</RelativeLayout>

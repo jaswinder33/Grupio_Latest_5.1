@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rowheaderlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/greytransparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/message_status_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/unread_message" />
+
+            <ImageView
+                android:id="@+id/attendee_image"
+                android:layout_width="@dimen/message_icon"
+                android:layout_height="@dimen/message_icon"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/no_image_1" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/message_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/image_layout"
+            android:orientation="horizontal">
+
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/attendee_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dip"
+                android:layout_marginRight="65dp"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_14"
+                grupio:font="Roboto-Bold.ttf" />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/message_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/darkgrey"
+                android:textSize="@dimen/text_12"
+                grupio:font="roboto.regular.ttf" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/message_layout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/image_layout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/attendee_title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#666666"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/attendee_msg"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text=""
+                android:textColor="#666666"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

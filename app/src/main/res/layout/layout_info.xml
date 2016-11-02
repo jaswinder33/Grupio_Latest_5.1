@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <com.grupio.Utils.CustomTextView
+        android:id="@+id/contactInfoTxtId"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/greytransparent"
+        android:drawableLeft="@drawable/contact_icon_disable"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:padding="10dip"
+        android:text="Contact Information"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18"
+        grupio:font="Roboto-Bold.ttf" />
+
+    <RelativeLayout
+        android:id="@+id/emailLayoutId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/att_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:drawableLeft="@drawable/icon_mail"
+            android:drawablePadding="10dp"
+            android:text=""
+            android:textColor="@color/newGrupioColor"
+            android:textSize="@dimen/text_12"
+            android:textStyle="normal"
+            grupio:font="roboto.regular.ttf" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_email"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkgrey"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/phoneLayoutId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/att_primary_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:drawableLeft="@drawable/icon_phone"
+            android:drawablePadding="10dp"
+            android:text=""
+            android:textColor="@color/newGrupioColor"
+            android:textSize="@dimen/text_12"
+            android:textStyle="normal"
+            grupio:font="roboto.regular.ttf" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_phone"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkgrey"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:id="@+id/linkedinLayoutId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/att_linkedin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dip"
+            android:drawableLeft="@drawable/linkedin_attn"
+            android:drawablePadding="10dp"
+            android:text=""
+            android:textColor="@color/newGrupioColor"
+            android:textSize="@dimen/text_12"
+            android:textStyle="normal"
+            grupio:font="roboto.regular.ttf" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_linkedin"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkgrey"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:id="@+id/twitterLayoutId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/att_twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dip"
+            android:drawableLeft="@drawable/twitter_attn"
+            android:drawablePadding="10dp"
+            android:text=""
+            android:textColor="@color/newGrupioColor"
+            android:textSize="@dimen/text_12"
+            android:textStyle="normal"
+            grupio:font="roboto.regular.ttf" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/line_twitter"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkgrey"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:id="@+id/socialLayoutId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/att_website_id"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:drawableLeft="@drawable/web_attn"
+            android:drawablePadding="10dp"
+            android:text=""
+            android:textColor="@color/newGrupioColor"
+            android:textSize="@dimen/text_12"
+            android:textStyle="normal"
+            grupio:font="roboto.regular.ttf" />
+    </RelativeLayout>
+
+
+</LinearLayout>

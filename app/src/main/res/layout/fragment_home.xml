@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/content_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_banner" />
+
+        <RelativeLayout
+            android:id="@+id/webLogoLay"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_below="@+id/bannerLay">
+
+            <ImageView
+                android:id="@+id/webLogo"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:adjustViewBounds="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/eventName"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/webLogo"
+                android:background="@drawable/pattern_bg"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Chat with 5.1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16"
+                grupio:font="Roboto-Bold.ttf" />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/eventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/colorAccent"
+                android:elevation="5dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="21/25 \nJuly/July"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14"
+                grupio:font="roboto.regular.ttf" />
+
+        </RelativeLayout>
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/infoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/webLogoLay"
+            android:padding="10dp"
+            android:text="@string/information"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_18"
+            grupio:font="Roboto-Bold.ttf" />
+
+        <LinearLayout
+            android:id="@+id/venueLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoText"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.grupio.Utils.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:padding="10dp"
+                android:text="@string/venue"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                grupio:font="Roboto-Bold.ttf" />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/venue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:text="JW Marriot"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                grupio:font="roboto.regular.ttf" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addressLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/venueLay"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.grupio.Utils.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:padding="10dp"
+                android:text="@string/address"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                grupio:font="Roboto-Bold.ttf" />
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:ellipsize="end"
+                android:padding="10dp"
+                android:text="barbecur nation, \njanakpur,\nDelhi, India."
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                grupio:font="roboto.regular.ttf" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/staticMap"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/addressLay"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:id="@+id/getDirection"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/staticMap"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/get_direction"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/eventWebsite"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/getDirection"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/event_website"
+            android:textColor="@color/black" />
+
+
+        <LinearLayout
+            android:id="@+id/descriptionLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <com.grupio.Utils.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/webLogoLay"
+                android:paddingLeft="10dp"
+                android:text="@string/description"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                grupio:font="Roboto-Bold.ttf" />
+
+
+            <com.grupio.Utils.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_16"
+                grupio:font="roboto.regular.ttf" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
+

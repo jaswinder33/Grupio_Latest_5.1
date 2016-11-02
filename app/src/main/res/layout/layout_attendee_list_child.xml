@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false">
+
+    <RelativeLayout
+        android:id="@+id/imageLayoutId"
+        android:layout_width="@dimen/attendee_image_width"
+        android:layout_height="@dimen/attendee_image_height"
+        android:padding="16dp">
+
+        <com.grupio.backend.CircularImageView
+            android:id="@+id/attendee_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            app:border="true"
+            app:border_color="#837E7C"
+            app:border_width="0.5dp" />
+
+        <TextView
+            android:id="@+id/presenceTextView"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/presence_symbol_margin"
+            android:layout_marginRight="@dimen/presence_symbol_margin"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minLines="1"
+            android:paddingRight="0dp"
+            android:text="\+"
+            android:textColor="#fff"
+            android:textSize="10sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/InfoLayoutId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/addItem"
+        android:layout_toRightOf="@+id/imageLayoutId">
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/attendee_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="ABC"
+            android:textColor="@color/black"
+            android:textSize="@dimen/list_item_text_1_size"
+            grupio:font="roboto.regular.ttf" />
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/attendee_company_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/attendee_name"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/darkgrey"
+            android:textSize="@dimen/list_item_text_2_size"
+            grupio:font="Roboto-Bold.ttf" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/addItem"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:background="@color/transparent"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_minus" />
+
+</RelativeLayout>

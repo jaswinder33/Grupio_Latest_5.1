@@ -7,7 +7,6 @@ import com.grupio.BuildConfig;
  */
 public class ConstantData {
 
-
     public final static int ALPHA_VALUE1 = 220;
     public final static int ALPHA_VALUE2 = 255;
     public static String DATABASE = "grupio.db";
