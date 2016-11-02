@@ -37,7 +37,7 @@ import java.io.File;
  */
 public abstract class BaseActivity<Presenter> extends AppCompatActivity implements BaseFunctionality, View.OnClickListener {
 
-    public static final String TAG = "baseactivity";
+    public static final String TAG = "Baseactivity";
     public static final int SD_READ_WRITE_PERMISSION = 100;
     public static final int CALL_PERMISSION = 101;
     public static final String REFRESH = "refresh";
@@ -76,8 +76,6 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         registerListeners();
         setUp();
     }
-
-    public abstract boolean isHeaderForGridPage();
 
     /**
      * Setup header of screen.
@@ -215,8 +213,6 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         }
     }
 
-    public abstract void handleRightBtnClick();
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -261,8 +257,6 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         Log.i(TAG, "sendReport: " + screenName);
     }
 
-    public abstract String getScreenName();
-
     @Override
     public Presenter getPresenter() {
         return mPresenter;
@@ -301,23 +295,15 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         initIds();
     }
 
-    public abstract void initIds();
-
     @Override
     public void registerListeners() {
         mPresenter = setPresenter();
         setListeners();
     }
 
-    public abstract void setListeners();
-
-    public abstract Presenter setPresenter();
-
     @Override
     public void unRegisterListeners() {
     }
-
-    public abstract int getLayout();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -337,20 +323,41 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         mProgressDialog.setMessage(message);
     }
 
-    public abstract void setUp();
 
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    protected class CustomDialog {
+    public abstract int getLayout();
+
+    public abstract void initIds();
+
+    public abstract boolean isHeaderForGridPage();
+
+    public abstract String getScreenName();
+
+    public abstract Presenter setPresenter();
+
+    public abstract void setListeners();
+
+    public abstract void setUp();
+
+    public abstract void handleRightBtnClick();
+
+    public class CustomDialog {
 
         private String okStr = "Ok";
         private String cancelStr = "Cancel";
         private ClickHandler mClick;
+        private boolean isSingleBtn = false;
 
         public CustomDialog(ClickHandler mClick) {
             this.mClick = mClick;
+        }
+
+        public CustomDialog(String Ok, ClickHandler mClick) {
+            this(mClick);
+            this.okStr = Ok;
         }
 
         public CustomDialog(String Ok, String cancel, ClickHandler mClick) {
@@ -359,15 +366,20 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
             this.cancelStr = cancel;
         }
 
-        public void show(String message) {
-            new AlertDialog.Builder(BaseActivity.this)
-                    .setMessage(message)
-                    .setPositiveButton(okStr, (dialogInterface, i) -> mClick.handleClick())
-                    .setNegativeButton(cancelStr, (dialogInterface, i) -> {
-                    }).create().show();
+        public CustomDialog singledBtnDialog(boolean isSingleBtn) {
+            this.isSingleBtn = isSingleBtn;
+            return this;
         }
 
+        public void show(String message) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(BaseActivity.this);
+            dialog.setMessage(message);
+            dialog.setPositiveButton(okStr, (dialogInterface, i) -> mClick.handleClick());
+            if (!isSingleBtn) {
+                dialog.setNegativeButton(okStr, (dialogInterface, i) -> {
+                });
+            }
+            dialog.create().show();
+        }
     }
-
-
 }

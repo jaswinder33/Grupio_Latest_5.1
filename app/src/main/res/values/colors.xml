@@ -15,4 +15,6 @@
     <color name="list_header_text_color">#000000</color>
     <color name="darkgrey">#3d3d3d</color>
     <color name="newGrupioColor">#333333</color>
+
+    <color name="blue_alert_icon">#5c77ad</color>
 </resources>

@@ -8,38 +8,31 @@ import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
 import com.grupio.message.apis.APICallBack;
 import com.grupio.session.ConstantData;
-import com.grupio.session.Preferences;
 
 import java.util.HashMap;
 
 /**
- * Created by JSN on 27/10/16.
+ * Created by JSN on 2/11/16.
  */
 
-/**
- * https://conf.dharanet.com/conf/v1/main/getnotifications.php?event_id=151&device_id=353720052682941&format=json
- */
-public class AlertsAPI extends BaseAsyncTask<Void, Boolean> {
+public class LiveAPI extends BaseAsyncTask<Void, Boolean> {
 
     private String response;
 
-    public AlertsAPI(Context mcontext, APICallBack mListener) {
+    public LiveAPI(Context mcontext, APICallBack mListener) {
         super(mcontext, mListener);
     }
 
     @Override
     public String endPoint() {
-        url = mContext.getString(R.string.alerts_api) + ConstantData.EVENT_ID;
-        url += "&device_id=" + Preferences.getInstances(mContext).getDeviceID();
-        url += "&format=json";
-        return url;
+        return mContext.getString(R.string.live_api) + ConstantData.EVENT_ID;
     }
 
     @Override
     public Boolean handleBackground(Void... params) {
 
-        APIRequest apiRequest = new GetRequest();
-        response = apiRequest.requestResponse(url, new HashMap<>(), mContext);
+        APIRequest api = new GetRequest();
+        response = api.requestResponse(url, new HashMap<>(), mContext);
 
         return response != null && !TextUtils.isEmpty(response);
 
@@ -48,11 +41,11 @@ public class AlertsAPI extends BaseAsyncTask<Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean mResponse) {
         super.onPostExecute(mResponse);
-
         if (mResponse) {
             ((APICallBackWithResponse) mListener).onSuccess(response);
         } else {
             mListener.onFailure(mContext.getString(R.string.erroor_occured));
         }
     }
+
 }

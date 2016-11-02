@@ -1,6 +1,7 @@
 package com.grupio.apis;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
@@ -15,7 +16,7 @@ import java.util.HashMap;
  * Created by JSN on 27/10/16.
  */
 
-public class MarkAlertRead extends BaseAsyncTask<String, Void> {
+public class MarkAlertRead extends BaseAsyncTask<String, Boolean> {
     public MarkAlertRead(Context mcontext, APICallBack mListener) {
         super(mcontext, mListener);
     }
@@ -31,13 +32,14 @@ public class MarkAlertRead extends BaseAsyncTask<String, Void> {
     }
 
     @Override
-    public Void handleBackground(String... params) {
+    public Boolean handleBackground(String... params) {
 
         url += "&alert_id=" + params[0];
 
         APIRequest apiRequest = new GetRequest();
-        apiRequest.requestResponse(url, new HashMap<>(), mContext);
+        String response = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
-        return null;
+        return response != null && !TextUtils.isEmpty(response);
+
     }
 }

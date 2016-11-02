@@ -64,17 +64,9 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
         ((BaseActivity) getActivity()).sendReport(screenName);
     }
 
-    public abstract String getScreenName();
-
-    @Override
-    public abstract String getBannerName();
-
-    @Override
-    public Presenter getPresenter() {
-        return presenter;
+    public void showToast(String msg) {
+        ((BaseActivity) getActivity()).showToast(msg);
     }
-
-    public abstract Presenter setPresenter();
 
     @Override
     public void setupSearchBar(boolean showSearchBar, String locale) {
@@ -101,8 +93,6 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
         initIds();
     }
 
-    public abstract void initIds();
-
     @Override
     public void registerListeners() {
         presenter = setPresenter();
@@ -113,8 +103,20 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
     public void unRegisterListeners() {
     }
 
-    @Override
+    public Presenter getPresenter() {
+        return presenter;
+    }
+
+
     public abstract int getLayout();
 
+    public abstract void initIds();
+
     public abstract void setUp();
+
+    public abstract Presenter setPresenter();
+
+    public abstract String getScreenName();
+
+    public abstract String getBannerName();
 }

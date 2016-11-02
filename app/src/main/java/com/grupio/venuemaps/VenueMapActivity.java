@@ -5,7 +5,10 @@ import android.os.Bundle;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
+import com.grupio.data.AlertData;
+import com.grupio.data.LiveData;
 import com.grupio.data.MapsData;
+import com.grupio.data.SurveyData;
 
 
 /**
@@ -28,7 +31,6 @@ public class VenueMapActivity extends BaseActivity {
 
     @Override
     public void handleRightBtnClick() {
-
     }
 
     @Override
@@ -73,7 +75,16 @@ public class VenueMapActivity extends BaseActivity {
                 break;
 
             case "alert":
-                mFrag = new VenueMapsFragment();
+                mFrag = new VenueMapsFragment(new AlertData(), null);
+                break;
+
+            case "Live":
+                mFrag = new VenueMapsFragment(new LiveData(), null);
+                break;
+
+            case "Survey":
+                mFrag = new VenueMapsFragment(new SurveyData(), null);
+                break;
 
         }
         Utility.addFragment(this, mFrag, false);

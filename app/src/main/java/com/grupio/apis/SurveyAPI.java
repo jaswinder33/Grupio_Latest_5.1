@@ -27,11 +27,11 @@ public class SurveyAPI extends BaseApiCall {
 
     @Override
     public void callApi() {
-//        String url = ConstantData.SURVEYS_API + ConstantData.EVENT_ID + ConstantData.API_FORMAT;
 
         APIRequest request = new GetRequest();
         String response =  request.requestResponse(url, new HashMap<String, String>(), mContext);
         if(response != null){
+
         }
 
         Log.i("API", "SurveyAPI");

@@ -47,6 +47,9 @@
     <string name="alerts_count_api">/getunreadalertcount.php?event_id=</string>
     <string name="mark_alert_read_api">/markalertsread.php?event_id=</string>
 
+    <!-- Live API-->
+    <string name="live_api">/livefeeds.php?format=json&amp;livefeedformat=new&amp;event_id=</string>
+
 
     <!-- ################################################################### -->
     <!-- ################################################################### -->
