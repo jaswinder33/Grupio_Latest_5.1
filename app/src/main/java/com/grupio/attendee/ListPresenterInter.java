@@ -9,4 +9,6 @@ public interface ListPresenterInter {
     void fetchListFromServer();
 
     void fetchCategoryList();
+
+    <T> void fetchFavList(T type, String queryStr, String cateogory);
 }

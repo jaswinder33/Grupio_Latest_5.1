@@ -3,8 +3,9 @@ package com.grupio.application;
 import android.app.Application;
 import android.content.Context;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
-import com.grupio.session.ConstantData;
+import com.grupio.session.Preferences;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -42,16 +43,10 @@ public class UAApplication extends Application{
 
         try {
             TelephonyManager tManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            ConstantData.DEVICE_ID = tManager.getDeviceId();
+            Preferences.getInstances(this).setDeviceID(tManager.getDeviceId());
+            Log.i("Application", "onCreate: " + tManager.getDeviceId());
         } catch (Exception e) {
         }
     }
-
-//    @Override
-//    protected void attachBaseContext(Context base) {
-//        super.attachBaseContext(base);
-//        MultiDex.install(base);
-//    }
-
 
 }

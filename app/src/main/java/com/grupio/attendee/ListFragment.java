@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +35,14 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * Created by JSN on 25/7/16.
  */
-public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> implements ViewInter, ListWatcher.Watcher {
+public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> implements ViewInter, ListWatcher.Watcher, View.OnClickListener {
 
+    LinearLayout likeUnlikeLay;
+    private TextView noDataAvailableTxt;
+    private StickyListHeadersListView mListView;
+    private AttendeeListAdapter mAttendeeadapter;
+    private SpeakerAdapter mSpeakerAdapter;
+    private ExhibitorAdapter mExhibitorAdapter;
     private T type;
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -69,7 +77,6 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             View v = mSpinner.getSelectedView();
             ((TextView) v).setTextColor(Color.BLACK);
 
-
             String category = (String) parent.getAdapter().getItem(position);
 
             String queryStr = searchEditTxt.getText().toString();
@@ -103,11 +110,7 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         public void afterTextChanged(Editable s) {
         }
     };
-    private TextView noDataAvailableTxt;
-    private StickyListHeadersListView mListView;
-    private AttendeeListAdapter mAttendeeadapter;
-    private SpeakerAdapter mSpeakerAdapter;
-    private ExhibitorAdapter mExhibitorAdapter;
+    private Button allBtn, favBtn;
 
     public ListFragment() {
     }
@@ -153,10 +156,15 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         return new ListPresenter(type, getActivity(), this);
     }
 
+
     @Override
     public void initIds() {
         mSpinner = (Spinner) view.findViewById(R.id.spinnerCat);
         mListView = (StickyListHeadersListView) view.findViewById(R.id.attendeeListView);
+        allBtn = (Button) view.findViewById(R.id.allBtn);
+        favBtn = (Button) view.findViewById(R.id.favBtn);
+        likeUnlikeLay = (LinearLayout) view.findViewById(R.id.like_unlike_lay);
+
         noDataAvailableTxt = (TextView) view.findViewById(R.id.txtNoData);
         mListView.setEmptyView(noDataAvailableTxt);
     }
@@ -195,6 +203,10 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         mSpinner.setOnItemSelectedListener(mSpinnerListener);
 
         ListWatcher.getInstance().registerListener(this);
+
+        favBtn.setOnClickListener(this);
+        allBtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -241,15 +253,6 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             List<SpeakerData> mSpeakerList = (List<SpeakerData>) mList;
             mSpeakerAdapter.addAll(mSpeakerList);
         } else if (type instanceof ExhibitorData) {
-
-         /*   //TODO
-            MyAdapter myAdapter = new MyAdapter(getActivity());
-            List<ExhibitorData> mExhibitorList = (List<ExhibitorData>) mList;
-            myAdapter.addAll(mExhibitorList);
-            mListView.setAdapter(myAdapter);
-
-            //TODO*/
-
 
             mExhibitorAdapter = new ExhibitorAdapter(getActivity());
             mListView.setAdapter(mExhibitorAdapter);
@@ -325,6 +328,11 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
     }
 
     @Override
+    public void showFavLay() {
+        likeUnlikeLay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void refreshList() {
 
         String category = mSpinner.getVisibility() == View.VISIBLE ? mSpinner.getSelectedItem().toString() : null;
@@ -333,5 +341,44 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         queryStr = queryStr.equals("") ? null : queryStr;
 
         getPresenter().fetchList(queryStr, category);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        boolean isFav = false;
+        String category = (String) mSpinner.getSelectedItem();
+        String queryStr = searchEditTxt.getText().toString();
+        queryStr = queryStr.equals("") ? null : queryStr;
+
+
+        switch (view.getId()) {
+            case R.id.allBtn:
+                isFav = false;
+                getPresenter().fetchList(queryStr, category);
+                break;
+            case R.id.favBtn:
+                isFav = true;
+                getPresenter().fetchFavList(type, queryStr, category);
+                break;
+        }
+
+        setButton(isFav);
+    }
+
+    private void setButton(boolean flag) {
+
+        if (flag) {
+            allBtn.setTextColor(getResources().getColor(R.color.exhibitor_buttons_blue));
+            allBtn.setBackgroundResource(R.drawable.left_round_stroke);
+            favBtn.setBackgroundResource(R.drawable.right_round_btn);
+            favBtn.setTextColor(Color.WHITE);
+        } else {
+            allBtn.setTextColor(Color.WHITE);
+            allBtn.setBackgroundResource(R.drawable.left_round_btn);
+            favBtn.setBackgroundResource(R.drawable.right_round_stroke);
+            favBtn.setTextColor(getResources().getColor(R.color.exhibitor_buttons_blue));
+        }
+
     }
 }

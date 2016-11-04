@@ -206,6 +206,7 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             mSpeakerData = (SpeakerData) data;
         } else if (type instanceof ExhibitorData) {
             mExhibitorData = (ExhibitorData) data;
+            mExhibitorData = ExhibitorDAO.getInstance(mContext).getExhibitorDetal(mExhibitorData.getExhibitorId());
         }
     }
 

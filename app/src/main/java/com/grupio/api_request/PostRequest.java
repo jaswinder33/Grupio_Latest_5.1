@@ -22,6 +22,22 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class PostRequest extends APIRequest {
 
+	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
+		StringBuilder result = new StringBuilder();
+		boolean first = true;
+		for (Entry<String, String> entry : params.entrySet()) {
+			if (first)
+				first = false;
+			else
+				result.append("&");
+
+			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+			result.append("=");
+			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+		}
+		return result.toString();
+	}
+
 	@Override
 	public String requestResponse(String endPoint, Map<String, String> params, Context mContext) {
 
@@ -34,6 +50,7 @@ public class PostRequest extends APIRequest {
 			url = new URL(endPoint);
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setInstanceFollowRedirects(true);
 			conn.setReadTimeout(30000);
 			conn.setConnectTimeout(30000);
 			conn.setRequestMethod("POST");
@@ -50,9 +67,6 @@ public class PostRequest extends APIRequest {
 			writer.close();
 			os.close();
 			int responseCode = conn.getResponseCode();
-
-//			System.out.println("\nSending 'POST' request to URL : " + url);
-//			System.out.println("Response Code : " + responseCode);
 
 			if (responseCode == HttpsURLConnection.HTTP_OK) {
 				String line;
@@ -71,22 +85,6 @@ public class PostRequest extends APIRequest {
 
 		return response.toString();
 
-	}
-
-	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-		for (Entry<String, String> entry : params.entrySet()) {
-			if (first)
-				first = false;
-			else
-				result.append("&");
-
-			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-		}
-		return result.toString();
 	}
 
 }

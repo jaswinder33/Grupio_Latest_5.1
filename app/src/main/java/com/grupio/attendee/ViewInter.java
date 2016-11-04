@@ -23,4 +23,6 @@ public interface ViewInter {
     void notifyAdapter();
 
     void onFailure(String msg);
+
+    void showFavLay();
 }

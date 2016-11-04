@@ -30,6 +30,9 @@ public class GetRequest extends APIRequest {
 		HttpURLConnection con = null;
 		try {
 			con = (HttpURLConnection) url.openConnection();
+//			con.setReadTimeout(30000);
+//			con.setConnectTimeout(30000);
+//			con.setInstanceFollowRedirects(true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,13 +43,6 @@ public class GetRequest extends APIRequest {
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 		}
-
-//		int responseCode = 0;
-//		try {
-//			responseCode = con.getResponseCode();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 
 		BufferedReader in = null;
 		try {

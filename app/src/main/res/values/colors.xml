@@ -17,4 +17,6 @@
     <color name="newGrupioColor">#333333</color>
 
     <color name="blue_alert_icon">#5c77ad</color>
+
+    <color name="exhibitor_buttons_blue">#0080FF</color>
 </resources>

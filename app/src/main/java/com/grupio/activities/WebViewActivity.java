@@ -141,9 +141,9 @@ public class WebViewActivity extends BaseActivity {
     }
 
     public void showAlert(String messsag, Person mData) {
-        new CustomDialog("Show details", "Cancel", () -> {
-            sendIntent(mData);
-        }).show(messsag);
+        CustomDialog.getDialog("Show details", this, () ->
+                sendIntent(mData)
+        ).show(messsag);
     }
 
     public void sendIntent(Person mData) {

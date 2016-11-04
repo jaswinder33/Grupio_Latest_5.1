@@ -118,14 +118,13 @@ public class Preferences {
         return pref.getString("user_info", null);
     }
 
-    public void saveDeviceID(String token) {
-        editor.putString("deviceID", token).commit();
-    }
-
     public String getDeviceID() {
         return pref.getString("deviceID", "");
     }
 
+    public void setDeviceID(String token) {
+        editor.putString("deviceID", token).commit();
+    }
 
     public void saveDeviceToken(String token) {
         editor.putString("deviceToken", token).commit();
@@ -141,5 +140,13 @@ public class Preferences {
 
     public void setUnreadAlertCount(String count) {
         editor.putString("unreadAlertCount", count).commit();
+    }
+
+    public String getExhibitorCategory() {
+        return pref.getString("exhibitor_category", "");
+    }
+
+    public void setExhibitorCategory(String response) {
+        editor.putString("exhibitor_category", response).commit();
     }
 }

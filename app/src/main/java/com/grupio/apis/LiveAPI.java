@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.LiveDAO;
 import com.grupio.message.apis.APICallBack;
 import com.grupio.session.ConstantData;
 
@@ -34,18 +35,23 @@ public class LiveAPI extends BaseAsyncTask<Void, Boolean> {
         APIRequest api = new GetRequest();
         response = api.requestResponse(url, new HashMap<>(), mContext);
 
-        return response != null && !TextUtils.isEmpty(response);
-
-    }
-
-    @Override
-    protected void onPostExecute(Boolean mResponse) {
-        super.onPostExecute(mResponse);
-        if (mResponse) {
-            ((APICallBackWithResponse) mListener).onSuccess(response);
-        } else {
-            mListener.onFailure(mContext.getString(R.string.erroor_occured));
+        if (response != null && !TextUtils.isEmpty(response)) {
+            LiveDAO.getInstance(mContext).insertData(response);
+            return true;
         }
+
+        return false;
+
     }
+
+//    @Override
+//    protected void onPostExecute(Boolean mResponse) {
+//        super.onPostExecute(mResponse);
+//        if (mResponse) {
+//            ((APICallBackWithResponse) mListener).onSuccess(response);
+//        } else {
+//            mListener.onFailure(mContext.getString(R.string.erroor_occured));
+//        }
+//    }
 
 }

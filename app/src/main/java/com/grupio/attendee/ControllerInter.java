@@ -13,12 +13,16 @@ public interface ControllerInter {
 
     void fetchListFromDB(String queryStr, String cateogory, onTaskComplete mListener);
 
+    <T> void fetchFavList(T type, String queryStr, String category, onTaskComplete mListener);
+
     interface onTaskComplete {
         void onListFetch(List<? extends Person> mlist);
 
         void onCategoryFetch(List<String> mList);
 
         void onFailure(String msg);
+
+        void showFavLay();
     }
 
 

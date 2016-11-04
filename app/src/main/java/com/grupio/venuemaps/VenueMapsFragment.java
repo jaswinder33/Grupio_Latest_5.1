@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.grupio.R;
+import com.grupio.activities.BaseActivity;
 import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.data.AlertData;
@@ -40,12 +41,21 @@ public class VenueMapsFragment<T> extends BaseFragment<VenueMapsPresenter> imple
     public static final String TAG = "VenueMapsFragment";
     AdapterView.OnItemClickListener alertListClickListener = (AdapterView<?> adapterView, View view, int position, long l) -> {
         AlertData mData = (AlertData) adapterView.getAdapter().getItem(position);
-        ((VenueMapActivity) getActivity()).new CustomDialog(() -> {
+
+        BaseActivity.CustomDialog.getDialog(getActivity(), () -> {
             getPresenter().markAlertRead(mData.getAlertId(), getActivity());
         }).singledBtnDialog(true).show(mData.getNotificationText());
 
     };
     AdapterView.OnItemClickListener surveyListClickListener = (AdapterView<?> adapterView, View view, int position, long l) -> {
+
+        SurveyData mSurveyData = (SurveyData) adapterView.getAdapter().getItem(position);
+
+        Intent mIntent = new Intent(getActivity(), WebViewActivity.class);
+        mIntent.putExtra("url", mSurveyData.getUrl());
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(getActivity());
+
     };
     AdapterView.OnItemClickListener liveFeedClickListener = (AdapterView<?> adapterView, View view, int position, long l) -> {
 
@@ -55,8 +65,6 @@ public class VenueMapsFragment<T> extends BaseFragment<VenueMapsPresenter> imple
         mIntent.putExtra("url", liveData.getUrl());
         startActivity(mIntent);
         SlideOut.getInstance().startAnimation(getActivity());
-
-
     };
     AdapterView.OnItemClickListener mapListClickListener = (AdapterView<?> adapterView, View view, int position, long l) -> {
         MapsData mapsData = (MapsData) adapterView.getAdapter().getItem(position);
@@ -146,22 +154,20 @@ public class VenueMapsFragment<T> extends BaseFragment<VenueMapsPresenter> imple
             mMapListAdapter.addAll((List<MapsData>) mList);
             mListview.setAdapter(mMapListAdapter);
         } else if (type instanceof AlertData) {
-
             mAlertList = new ArrayList<>();
             mAlertList.addAll((List<AlertData>) mList);
-
             mAlertAdapter = new AlertAdapter(getActivity());
             mAlertAdapter.addAll(mAlertList);
             mListview.setAdapter(mAlertAdapter);
-
         } else if (type instanceof LiveData) {
-
             LiveFeedAdapter mAdapter = new LiveFeedAdapter(getActivity());
             mAdapter.addAll((List<LiveData>) mList);
             mListview.setAdapter(mAdapter);
-
             Log.i(TAG, "showList: Live List:" + mList.size());
         } else if (type instanceof SurveyData) {
+            SurveyAdapter mAdapter = new SurveyAdapter(getActivity());
+            mAdapter.addAll((List<SurveyData>) mList);
+            mListview.setAdapter(mAdapter);
             Log.i(TAG, "showList: Survey List:" + mList.size());
         }
     }
@@ -191,5 +197,10 @@ public class VenueMapsFragment<T> extends BaseFragment<VenueMapsPresenter> imple
                 break;
             }
         }
+    }
+
+    @Override
+    public <T> void refreshList(T t) {
+        getPresenter().fetchListFromServer(t, getActivity());
     }
 }

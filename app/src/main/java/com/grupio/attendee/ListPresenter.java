@@ -26,10 +26,6 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
     @Override
     public void fetchList(String queryStr, String cateogory) {
 
-        if (mListener != null) {
-            mListener.showProgress();
-        }
-
         if (mController != null) {
             mController.fetchListFromDB(queryStr, cateogory, this);
         }
@@ -52,6 +48,11 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
         if (mController != null) {
             mController.fetchCategoryList(this);
         }
+    }
+
+    @Override
+    public <T> void fetchFavList(T type, String queryStr, String cateogory) {
+        mController.fetchFavList(type, queryStr, cateogory, this);
     }
 
 
@@ -81,5 +82,10 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
             mListener.hideProgress();
             mListener.onFailure(msg);
         }
+    }
+
+    @Override
+    public void showFavLay() {
+        mListener.showFavLay();
     }
 }

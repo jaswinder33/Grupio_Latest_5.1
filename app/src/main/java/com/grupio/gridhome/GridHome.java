@@ -21,13 +21,10 @@ import java.util.List;
 public class GridHome extends BaseActivity<GridHomePresenter> implements GridView {
 
     private static final int UPDATE_INTERVAL = 15 * 60 * 1000;
-    Runnable updaterRunnable = new Runnable() {
-        @Override
-        public void run() {
-//            Intent mIntent = new Intent(GridHome.this, DataFetchService.class);
+    Runnable updaterRunnable = () -> {
+        //            Intent mIntent = new Intent(GridHome.this, DataFetchService.class);
 //            startService(mIntent);
 //            mHandler.postDelayed(updaterRunnable, UPDATE_INTERVAL);
-        }
     };
     private ImageButton switchEvent, moreInfo;
     private RecyclerView mRecyclerView;
@@ -45,6 +42,7 @@ public class GridHome extends BaseActivity<GridHomePresenter> implements GridVie
         handleRightBtn(false, null);
         setBackground(true);
         mHandler = new Handler();
+        getPresenter().fetchMenuList();
     }
 
     @Override
@@ -164,4 +162,6 @@ public class GridHome extends BaseActivity<GridHomePresenter> implements GridVie
     public void handleRightBtnClick() {
 
     }
+
+
 }

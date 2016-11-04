@@ -20,17 +20,21 @@ public interface VenueMapContract {
         void hideProgress();
 
         void onMessageMarked(String id);
+
+        <T> void refreshList(T t);
     }
 
     interface MapsPresenter {
         <T> void fetchList(T t, Context mContext);
 
+        <T> void fetchListFromServer(T t, Context mContext);
         void markAlertRead(String alertId, Context mContext);
     }
 
     interface MapsInteractor {
         void markAlertRead(String alertId, Context mContext, OnInteraction mlistener);
 
+        <T> void fetchListFromServer(T t, Context mContext, OnInteraction mlistener);
         <T> void fetchList(T t, Context mContext, OnInteraction mlistener);
     }
 

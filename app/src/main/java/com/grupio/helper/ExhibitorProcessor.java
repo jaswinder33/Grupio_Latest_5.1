@@ -156,16 +156,11 @@ public class ExhibitorProcessor {
                             data.setAddress(jObject.getString("address").trim());
                         } catch (Exception e) {
                         }
-
-
                         mList.add(data);
                     }
                 }
             }
-
-
         }
-
 
         return mList;
     }
@@ -257,7 +252,7 @@ public class ExhibitorProcessor {
         return mList;
     }
 
-    public ArrayList<String> parseCategoryResult(String response) {
+    public ArrayList<String> parseExhibitorCategory(String response) {
 
         ArrayList<String> mTList = new ArrayList<String>();
 
@@ -291,6 +286,5 @@ public class ExhibitorProcessor {
         return mTList;
 
     }
-
 
 }

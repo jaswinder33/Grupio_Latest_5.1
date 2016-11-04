@@ -18,8 +18,12 @@ public abstract class BaseAsyncTask<Request, Response> extends AsyncTask<Request
     protected String url;
     protected APICallBack mListener;
 
-    public BaseAsyncTask(Context mcontext, APICallBack mListener) {
+    public BaseAsyncTask(Context mcontext) {
         this.mContext = mcontext;
+    }
+
+    public BaseAsyncTask(Context mcontext, APICallBack mListener) {
+        this(mcontext);
         this.mListener = mListener;
     }
 
@@ -53,7 +57,7 @@ public abstract class BaseAsyncTask<Request, Response> extends AsyncTask<Request
     @Override
     protected void onPostExecute(Response mResponse) {
         super.onPostExecute(mResponse);
-        if (mResponse instanceof Boolean) {
+        if (mResponse instanceof Boolean && mListener != null) {
             if ((Boolean) mResponse) {
                 mListener.onSuccess();
             } else {

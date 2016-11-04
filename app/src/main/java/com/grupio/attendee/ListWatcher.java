@@ -22,6 +22,10 @@ public class ListWatcher {
         this.mListener = mListener;
     }
 
+    public void unregisterListener() {
+        mListener = null;
+    }
+
     public void notifyList() {
         if (mListener != null) {
             mListener.refreshList();

@@ -93,5 +93,9 @@ public class ListActivity extends BaseActivity {
         return null;
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ListWatcher.getInstance().unregisterListener();
+    }
 }

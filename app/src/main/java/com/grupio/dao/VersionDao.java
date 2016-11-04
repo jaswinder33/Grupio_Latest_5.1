@@ -90,7 +90,7 @@ public class VersionDao extends BaseDAO {
 
     }
 
-    public void insertDataInOldColumn(VersionData vData) {
+    public synchronized void insertDataInOldColumn(VersionData vData) {
 
         Log.i(TAG, "insertDataInOldColumn: \nName: " + vData.name + "\nversion: " + vData.oldVersion);
         openDB(1);

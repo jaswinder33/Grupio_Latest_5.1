@@ -15,7 +15,9 @@ import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
 import com.grupio.db.EventTable;
+import com.grupio.helper.ExhibitorProcessor;
 import com.grupio.interfaces.Person;
+import com.grupio.session.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,12 +86,19 @@ public class ListController<T extends Person> implements ControllerInter {
         } else if (type instanceof SpeakerData) {
             fetchSpeakerListFromDb(queryStr, cateogory, mListener);
         } else if (type instanceof ExhibitorData) {
-            fetchExhibitorListFromDb(queryStr, cateogory, mListener);
+            fetchExhibitorListFromDb(queryStr, cateogory, false, mListener);
         }
 
     }
 
-    public void fetchCatList(onTaskComplete mListener) {
+    @Override
+    public <T> void fetchFavList(T type, String queryStr, String category, onTaskComplete mListener) {
+        if (type instanceof ExhibitorData) {
+            fetchExhibitorListFromDb(queryStr, category, true, mListener);
+        }
+    }
+
+    private void fetchCatList(onTaskComplete mListener) {
         List<String> mlist = new ArrayList<>();
 
         if (type instanceof AttendeesData) {
@@ -97,12 +106,10 @@ public class ListController<T extends Person> implements ControllerInter {
         } else if (type instanceof SpeakerData) {
             mlist.addAll(SpeakerDAO.getInstance(mContext).getCategoryList());
         } else if (type instanceof ExhibitorData) {
-            /*
-            Db query to fetch exhibitor category. But its not used. Separate API is implemented to fetch exhibitor category.
-             */
-            ExhibitorDAO.getInstance(mContext).getCategoryList();
-
-//            mlist.addAll(fetchExhibitorCategory());
+            mListener.showFavLay();
+            String response = Preferences.getInstances(mContext).getExhibitorCategory();
+            ExhibitorProcessor exhibitorProcessor = new ExhibitorProcessor();
+            mlist.addAll(exhibitorProcessor.parseExhibitorCategory(response));
         }
 
 
@@ -114,8 +121,7 @@ public class ListController<T extends Person> implements ControllerInter {
         }
     }
 
-    public void fetchAttendeeListFromServer(final onTaskComplete mListener) {
-
+    private void fetchAttendeeListFromServer(final onTaskComplete mListener) {
 
         if (Utility.hasInternet(mContext)) {
             new Thread(new Runnable() {
@@ -156,8 +162,7 @@ public class ListController<T extends Person> implements ControllerInter {
     }
 
 
-    public void fetchSpeakerListFromServer(final onTaskComplete mListener) {
-
+    private void fetchSpeakerListFromServer(final onTaskComplete mListener) {
 
         if (Utility.hasInternet(mContext)) {
             new Thread(new Runnable() {
@@ -195,41 +200,13 @@ public class ListController<T extends Person> implements ControllerInter {
         } else {
             mListener.onFailure(mContext.getResources().getText(R.string.no_internet).toString());
         }
-
-
-//        APICall<SpeakerListAPI> api = new APICall<>(new SpeakerListAPI());
-//        api.doCall(mContext, new ApiCallBack() {
-//            @Override
-//            public void onSuccess(Object response) {
-//                fetchCategoryList(mListener);
-//            }
-//
-//            @Override
-//            public void onFailure(Object msg) {
-//                mListener.onFailure((String) msg);
-//            }
-//        });
-
-
-//        SpeakerListAPI api = new SpeakerListAPI(mContext);
-//        api.doCall(new APICallBack() {
-//            @Override
-//            public void onSuccess() {
-//                fetchCategoryList(mListener);
-//            }
-//
-//            @Override
-//            public void onFailure(String msg) {
-//                mListener.onFailure(msg);
-//            }
-//        });
     }
 
     private void fetchExhibitorListFromServer(onTaskComplete mListener) {
 
     }
 
-    public void fetchAttendeeListFromDb(String queryStr, String cateogory, onTaskComplete mListener) {
+    private void fetchAttendeeListFromDb(String queryStr, String cateogory, onTaskComplete mListener) {
         List<AttendeesData> mlist = new ArrayList<>();
 
         if (queryStr == null) {
@@ -251,7 +228,7 @@ public class ListController<T extends Person> implements ControllerInter {
 
     }
 
-    public void fetchSpeakerListFromDb(String queryStr, String cateogory, onTaskComplete mListener) {
+    private void fetchSpeakerListFromDb(String queryStr, String cateogory, onTaskComplete mListener) {
         List<SpeakerData> mlist = new ArrayList<>();
 
         if (queryStr == null) {
@@ -273,20 +250,20 @@ public class ListController<T extends Person> implements ControllerInter {
 
     }
 
-    public void fetchExhibitorListFromDb(String queryStr, String cateogory, onTaskComplete mListener) {
+    private void fetchExhibitorListFromDb(String queryStr, String cateogory, boolean favOnly, onTaskComplete mListener) {
         List<ExhibitorData> mlist = new ArrayList<>();
 
         if (queryStr == null) {
             if (cateogory == null || cateogory.equals("All")) {
-                mlist.addAll(ExhibitorDAO.getInstance(mContext).getExhibitorList(0));
+                mlist.addAll(ExhibitorDAO.getInstance(mContext).getExhibitorList(favOnly, 0));
             } else {
-                mlist.addAll(ExhibitorDAO.getInstance(mContext).sortExhibitorByCategory(cateogory, 0));
+                mlist.addAll(ExhibitorDAO.getInstance(mContext).sortExhibitorByCategory(cateogory, favOnly, 0));
             }
         } else {
             if (cateogory == null || cateogory.equals("All")) {
-                mlist.addAll(ExhibitorDAO.getInstance(mContext).searchExhibitorByName(null, queryStr));
+                mlist.addAll(ExhibitorDAO.getInstance(mContext).searchExhibitorByName(null, queryStr, favOnly));
             } else {
-                mlist.addAll(ExhibitorDAO.getInstance(mContext).searchExhibitorByName(cateogory, queryStr));
+                mlist.addAll(ExhibitorDAO.getInstance(mContext).searchExhibitorByName(cateogory, queryStr, favOnly));
             }
         }
 
@@ -294,16 +271,5 @@ public class ListController<T extends Person> implements ControllerInter {
         mListener.onListFetch(mlist);
 
     }
-
-    /**Exhibitor's category is coming from server in separate API
-     * temp code
-     */
-//    public List<String> fetchExhibitorCategory(){
-//        String resp = Utility.getFromSD(mContext, ConstantData.EXHIBITOR_CATEGORY);
-//
-//        ExhibitorProcessor edp = new ExhibitorProcessor();
-//        return edp.parseCategoryResult(resp);
-//    }
-
 
 }

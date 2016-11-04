@@ -45,6 +45,12 @@ public class VenueMapsPresenter<T> implements VenueMapContract.MapsPresenter, Ve
     }
 
     @Override
+    public <T> void fetchListFromServer(T t, Context mContext) {
+        mListener.showProgress();
+        mInteractor.fetchListFromServer(t, mContext, this);
+    }
+
+    @Override
     public void markAlertRead(String alertId, Context mContext) {
         mListener.showProgress();
         mInteractor.markAlertRead(alertId, mContext, this);

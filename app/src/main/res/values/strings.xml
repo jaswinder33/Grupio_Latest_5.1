@@ -19,6 +19,7 @@
     <string name="menu_api">/getmenuitems_new.php?event_id=</string>
     <string name="attendee_api">/attendees.php?event_id=</string>
     <string name="tracks_list_api">/gettracks.php?event_id=</string>
+    <string name="exhibitor_category_api">/get_exhibitor_catgories.php?format=json</string>
 
     <string name="sessions_api">/sessions.php?event_id=</string>
     <string name="speakers_api">/speakers.php?event_id=</string>

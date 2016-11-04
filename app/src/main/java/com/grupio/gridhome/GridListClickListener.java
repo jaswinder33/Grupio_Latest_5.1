@@ -78,7 +78,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
             switch (menu.getMenuName()) {
 
                 case "activity_feed":
-                    //Leave pending
+                    //Leave pendingGr
                     break;
 
                 case "detail":

@@ -20,4 +20,5 @@ public interface DetailPresenterInter {
 
     void doFav(String id);
 
+
 }

@@ -19,8 +19,6 @@ public class GridHomePresenter implements GridHomePresenterImp, GridInteractorIm
         this.listener = listener;
         this.mContext = mContext;
         interactor = new GridHomeInteractor();
-
-        fetchMenuList();
     }
 
     @Override

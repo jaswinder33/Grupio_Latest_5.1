@@ -37,5 +37,7 @@ public class ExhibitorAPI extends BaseApiCall {
             ExhibitorDAO.getInstance(mContext).insert(response);
         }
 
+        //fetch exhibitorcategory.
+        new ExhibitorCategoryAPI(mContext).doCall();
     }
 }

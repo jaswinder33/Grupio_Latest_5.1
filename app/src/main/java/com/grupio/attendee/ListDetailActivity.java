@@ -1,8 +1,6 @@
 package com.grupio.attendee;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -34,6 +32,7 @@ import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.interfaces.ClickHandler;
 import com.grupio.interfaces.Person;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.DocumentController;
@@ -49,54 +48,23 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     public static final int CONNECT_REQUEST = 201;
     public static final String LIST_DETAIL = "ListDetailActivity";
-    AdapterView.OnItemClickListener sessionListItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ScheduleData sData = (ScheduleData) parent.getAdapter().getItem(position);
-            Intent intent = new Intent(ListDetailActivity.this, ScheduleDetail.class);
-            intent.putExtra("session_id", sData.getSession_id());
-            startActivity(intent);
-            SlideOut.getInstance().startAnimation(ListDetailActivity.this);
-        }
+    AdapterView.OnItemClickListener sessionListItemClick = (parent, view, position, id1) -> {
+        ScheduleData sData = (ScheduleData) parent.getAdapter().getItem(position);
+        Intent intent = new Intent(ListDetailActivity.this, ScheduleDetail.class);
+        intent.putExtra("session_id", sData.getSession_id());
+        startActivity(intent);
+        SlideOut.getInstance().startAnimation(ListDetailActivity.this);
     };
-    AdapterView.OnItemClickListener attendeeListItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            AttendeesData mData = (AttendeesData) parent.getAdapter().getItem(position);
+    AdapterView.OnItemClickListener attendeeListItemClick = (parent, view, position, id1) -> {
+        AttendeesData mData = (AttendeesData) parent.getAdapter().getItem(position);
 
-            Intent mIntent = new Intent(ListDetailActivity.this, ListDetailActivity.class);
-            mIntent.putExtra("id", mData.getAttendee_id());
-            mIntent.setType("attendee");
-            mIntent.putExtra("data", mData);
+        Intent mIntent = new Intent(ListDetailActivity.this, ListDetailActivity.class);
+        mIntent.putExtra("id", mData.getAttendee_id());
+        mIntent.setType("attendee");
+        mIntent.putExtra("data", mData);
 
-            startActivity(mIntent);
-            SlideOut.getInstance().startAnimation(ListDetailActivity.this);
-        }
-    };
-    private String type = "";
-    AdapterView.OnItemClickListener resourceListItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            LogisticsData mapObjt = (LogisticsData) parent.getAdapter().getItem(position);
-            switch (type) {
-                case "attendee":
-                    DocumentController<AttendeesData, LogisticsData> mController = new DocumentController<>(new AttendeesData(), new LogisticsData(), ListDetailActivity.this);
-                    mController.handleDocument(mapObjt);
-                    break;
-
-                case "speaker":
-                    DocumentController<SpeakerData, LogisticsData> mController1 = new DocumentController<>(new SpeakerData(), new LogisticsData(), ListDetailActivity.this);
-                    mController1.handleDocument(mapObjt);
-                    break;
-
-                case "exhibitor":
-                    DocumentController<ExhibitorData, LogisticsData> mController2 = new DocumentController<>(new ExhibitorData(), new LogisticsData(), ListDetailActivity.this);
-                    mController2.handleDocument(mapObjt);
-                    break;
-
-            }
-        }
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(ListDetailActivity.this);
     };
     private String id;
     private Person mperson;
@@ -127,6 +95,29 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     private LinearLayout attendeeListLay;
     private TextView attendeeHeader;
     private ListView attendeeList;
+    private String type = "";
+    AdapterView.OnItemClickListener resourceListItemClick = (parent, view, position, id1) -> {
+
+        LogisticsData mapObjt = (LogisticsData) parent.getAdapter().getItem(position);
+        switch (type) {
+            case "attendee":
+                DocumentController<AttendeesData, LogisticsData> mController = new DocumentController<>(new AttendeesData(), new LogisticsData(), ListDetailActivity.this);
+                mController.handleDocument(mapObjt);
+                break;
+
+            case "speaker":
+                DocumentController<SpeakerData, LogisticsData> mController1 = new DocumentController<>(new SpeakerData(), new LogisticsData(), ListDetailActivity.this);
+                mController1.handleDocument(mapObjt);
+                break;
+
+            case "exhibitor":
+                DocumentController<ExhibitorData, LogisticsData> mController2 = new DocumentController<>(new ExhibitorData(), new LogisticsData(), ListDetailActivity.this);
+                mController2.handleDocument(mapObjt);
+                break;
+
+        }
+    };
+
 
     @Override
     public boolean isHeaderForGridPage() {
@@ -290,7 +281,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         handleRightBtn(false, null);
         getData();
         registerListeners();
-        getPresenter().validateData(mperson);
+
     }
 
     @Override
@@ -366,20 +357,20 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     public void showLinkedin(String linkedinIdStr) {
         linkedinLayout.setVisibility(View.VISIBLE);
         linkedinLine.setVisibility(View.VISIBLE);
-        linkedinId.setText(linkedinIdStr);
+        linkedinId.setText("Linkedin Profile");
     }
 
     @Override
     public void showTwitter(String twitterStr) {
         twitterlayout.setVisibility(View.VISIBLE);
         twitterLine.setVisibility(View.VISIBLE);
-        twitterId.setText(twitterStr);
+        twitterId.setText("Twitter Profile");
     }
 
     @Override
     public void showWebSite(String websiteStr) {
         websiteLayout.setVisibility(View.VISIBLE);
-        website.setText(websiteStr);
+        website.setText("Website");
     }
 
     @Override
@@ -642,66 +633,32 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     }
 
     public void askSendRequestConfirmationDialog() {
-        AlertDialog.Builder alertbox = new AlertDialog.Builder(ListDetailActivity.this);
-        alertbox.setMessage(getString(R.string.send_info_request));
-        alertbox.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                getPresenter().sendContactRequest(id, true);
-            }
-        });
-
-        alertbox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                arg0.dismiss();
-            }
-        });
-        alertbox.show();
+        CustomDialog.getDialog("Submit", this, () -> getPresenter().sendContactRequest(id, true)).show(getString(R.string.send_info_request));
     }
 
     public void showSendRequestSentConfirmation() {
-        AlertDialog.Builder adialog = new AlertDialog.Builder(ListDetailActivity.this);
 
-        adialog.setMessage(getString(R.string.contact_sent));
+        CustomDialog.getDialog(this, () -> {
+        }).show(getString(R.string.contact_sent));
 
-        adialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-
-        adialog.show();
     }
 
     private void handlePhoneClickForOthers(final String number) {
-        new AlertDialog.Builder(this)
-//                .setMessage(LocalisationDataProcessor.CALL + ": " + number + "?")
-                .setMessage("Call" + ": " + number + "?")
-//                .setPositiveButton(LocalisationDataProcessor.YES, new DialogInterface.OnClickListener() {
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Permissions.getInstance().hasCallPermission(ListDetailActivity.this)) {
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
-                                startActivity(intent);
-                            } catch (Exception e) {
-                            }
-                        } else {
-                            Permissions.getInstance().checkCallPermission(ListDetailActivity.this).askForPermissions(ListDetailActivity.this, CALL_PERMISSION);
-                        }
-                    }
-                })
-//                .setNegativeButton(LocalisationDataProcessor.NO, new DialogInterface.OnClickListener() {
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
+
+        ClickHandler mYesBtnClick = () -> {
+            if (Permissions.getInstance().hasCallPermission(ListDetailActivity.this)) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+                    startActivity(intent);
+                } catch (Exception e) {
+                }
+            } else {
+                Permissions.getInstance().checkCallPermission(ListDetailActivity.this).askForPermissions(ListDetailActivity.this, CALL_PERMISSION);
+            }
+        };
+
+        CustomDialog.getDialog(this, mYesBtnClick).show("Call" + ": " + number + "?");
+
     }
 
     private void handlePhoneClickForAttendee(final String number) {
@@ -851,5 +808,11 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             getPresenter().sendContactRequest(id, false);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().validateData(mperson);
     }
 }

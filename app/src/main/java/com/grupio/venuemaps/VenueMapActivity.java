@@ -1,5 +1,6 @@
 package com.grupio.venuemaps;
 
+import android.app.Fragment;
 import android.os.Bundle;
 
 import com.grupio.R;
@@ -31,6 +32,28 @@ public class VenueMapActivity extends BaseActivity {
 
     @Override
     public void handleRightBtnClick() {
+
+        Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
+
+        if (mFrag != null) {
+            switch (type) {
+                case "venueMaps":
+                    ((VenueMapsFragment) mFrag).refreshList(new MapsData());
+                    break;
+
+                case "alert":
+                    ((VenueMapsFragment) mFrag).refreshList(new AlertData());
+                    break;
+
+                case "Live":
+                    ((VenueMapsFragment) mFrag).refreshList(new LiveData());
+                    break;
+
+                case "Survey":
+                    ((VenueMapsFragment) mFrag).refreshList(new SurveyData());
+                    break;
+            }
+        }
     }
 
     @Override
@@ -67,6 +90,8 @@ public class VenueMapActivity extends BaseActivity {
 
         getData();
 
+        handleRightBtn(true, REFRESH);
+
         VenueMapsFragment mFrag = null;
 
         switch (type) {
@@ -85,7 +110,6 @@ public class VenueMapActivity extends BaseActivity {
             case "Survey":
                 mFrag = new VenueMapsFragment(new SurveyData(), null);
                 break;
-
         }
         Utility.addFragment(this, mFrag, false);
     }

@@ -2,6 +2,7 @@ package com.grupio.activities;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -68,11 +69,6 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         setUpHeader(isHeaderForGridPage());
         handleLeftBtn(isHeaderForGridPage());
         sendReport(getScreenName());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         registerListeners();
         setUp();
     }
@@ -216,6 +212,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
         SlideIn.getInstance().startAnimation(this);
     }
 
@@ -229,13 +226,10 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
     @Override
     public void hideProgressDialog() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
+        runOnUiThread(() -> {
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
             }
         });
     }
@@ -344,26 +338,39 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
     public abstract void handleRightBtnClick();
 
-    public class CustomDialog {
+    public static class CustomDialog {
 
         private String okStr = "Ok";
         private String cancelStr = "Cancel";
         private ClickHandler mClick;
         private boolean isSingleBtn = false;
+        private Context mContext;
 
-        public CustomDialog(ClickHandler mClick) {
+        private CustomDialog(Context mContext, ClickHandler mClick) {
+            this.mContext = mContext;
             this.mClick = mClick;
         }
 
-        public CustomDialog(String Ok, ClickHandler mClick) {
-            this(mClick);
+        private CustomDialog(String Ok, Context mContext, ClickHandler mClick) {
+            this(mContext, mClick);
             this.okStr = Ok;
         }
 
-        public CustomDialog(String Ok, String cancel, ClickHandler mClick) {
-            this(mClick);
-            this.okStr = Ok;
+        private CustomDialog(String Ok, String cancel, Context mContext, ClickHandler mClick) {
+            this(Ok, mContext, mClick);
             this.cancelStr = cancel;
+        }
+
+        public static CustomDialog getDialog(Context mContext, ClickHandler mClick) {
+            return new CustomDialog(mContext, mClick);
+        }
+
+        public static CustomDialog getDialog(String Ok, Context mContext, ClickHandler mClick) {
+            return new CustomDialog(Ok, mContext, mClick);
+        }
+
+        public static CustomDialog getDialog(String Ok, String cancel, Context mContext, ClickHandler mClick) {
+            return new CustomDialog(Ok, cancel, mContext, mClick);
         }
 
         public CustomDialog singledBtnDialog(boolean isSingleBtn) {
@@ -372,11 +379,11 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         }
 
         public void show(String message) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(BaseActivity.this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
             dialog.setMessage(message);
             dialog.setPositiveButton(okStr, (dialogInterface, i) -> mClick.handleClick());
             if (!isSingleBtn) {
-                dialog.setNegativeButton(okStr, (dialogInterface, i) -> {
+                dialog.setNegativeButton(cancelStr, (dialogInterface, i) -> {
                 });
             }
             dialog.create().show();

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.SurveyDAO;
 import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
@@ -29,9 +30,9 @@ public class SurveyAPI extends BaseApiCall {
     public void callApi() {
 
         APIRequest request = new GetRequest();
-        String response =  request.requestResponse(url, new HashMap<String, String>(), mContext);
-        if(response != null){
-
+        String response = request.requestResponse(url, new HashMap<String, String>(), mContext);
+        if (response != null) {
+            SurveyDAO.getInstance(mContext).insertData(response);
         }
 
         Log.i("API", "SurveyAPI");

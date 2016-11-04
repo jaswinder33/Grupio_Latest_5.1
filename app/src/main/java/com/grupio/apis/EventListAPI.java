@@ -51,17 +51,4 @@ public class EventListAPI extends BaseCallable<List<EventData>> {
         return eHelper.parseResult(response);
     }
 
-//    @Override
-//    public List<EventData> call() throws Exception {
-//
-//        String queryString = "?keyword=" + queryText + "&orgid=" + ConstantData.ORG_ID + "&format=json";
-//        String url = ConstantData.EVENT_LIST_API + queryString;
-//
-//        APIRequest request = new GetRequest();
-//        String response = request.requestResponse(url, new HashMap<>(),context);
-//
-//        EventListHelper eHelper = new EventListHelper();
-//
-//        return eHelper.parseResult(response);
-//    }
 }

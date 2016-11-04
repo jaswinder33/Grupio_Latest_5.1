@@ -169,7 +169,7 @@ public class ExhibitorDAO extends BaseDAO {
      *          Sample Query:
      *          select exhibitors.*, likes.isFav  from exhibitors left join likes on exhibitors.id=likes.id  order by name COLLATE NOCASE;
      */
-    public List<ExhibitorData> getExhibitorList(int i) {
+    public List<ExhibitorData> getExhibitorList(boolean favOnly, int i) {
 
         List<ExhibitorData> mList = new ArrayList<>();
 
@@ -184,7 +184,13 @@ public class ExhibitorDAO extends BaseDAO {
 
 //        query = "select * from " + MyDbHandler.EXHIBITOR_TABLE + " order by " + MyDbHandler.NAME + " COLLATE NOCASE;";
 
-        query = "select exhibitors.*, likes.isFav  from " + ExhibitorTable.EXHIBITOR_TABLE + " left join " + ExhibitorLikeTable.LIKE_TABLE + " on exhibitors.id=likes.id  order by name COLLATE NOCASE;";
+        query = "select exhibitors.*, likes.isFav  from " + ExhibitorTable.EXHIBITOR_TABLE + " left join " + ExhibitorLikeTable.LIKE_TABLE + " on exhibitors.id=likes.id  ";
+
+        if (favOnly) {
+            query += "  where likes.isFav='1' ";
+        }
+
+        query += " order by name COLLATE NOCASE; ";
 
         openDB(0);
 
@@ -247,13 +253,20 @@ public class ExhibitorDAO extends BaseDAO {
      *                 select * from exhibitors where category='server' order by firstname COLLATE NOCASE limit 30 offset 30;
      * @return list of Exhibitors belongs to particular category
      */
-    public List<ExhibitorData> sortExhibitorByCategory(String category, int i) {
+    public List<ExhibitorData> sortExhibitorByCategory(String category, boolean favOnly, int i) {
 
         List<ExhibitorData> mList = new ArrayList<>();
 
         String query;
 
-        query = "select exhibitors.*, likes.isFav  from exhibitors left join likes on exhibitors.id=likes.id   where category like  '" + category + "' or category like  '%," + category + "' or category like  '" + category + ",%'  or category like '%," + category + ",%' order by name COLLATE NOCASE;";
+//        query = "select exhibitors.*, likes.isFav  from exhibitors left join likes on exhibitors.id=likes.id   where category like  '" + category + "' or category like  '%," + category + "' or category like  '" + category + ",%'  or category like '%," + category + ",%' order by name COLLATE NOCASE;";
+
+        query = "select exhibitors.*, likes.isFav  from exhibitors left join likes on exhibitors.id=likes.id   where  (category like  '" + category + "' or category like  '%," + category + "' or category like  '" + category + ",%'  or category like '%," + category + ",%') ";
+        if (favOnly) {
+            query += " and likes.isFav='1' ";
+        }
+
+        query += " order by name COLLATE NOCASE; ";
 
         openDB(0);
 
@@ -369,7 +382,7 @@ public class ExhibitorDAO extends BaseDAO {
      *                 select * from exhibitors where  category='server' (firstName like 'ma%' or lastName like '') order by firstname COLLATE NOCASE;
      * @return list of all exhibitors which are returned by query
      */
-    public List<ExhibitorData> searchExhibitorByName(String category, String queryStr) {
+    public List<ExhibitorData> searchExhibitorByName(String category, String queryStr, boolean favOnly) {
 
         List<ExhibitorData> mList = new ArrayList<>();
 
@@ -381,6 +394,10 @@ public class ExhibitorDAO extends BaseDAO {
             query = "select exhibitors.*, likes.isFav  from " + ExhibitorTable.EXHIBITOR_TABLE + " left join " + ExhibitorLikeTable.LIKE_TABLE + " on exhibitors.id=likes.id  where " + ExhibitorTable.NAME + " like '" + queryStr + "%'";
 
             query += "and  (category like  '" + category + "' or category like  '%," + category + "' or category like  '" + category + ",%'  or category like '%," + category + ",%') ";
+        }
+
+        if (favOnly) {
+            query += " and likes.isFav='1' ";
         }
 
         query += "order by " + ExhibitorTable.NAME + " COLLATE NOCASE;";
@@ -475,5 +492,6 @@ public class ExhibitorDAO extends BaseDAO {
             }
         }
     }
+
 
 }
