@@ -17,12 +17,16 @@ public class ScheduleListInteractor implements ScheduleListContract.Interactor {
 
         String trackName = SessionTracksDAO.getInstance(mContext).getTrackName(trackId);
 
-        mListener.onListFetch(SessionDAO.getInstance(mContext).fetchSessionList(date, searchQuery));
+        trackName = !trackName.equals("") ? trackName : null;
+
+        mListener.onListFetch(SessionDAO.getInstance(mContext).fetchSessionList(date, trackName, searchQuery));
     }
 
     @Override
-    public void fetchDateList(Context mContext, ScheduleListContract.onInteraction mListener) {
-        mListener.onDateListFetch(SessionDAO.getInstance(mContext).getDateList());
+    public void fetchDateList(String trackId, Context mContext, ScheduleListContract.onInteraction mListener) {
+        String trackName = SessionTracksDAO.getInstance(mContext).getTrackName(trackId);
+        trackName = !trackName.equals("") ? trackName : null;
+        mListener.onDateListFetch(SessionDAO.getInstance(mContext).getDateList(trackName));
     }
 
 

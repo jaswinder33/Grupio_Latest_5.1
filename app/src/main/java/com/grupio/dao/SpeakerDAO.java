@@ -3,12 +3,16 @@ package com.grupio.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.grupio.data.SpeakerData;
 import com.grupio.db.SpeakerTable;
 import com.grupio.helper.SpeakerProcessor;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -516,6 +520,57 @@ public class SpeakerDAO extends BaseDAO {
                 closeDb();
             }
         }
+    }
+
+    public String getSpeakerNames(String ids, SQLiteDatabase mDbInstance, boolean isFirstName) {
+
+        String name = "";
+        String idQuery = "";
+
+        try {
+            JSONArray mJsonArray = new JSONArray(ids);
+
+            if (mJsonArray != null && mJsonArray.length() > 0) {
+
+                for (int i = 0; i < mJsonArray.length(); i++) {
+                    idQuery = "'" + mJsonArray.getString(i) + "',";
+                }
+
+                idQuery = idQuery.substring(0, idQuery.lastIndexOf(","));
+
+                String query = "select firstName, lastName from speakers where id in(" + idQuery + ");";
+
+                Cursor mcursor = null;
+                try {
+                    mcursor = mDbInstance.rawQuery(query, null);
+
+                    if (mcursor != null) {
+                        mcursor.moveToFirst();
+
+                        do {
+
+                            if (isFirstName) {
+                                name += mcursor.getString(0) + " " + mcursor.getString(1) + ";";
+                            } else {
+                                name += mcursor.getString(1) + ", " + mcursor.getString(0) + ";";
+                            }
+                        } while (mcursor.moveToNext());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+
+                    if (mcursor != null && !mcursor.isClosed()) {
+                        mcursor.close();
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return name;
     }
 
 }

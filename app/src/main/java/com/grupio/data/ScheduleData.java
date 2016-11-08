@@ -38,6 +38,15 @@ public class ScheduleData implements Person {
     private String session_id;
 
     private boolean isSessionFav = false;
+    private String speakerNameAsString;
+
+    public String getSpeakerNameAsString() {
+        return speakerNameAsString;
+    }
+
+    public void setSpeakerNameAsString(String speakerNameAsString) {
+        this.speakerNameAsString = speakerNameAsString;
+    }
 
     public String getSpeakerListAsString() {
         return speakerListAsString;

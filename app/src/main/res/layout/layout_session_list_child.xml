@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="How Brand Development Helped increase interest in two Pubic Health Programs in Maine" />
+            android:text="How Brand Development Helped increase interest in two Pubic Health Programs in Maine"
+            android:textSize="@dimen/text_14" />
 
         <TextView
             android:id="@+id/sessionSpeakerList"
@@ -37,7 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:text="" />
+            android:text="Speaker List"
+            android:textSize="@dimen/text_12"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/sessionDate"
@@ -45,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:text="10:10 AM - 11:00 AM" />
+            android:text="10:10 AM - 11:00 AM"
+            android:textSize="@dimen/text_12" />
 
         <TextView
             android:id="@+id/sessionLocation"
@@ -54,7 +58,8 @@
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             android:text="Location:"
-            android:visibility="gone" />
+            android:textSize="@dimen/text_12"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/sessionTrack"
@@ -66,7 +71,6 @@
             android:gravity="center_horizontal"
             android:text="Track: Breakout session"
             android:textStyle="bold" />
-
 
     </LinearLayout>
 

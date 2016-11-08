@@ -15,6 +15,8 @@ import com.grupio.dao.EventDAO;
 import com.grupio.data.ScheduleData;
 import com.grupio.db.EventTable;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,9 +42,12 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
         String name_order = EventDAO.getInstance(context).getValue(EventTable.NAME_ORDER);
         isFirstName = name_order.equals("firstname_lastname");
 
+        findPersonType();
+
         if (mPerson instanceof ScheduleData) {
             isSession = true;
         }
+
     }
 
     @Override
@@ -90,7 +95,6 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-
         if (!eventColor.equals("")) {
             holder.session_track.setBackgroundColor(Color.parseColor(eventColor));
         }
@@ -102,6 +106,21 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
         if (isSession) {
 
+            ScheduleData mScheduleData = (ScheduleData) getItem(position);
+
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+
+            try {
+                cal.setTime(sdf1.parse(mScheduleData.getStart_time()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            SimpleDateFormat sdf2 = new SimpleDateFormat("hh aaa");
+            sdf2.format(cal.getTime());
+
+            holder.session_track.setText(sdf2.format(cal.getTime()));
 
         } else {
             if (isFirstName) {
@@ -185,6 +204,21 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
     public abstract Holder setViewHolder(View convertView);
 
+    public void findPersonType() {
+        Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
+        for (Type type : typeArguments) {
+
+            try {
+                mPerson = ((Class<Person>) type).newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     class HeaderViewHolder {
         TextView session_track;
 
@@ -192,5 +226,4 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             session_track = (TextView) view.findViewById(R.id.session_track);
         }
     }
-
 }

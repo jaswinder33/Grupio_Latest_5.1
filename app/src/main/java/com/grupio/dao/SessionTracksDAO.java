@@ -227,7 +227,7 @@ public class SessionTracksDAO extends BaseDAO {
 
         String trackname = "";
 
-        String query = "select " + SessionTracksTable.TRACK + " from session_tracks where id=" + trackid + ";";
+        String query = "select " + SessionTracksTable.TRACK + " from session_tracks where id='" + trackid + "';";
 
 
         Cursor mCursor = null;

@@ -99,7 +99,11 @@ public class SessionDAO extends BaseDAO {
 
     }
 
-    public void fetchSessionList(String date, String trackName, String searchQuery) {
+    public List<ScheduleData> fetchSessionList(String date, String trackName, String searchQuery) {
+
+        String name_order = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER);
+        boolean isFirstName = name_order.equals("firstname_lastname");
+
 
         openDB(0);
 
@@ -107,15 +111,27 @@ public class SessionDAO extends BaseDAO {
 
         String query = "";
 
-        query = "select sessions.*,likes.isFav, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.start_time like " + date + "&'";
+        query = "select sessions.*,likes.isFav, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track";// where sessions.start_time like " + date + "%'";
 
         if (trackName != null) {
-            query += " and sessions.track='" + trackName + "'";
+            if (date == null) {
+                query += " where sessions.start_time=(select min(sessions.start_time) from sessions where sessions.track='" + trackName + "')";
+            } else {
+                query += " where sessions.start_time like '" + date + "%'";
+            }
+        } else {
+            if (date == null) {
+                query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions);";
+            } else {
+                query += " where sessions.start_time like '" + date + "%'";
+            }
         }
 
         if (searchQuery != null) {
-            query += " and sessions.name='" + trackName + "'";
+            query += " and sessions.name like '" + searchQuery + "%'";
         }
+
+        query += " order by sessions.start_time;";
 
         Cursor mCursor = null;
 
@@ -138,9 +154,14 @@ public class SessionDAO extends BaseDAO {
                     sd.setParent_session_id(mCursor.getString(7));
                     sd.setHas_child(mCursor.getString(8));
                     sd.setMaxSeatsAvailable(mCursor.getString(9));
+
                     sd.setSpeakerListAsString(mCursor.getString(10));
                     sd.setResourceListAsString(mCursor.getString(11));
-                    sd.setColor(mCursor.getString(12) == null ? "" : mCursor.getString(12));
+                    sd.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
+                    sd.setColor(mCursor.getString(13) != null ? mCursor.getString(13) : "#");
+
+                    sd.setSpeakerNameAsString(SpeakerDAO.getInstance(mContext).getSpeakerNames(mCursor.getString(10), db, isFirstName));
+
 
                     mScheduleDataList.add(sd);
                 } while (mCursor.moveToNext());
@@ -155,12 +176,22 @@ public class SessionDAO extends BaseDAO {
             closeDb();
         }
 
+        return mScheduleDataList;
+
     }
 
-    public List<String> getDateList() {
-        String query = "select distinct strftime('%d-%m-%Y'," + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " ";
+    public List<String> getDateList(String trackName) {
 
-        query += " order by date(" + SessionTable.START_TIME + ") ";
+//        "select distinct strftime('%d-%m-%Y',start_time) from sessions";
+
+
+        String query = "select distinct date(" + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " ";
+
+        if (trackName != null) {
+            query += " where " + SessionTable.TRACK + "='" + trackName + "'";
+        }
+
+        query += " order by " + SessionTable.START_TIME + ";";
 
         List<String> dateslist = new ArrayList<>();
 

@@ -51,6 +51,10 @@
     <!-- Live API-->
     <string name="live_api">/livefeeds.php?format=json&amp;livefeedformat=new&amp;event_id=</string>
 
+    <!--Schedule APIs-->
+    <string name="like_unlike_schedule_api">/myschedule.php?format=json</string>>
+
+
 
     <!-- ################################################################### -->
     <!-- ################################################################### -->
@@ -165,11 +169,17 @@
     <string name="erroor_occured">Error Occured...</string>
     <string name="title_activity_logistics">LogisticsActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_venue_map">VenueMapActivity</string>
     <string name="title_activity_simple_list">SimpleListActivity</string>
     <string name="title_activity_schedule_track_list">ScheduleTrackListActivity</string>
     <string name="title_activity_schedule_list">ScheduleListActivity</string>
+
+
+    <!-- Schedule -->
+    <string name="add_schedule">Do you want to add this session to your schedule?</string>
+    <string name="remove_schedule">Do you want to remove this session from your schedule?</string>
+    <string name="add_schedule_to_calendar">Add this to your calendar?</string>
+    <string name="remove_schedule_from_calendar">Event removed from your calendar</string>
 
 </resources>

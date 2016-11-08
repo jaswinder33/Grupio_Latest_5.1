@@ -41,6 +41,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     public static final String TAG = "Baseactivity";
     public static final int SD_READ_WRITE_PERMISSION = 100;
     public static final int CALL_PERMISSION = 101;
+    public static final int CALENDAR_PERMISSION = 102;
     public static final String REFRESH = "refresh";
     public static final String ADD = "add";
 

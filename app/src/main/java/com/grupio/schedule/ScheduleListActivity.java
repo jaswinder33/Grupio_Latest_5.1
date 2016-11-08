@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
+import com.grupio.backend.Permissions;
 
 public class ScheduleListActivity extends BaseActivity {
 
@@ -52,6 +53,8 @@ public class ScheduleListActivity extends BaseActivity {
         Bundle mBundle = new Bundle();
         mBundle.putString("trackId", trackid);
         Utility.addFragment(this, ScheduleListFragment.getInstance(mBundle), false);
+
+        Permissions.getInstance().hasCalendarPermission(this).askForPermissions(this, CALENDAR_PERMISSION);
     }
 
     @Override

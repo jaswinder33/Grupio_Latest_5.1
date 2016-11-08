@@ -36,7 +36,9 @@ public class ScheduleListPresenter implements ScheduleListContract.onInteraction
     }
 
     @Override
-    public void fetchDateList(Context mContext) {
-        mInteractor.fetchDateList(mContext, this);
+    public void fetchDateList(String trackId, Context mContext) {
+        mInteractor.fetchDateList(trackId, mContext, this);
     }
+
+
 }

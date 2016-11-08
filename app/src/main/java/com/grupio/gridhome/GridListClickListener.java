@@ -19,6 +19,7 @@ import com.grupio.home.HomeActivity;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.LogisticsActivity;
 import com.grupio.message.MessageActivity;
+import com.grupio.schedule.ScheduleListActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
@@ -31,8 +32,7 @@ import com.grupio.venuemaps.VenueMapActivity;
 public class GridListClickListener implements RecyclerView.OnItemTouchListener {
 
     GestureDetector mGestureDetector;
-    MenuClick scheduleListClick = mBundle -> {
-    };
+
     private Context context;
     MenuClick homeclick = mBundle -> sendIntent(HomeActivity.class, mBundle);
     MenuClick messageclick = mBundle -> sendIntent(MessageActivity.class, mBundle);
@@ -44,6 +44,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick venueMapsClick = (Bundle mbundle) -> sendIntent(VenueMapActivity.class, mbundle);
     MenuClick discussionBoardClick = mBundle -> sendIntent(WebViewActivity.class, mBundle);
     MenuClick scheduleTracklistClick = mBundle -> sendIntent(ScheduleTrackListActivity.class, mBundle);
+    MenuClick scheduleListClick = mBundle -> sendIntent(ScheduleListActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -95,6 +96,8 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     if (isTrackPresent) {
                         performClick(mBundle, scheduleTracklistClick);
                     } else {
+                        mBundle = new Bundle();
+                        mBundle.putString("track", "0");
                         performClick(mBundle, scheduleListClick);
                     }
                     break;

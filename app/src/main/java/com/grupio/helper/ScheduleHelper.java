@@ -1,25 +1,96 @@
 package com.grupio.helper;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.CalendarContract;
 
+import com.grupio.animation.SlideOut;
+import com.grupio.apis.LikeUnlikeSessionAPI;
+import com.grupio.dao.EventDAO;
 import com.grupio.dao.VersionDao;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.TrackData;
 import com.grupio.data.VersionData;
 import com.grupio.data.mapList;
+import com.grupio.db.EventTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by JSN on 24/8/16.
  */
 public class ScheduleHelper {
 
+
+    public static boolean isLoginRequiredToLike(Context mContext, Class<?> mClassName) {
+
+        if (EventDAO.getInstance(mContext).getValue(EventTable.MYSCHEDULE_LOGIN_ENABLED).equals("y")) {
+            Intent mIntent = new Intent();
+            mIntent.setClass(mContext, mClassName);
+            mIntent.putExtra("from", mClassName.getSimpleName());
+            mContext.startActivity(mIntent);
+            SlideOut.getInstance().startAnimation((Activity) mContext);
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    public static void saveToCalendar(Context mContext, ScheduleData mScheduleData) {
+
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar starttime = Calendar.getInstance();
+        Calendar endtime = Calendar.getInstance();
+
+        try {
+            starttime.setTime(sdf1.parse(mScheduleData.getStart_time()));
+            endtime.setTime(sdf1.parse(mScheduleData.getEnd_time()));
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+        }
+
+        ContentResolver cr = mContext.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, starttime.getTimeInMillis());
+        values.put(CalendarContract.Events.DTEND, endtime.getTimeInMillis());
+        values.put(CalendarContract.Events.TITLE, mScheduleData.getName());
+        values.put(CalendarContract.Events.DESCRIPTION, mScheduleData.getSummary());
+        values.put(CalendarContract.Events.CALENDAR_ID, 3);
+        values.put(CalendarContract.Events.HAS_ALARM, 1);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+
+    }
+
+    public static void removeFromCalendar(Context mContext, ScheduleData mScheduleData) {
+        String eventID = mScheduleData.getCalenderAddId();
+        ContentResolver cr = mContext.getContentResolver();
+        ContentValues values = new ContentValues();
+        Uri deleteUri = null;
+        deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Long.valueOf(eventID));
+        int rows = cr.delete(deleteUri, null, null);
+    }
+
+    public static void addRemoveSession(String operation, String sessionId, Context mContext) {
+        new LikeUnlikeSessionAPI(mContext).doCall(operation, sessionId);
+    }
 
     public List<ScheduleData> parseJSON(Context mContext, String response) {
 

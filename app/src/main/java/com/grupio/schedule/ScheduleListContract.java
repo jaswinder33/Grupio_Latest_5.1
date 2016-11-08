@@ -21,13 +21,13 @@ public class ScheduleListContract {
     interface Presenter {
         void fetchList(String trackId, String searchQuery, String date, Context mContext);
 
-        void fetchDateList(Context mContext);
+        void fetchDateList(String trackId, Context mContext);
     }
 
     interface Interactor {
         void fetchlist(String trackId, String searchQuery, String date, Context mContext, onInteraction mListener);
 
-        void fetchDateList(Context mContext, onInteraction mListener);
+        void fetchDateList(String trackId, Context mContext, onInteraction mListener);
     }
 
     interface onInteraction {

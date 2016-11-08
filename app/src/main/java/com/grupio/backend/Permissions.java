@@ -60,4 +60,12 @@ public class Permissions {
         return this;
     }
 
+    public Permissions hasCalendarPermission(Activity mActivity) {
+
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_CALENDAR);
+        }
+        return this;
+    }
+
 }

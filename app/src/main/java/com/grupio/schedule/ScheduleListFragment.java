@@ -12,7 +12,9 @@ import com.grupio.fragments.BaseFragment;
 import com.grupio.interfaces.ClickHandler;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -23,6 +25,14 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> implements ScheduleListContract.View {
 
     private static ScheduleListFragment mScheduleListFragment;
+    AdapterView.OnItemClickListener mListClick = (adapterView, view1, i, l) -> {
+
+    };
+    private TextView noDataAvailableTxt;
+    private StickyListHeadersListView mListView;
+    private List<String> mdateList;
+    private int counter = 0;
+    private String trackid = null;
     public TextWatcher filterTextWatcher = new TextWatcher() {
 
         @Override
@@ -38,38 +48,28 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
         public void onTextChanged(CharSequence s, int start, int before,
                                   int count) {
 
-            List<ScheduleData> filterList = new ArrayList<>();
-
             if (s.toString().length() > 0) {
-
-
+                getPresenter().fetchList(trackid, s.toString(), mdateList.get(counter), getActivity());
             } else {
-
+                getPresenter().fetchList(trackid, null, mdateList.get(counter), getActivity());
             }
         }
     };
-    AdapterView.OnItemClickListener mListClick = (adapterView, view1, i, l) -> {
-
-    };
-    private List<String> mdateList;
-    private int counter = 0;
-    private String trackid = null;
     ClickHandler mLeftClick = () -> {
         if (counter > 0) {
             getPresenter().fetchList(trackid, searchEditTxt.getText().toString(), mdateList.get(counter - 1), getActivity());
-            dateTxt.setText(mdateList.get(counter - 1));
+            setDate(mdateList.get(counter - 1));
             counter--;
         }
     };
     ClickHandler mRightClick = () -> {
         if (counter < mdateList.size() - 1) {
             getPresenter().fetchList(trackid, searchEditTxt.getText().toString(), mdateList.get(counter + 1), getActivity());
-            dateTxt.setText(mdateList.get(counter + 1));
+            setDate(mdateList.get(counter + 1));
             counter++;
         }
     };
-    private TextView noDataAvailableTxt;
-    private StickyListHeadersListView mListView;
+
 
     public static ScheduleListFragment getInstance(Bundle mBundle) {
         mScheduleListFragment = new ScheduleListFragment();
@@ -101,8 +101,8 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
         setupSearchBar(true, "Search Sessions");
         handleDateLayout(mLeftClick, mRightClick);
         getData();
-        getPresenter().fetchDateList(getActivity());
-        getPresenter().fetchList(trackid, searchEditTxt.getText().toString(), null, getActivity());
+        getPresenter().fetchDateList(trackid, getActivity());
+        getPresenter().fetchList(trackid, null, null, getActivity());
         addFilter(filterTextWatcher);
     }
 
@@ -137,6 +137,31 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
     public void showDate(List<String> mDateList) {
         mdateList = new ArrayList<>();
         mdateList.addAll(mDateList);
-        dateTxt.setText(mDateList.get(0));
+        setDate(mDateList.get(0));
+    }
+
+    public void setDate(String date) {
+
+        String[] months = {"Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+
+        String[] dateArr = date.split("-");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(intValue(dateArr[0]), intValue(dateArr[1]), intValue(dateArr[2]));
+
+        int dd = cal.get(Calendar.DATE);
+        String mm = months[cal.get(Calendar.MONTH)];
+        int yy = cal.get(Calendar.YEAR);
+        String eventDate = mm + " " + dd + ", " + yy;
+
+        String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+
+        dateTxt.setText(dayOfWeek + " " + eventDate);
+
+    }
+
+    public Integer intValue(String value) {
+        return Integer.parseInt(value);
     }
 }
