@@ -1,7 +1,6 @@
 package com.grupio.logistics;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,14 +18,11 @@ import java.util.List;
 public class LogisticsFragment extends BaseFragment<LogisticsPresenter> implements LogisticsContract.View {
 
 
-    AdapterView.OnItemClickListener mListner = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            LogisticsData mData = (LogisticsData) adapterView.getAdapter().getItem(i);
+    AdapterView.OnItemClickListener mListner = (adapterView, view1, i, l) -> {
+        LogisticsData mData = (LogisticsData) adapterView.getAdapter().getItem(i);
 
-            DocumentController<LogisticsData, LogisticsData> mController = new DocumentController<>(new LogisticsData(), new LogisticsData(), getActivity());
-            mController.handleDocument(mData);
-        }
+        DocumentController<LogisticsData, LogisticsData> mController = new DocumentController<>(new LogisticsData(), new LogisticsData(), getActivity());
+        mController.handleDocument(mData);
     };
     private ListView mListview;
     private TextView noDataAvailable;

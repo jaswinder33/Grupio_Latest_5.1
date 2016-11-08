@@ -12,7 +12,12 @@ import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.dao.EventDAO;
+import com.grupio.data.ScheduleData;
 import com.grupio.db.EventTable;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -23,14 +28,21 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
     public boolean isFirstName = false;
     Holder mHolder;
+    Person mPerson;
     private String eventColor;
     private boolean showHeaders = true;
+
+    private boolean isSession = false;
 
     public BaseListAdapter(Context context) {
         super(context, 0);
         eventColor = EventDAO.getInstance(getContext()).getValue(EventTable.COLOR_THEME);
         String name_order = EventDAO.getInstance(context).getValue(EventTable.NAME_ORDER);
         isFirstName = name_order.equals("firstname_lastname");
+
+        if (mPerson instanceof ScheduleData) {
+            isSession = true;
+        }
     }
 
     @Override
@@ -41,7 +53,6 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     @Override
     public int getPositionForSection(int section) {
 
-
         if (section == 35) {
             return 0;
         }
@@ -50,7 +61,6 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             String l = "";
             if (isFirstName) {
                 l = getFirstName(i);
-
             } else {
                 l = getLastName(i);
             }
@@ -80,23 +90,31 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        if (isFirstName) {
-            if (!getFirstName(position).equals("")) {
-                holder.session_track.setText(getFirstName(position).substring(0, 1).toUpperCase());
-            }
-        } else {
-            if (!getLastName(position).equals("")) {
-                holder.session_track.setText(getLastName(position).substring(0, 1).toUpperCase());
-            }
-        }
 
         if (!eventColor.equals("")) {
-            holder.trackLayoutId.setBackgroundColor(Color.parseColor(eventColor));
+            holder.session_track.setBackgroundColor(Color.parseColor(eventColor));
         }
 
         if (!showHeaders) {
-            holder.trackLayoutId.setVisibility(View.GONE);
+            holder.session_track.setVisibility(View.GONE);
         }
+
+
+        if (isSession) {
+
+
+        } else {
+            if (isFirstName) {
+                if (!getFirstName(position).equals("")) {
+                    holder.session_track.setText(getFirstName(position).substring(0, 1).toUpperCase());
+                }
+            } else {
+                if (!getLastName(position).equals("")) {
+                    holder.session_track.setText(getLastName(position).substring(0, 1).toUpperCase());
+                }
+            }
+        }
+
 
         return convertView;
     }
@@ -104,18 +122,36 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     @Override
     public long getHeaderId(int position) {
 
-        char ch = 0;
+        if (isSession) {
+            ScheduleData mScheduleData = (ScheduleData) getItem(position);
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            try {
+                cal.setTime(sdf1.parse(mScheduleData.getStart_time()));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            long time = cal.getTimeInMillis();
 
-        if (isFirstName) {
-            if (!getFirstName(position).equals("")) {
-                ch = getFirstName(position).toLowerCase().substring(0, 1).charAt(0);
-            }
+            String time1 = mScheduleData.getStartHour("" + time);
+
+            long timenew = Long.parseLong(time1.substring(0, time1.indexOf(":")));
+
+            return timenew;
         } else {
-            if (!getLastName(position).equals("")) {
-                ch = getLastName(position).toLowerCase().substring(0, 1).charAt(0);
+            char ch = 0;
+
+            if (isFirstName) {
+                if (!getFirstName(position).equals("")) {
+                    ch = getFirstName(position).toLowerCase().substring(0, 1).charAt(0);
+                }
+            } else {
+                if (!getLastName(position).equals("")) {
+                    ch = getLastName(position).toLowerCase().substring(0, 1).charAt(0);
+                }
             }
+            return ch;
         }
-        return ch;
     }
 
     @NonNull
@@ -151,11 +187,9 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
     class HeaderViewHolder {
         TextView session_track;
-        View trackLayoutId;
 
         public HeaderViewHolder(View view) {
             session_track = (TextView) view.findViewById(R.id.session_track);
-            trackLayoutId = view.findViewById(R.id.trackLayoutId);
         }
     }
 

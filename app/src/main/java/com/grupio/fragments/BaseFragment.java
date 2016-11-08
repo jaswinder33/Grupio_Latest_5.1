@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 import com.grupio.dao.EventDAO;
 import com.grupio.db.EventTable;
 import com.grupio.interfaces.BaseFunctionality;
+import com.grupio.interfaces.ClickHandler;
 
 
 /**
@@ -25,6 +28,8 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
 
     protected View view;
     protected EditText searchEditTxt;
+    protected ImageButton leftBtn, rightBtn;
+    protected TextView dateTxt;
     private Presenter presenter;
 
     @Nullable
@@ -105,6 +110,17 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
 
     public Presenter getPresenter() {
         return presenter;
+    }
+
+
+    public void handleDateLayout(ClickHandler mLeftClick, ClickHandler mRightClick) {
+        view.findViewById(R.id.dateBtnLay).setVisibility(View.VISIBLE);
+        leftBtn = (ImageButton) view.findViewById(R.id.prevBtn);
+        rightBtn = (ImageButton) view.findViewById(R.id.nextBtn);
+        dateTxt = (TextView) view.findViewById(R.id.date);
+
+        leftBtn.setOnClickListener(view1 -> mLeftClick.handleClick());
+        rightBtn.setOnClickListener(view1 -> mRightClick.handleClick());
     }
 
 

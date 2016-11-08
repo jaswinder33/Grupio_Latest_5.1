@@ -13,11 +13,13 @@ import com.grupio.R;
 import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
+import com.grupio.dao.SessionTracksDAO;
 import com.grupio.data.MenuData;
 import com.grupio.home.HomeActivity;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.LogisticsActivity;
 import com.grupio.message.MessageActivity;
+import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
 import com.grupio.venuemaps.VenueMapActivity;
@@ -29,17 +31,19 @@ import com.grupio.venuemaps.VenueMapActivity;
 public class GridListClickListener implements RecyclerView.OnItemTouchListener {
 
     GestureDetector mGestureDetector;
+    MenuClick scheduleListClick = mBundle -> {
+    };
     private Context context;
     MenuClick homeclick = mBundle -> sendIntent(HomeActivity.class, mBundle);
-    MenuClick messageclick = (Bundle mBundle) -> sendIntent(MessageActivity.class, mBundle);
-    MenuClick attendeeclick = (Bundle mBundle) -> sendIntent(ListActivity.class, mBundle);
-    MenuClick speakerclick = (Bundle mBundle) -> sendIntent(ListActivity.class, mBundle);
-    MenuClick exhibitorClick = (Bundle mBundle) -> sendIntent(ListActivity.class, mBundle);
+    MenuClick messageclick = mBundle -> sendIntent(MessageActivity.class, mBundle);
+    MenuClick attendeeclick = mBundle -> sendIntent(ListActivity.class, mBundle);
+    MenuClick speakerclick = mBundle -> sendIntent(ListActivity.class, mBundle);
+    MenuClick exhibitorClick = mBundle -> sendIntent(ListActivity.class, mBundle);
     MenuClick loginClick = (Bundle mBundle) -> sendIntent(LoginActivity.class, mBundle);
     MenuClick logisticsClick = (Bundle mBundle) -> sendIntent(LogisticsActivity.class, mBundle);
     MenuClick venueMapsClick = (Bundle mbundle) -> sendIntent(VenueMapActivity.class, mbundle);
     MenuClick discussionBoardClick = mBundle -> sendIntent(WebViewActivity.class, mBundle);
-
+    MenuClick scheduleTracklistClick = mBundle -> sendIntent(ScheduleTrackListActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -87,6 +91,12 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
 
 
                 case "schedule":
+                    boolean isTrackPresent = SessionTracksDAO.getInstance(context).checkIfTrackExist();
+                    if (isTrackPresent) {
+                        performClick(mBundle, scheduleTracklistClick);
+                    } else {
+                        performClick(mBundle, scheduleListClick);
+                    }
                     break;
 
                 case "mycalendar":

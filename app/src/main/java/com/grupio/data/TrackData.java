@@ -11,4 +11,5 @@ public class TrackData {
     public String category;
     public String order;
 
+    public boolean showAllSession = false;
 }

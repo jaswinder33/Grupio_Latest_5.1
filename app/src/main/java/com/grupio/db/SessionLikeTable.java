@@ -1,17 +1,14 @@
 package com.grupio.db;
 
 /**
- * Created by JSN on 4/10/16.
+ * Created by JSN on 7/11/16.
  */
 
-/**
- * This table stores likes of sessions and exhibitors
- */
-public class ExhibitorLikeTable {
+public class SessionLikeTable {
 
     public static final String LIKE_TABLE = "likes";
 
-    //like table fields
+    //exhibitor like table fields
     public static final String ID = "id";
     public static final String isFav = "isFav";
 
@@ -19,4 +16,5 @@ public class ExhibitorLikeTable {
             + " ( "
             + ID + " TEXT, "
             + isFav + " TEXT);";
+
 }

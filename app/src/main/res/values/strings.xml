@@ -170,5 +170,6 @@
     <string name="title_activity_venue_map">VenueMapActivity</string>
     <string name="title_activity_simple_list">SimpleListActivity</string>
     <string name="title_activity_schedule_track_list">ScheduleTrackListActivity</string>
+    <string name="title_activity_schedule_list">ScheduleListActivity</string>
 
 </resources>

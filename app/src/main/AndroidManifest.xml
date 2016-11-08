@@ -122,6 +122,10 @@
         <activity
             android:name=".schedule.ScheduleTrackListActivity"
             android:label="@string/title_activity_schedule_track_list"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".schedule.ScheduleListActivity"
+            android:label="@string/title_activity_schedule_list"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -3,7 +3,6 @@ package com.grupio.attendee;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,10 +19,12 @@ import com.grupio.db.EventTable;
 public class SessionAdapter extends BaseListAdapter<ScheduleData, SessionAdapter.ViewHolder> {
 
     boolean showTrackColor = false;
+    String trackColor = "#";
 
     public SessionAdapter(Context context) {
         super(context);
         showTrackColor = EventDAO.getInstance(context).getValue(EventTable.SHOWTRACKS).equals("y");
+        trackColor = EventDAO.getInstance(context).getValue(EventTable.COLOR_THEME);
     }
 
     @Override
@@ -44,7 +45,6 @@ public class SessionAdapter extends BaseListAdapter<ScheduleData, SessionAdapter
     @Override
     public void handleGetView(int position, ViewHolder mHolder) {
 
-        Log.i("Session Adapter", "handleGetView: " + getItem(position).getName());
         if (showTrackColor) {
             mHolder.trackColor.setVisibility(View.VISIBLE);
             mHolder.trackColor.setBackgroundColor(Color.parseColor(!TextUtils.isEmpty(getItem(position).getColor()) ? getItem(position).getColor() : "#000000"));
@@ -61,12 +61,14 @@ public class SessionAdapter extends BaseListAdapter<ScheduleData, SessionAdapter
     }
 
     public class ViewHolder {
-        View trackColor;
         TextView sessionName;
+        View trackColor;
+        TextView sessionTrack;
 
         public ViewHolder(View view) {
-            trackColor = view.findViewById(R.id.trackColor);
             sessionName = (TextView) view.findViewById(R.id.sessionName);
+            trackColor = view.findViewById(R.id.trackColor);
+            sessionTrack = (TextView) view.findViewById(R.id.session_track);
         }
 
     }

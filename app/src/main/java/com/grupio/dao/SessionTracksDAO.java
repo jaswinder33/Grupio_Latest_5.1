@@ -221,5 +221,42 @@ public class SessionTracksDAO extends BaseDAO {
         }
     }
 
+    public String getTrackName(String trackid) {
+
+        openDB(0);
+
+        String trackname = "";
+
+        String query = "select " + SessionTracksTable.TRACK + " from session_tracks where id=" + trackid + ";";
+
+
+        Cursor mCursor = null;
+        try {
+
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null) {
+                mCursor.moveToFirst();
+
+                do {
+                    trackname = mCursor.getString(0);
+                } while (mCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+
+            closeDb();
+
+        }
+
+        return trackname;
+
+    }
+
 
 }

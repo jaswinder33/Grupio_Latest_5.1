@@ -32,10 +32,14 @@ public abstract class SingleElementListBaseAdapter<T> extends SimpleBaseListAdap
     public class Holder {
         public TextView name;
         public ImageView imageView;
+        public View trackColor;
+        public TextView sessionTrack;
 
         public Holder(View convertView) {
             imageView = (ImageView) convertView.findViewById(R.id.resource_image);
             name = (TextView) convertView.findViewById(R.id.map_name);
+            trackColor = convertView.findViewById(R.id.trackColor);
+            sessionTrack = (TextView) convertView.findViewById(R.id.session_track);
         }
     }
 }

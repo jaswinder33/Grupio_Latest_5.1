@@ -7,16 +7,12 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.grupio.data.ScheduleData;
 import com.grupio.db.EventTable;
+import com.grupio.db.ExhibitorLikeTable;
 import com.grupio.db.SessionTable;
 import com.grupio.db.SessionTracksTable;
 import com.grupio.helper.ScheduleHelper;
-import com.grupio.helper.SessionWatcher;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -103,49 +99,22 @@ public class SessionDAO extends BaseDAO {
 
     }
 
-    public List<ScheduleData> fetchSessionList(String date, String trackName) {
+    public void fetchSessionList(String date, String trackName, String searchQuery) {
 
         openDB(0);
 
         List<ScheduleData> mScheduleDataList = new ArrayList<>();
 
-        Calendar currentData = null;
-        String dateNow = null;
+        String query = "";
 
-        if (date == null) {
-            currentData = Calendar.getInstance();
+        query = "select sessions.*,likes.isFav, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.start_time like " + date + "&'";
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            dateNow = formatter.format(currentData.getTime());
-
-        } else {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            try {
-                Date dateChange = formatter.parse(date);
-                SimpleDateFormat formatterNew = new SimpleDateFormat("yyyy-MM-dd");
-                dateNow = formatterNew.format(dateChange);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
+        if (trackName != null) {
+            query += " and sessions.track='" + trackName + "'";
         }
 
-        String[] dateArr = dateNow.split(" ");
-
-        String query = "select sessions.*,session_tracks.color from " + SessionTable.SESSION_TABLE + " left join " + SessionTracksTable.SESSION_TRACKS_TABLE + " on  sessions.track=session_tracks.track where " +
-                " case " +
-                " when (select exists(select sessions.start_time from sessions where sessions.start_time  like  '" + dateArr[0] + "%' and sessions.track = '" + trackName + "' ) ) " +
-                " then sessions.start_time like '" + dateArr[0] + "%' " +
-                " else sessions.start_time like " +
-                "   (case     " +
-                "   when    " +
-                "   (select exists(select sessions.start_time from sessions where date(sessions.start_time) > date(" + dateArr[0] + ") and sessions.track = '" + trackName + "') ) " +
-                "   then  (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) > date(" + dateArr[0] + ") and sessions.track = '" + trackName + "')   " +
-                "   else    (select date(sessions.start_time)  || '%'    from sessions where date(sessions.start_time) < date(" + dateArr[0] + ") and sessions.track='" + trackName + "')   end    )  " +
-                " end ";
-
-        if (!trackName.equals("")) {
-            query += "and sessions.track = '" + trackName + "';";
+        if (searchQuery != null) {
+            query += " and sessions.name='" + trackName + "'";
         }
 
         Cursor mCursor = null;
@@ -186,29 +155,7 @@ public class SessionDAO extends BaseDAO {
             closeDb();
         }
 
-        if (mScheduleDataList.size() > 0) {
-            String startDAte = mScheduleDataList.get(0).getStart_time();
-
-            String[] dateArray = startDAte.split(" ");
-
-            String dateString = dateArray[0];
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date dateChange = formatter.parse(dateString);
-                SimpleDateFormat formatterNew = new SimpleDateFormat("dd-MM-yyyy");
-                SessionWatcher.getInstance().setDate(formatterNew.format(dateChange));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-        return mScheduleDataList;
-
     }
-
 
     public List<String> getDateList() {
         String query = "select distinct strftime('%d-%m-%Y'," + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " ";
@@ -245,6 +192,43 @@ public class SessionDAO extends BaseDAO {
 
         return dateslist;
 
+    }
+
+    public String getNextDate(String date) {
+
+        String dateStr = null;
+
+        openDB(0);
+
+        String query = "";
+
+        if (date == null) {
+            query = "select distinct strftime('%d-%m-%Y',  " + SessionTable.START_TIME + "  ) from sessions limit 1;";
+
+        } else {
+            query = "select strftime('%d-%m-%Y',  " + SessionTable.START_TIME + " ) from sessions where start_time > '" + date + "' limit 1;";
+        }
+
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+            if (mCursor != null) {
+                mCursor.moveToFirst();
+                do {
+                    dateStr = mCursor.getString(0);
+                } while (mCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return dateStr;
     }
 
     public void deleteData() {
@@ -314,6 +298,34 @@ public class SessionDAO extends BaseDAO {
         }
 
         return sd;
+    }
+
+
+    public void likeUnlikeSession(String sessionId, int operation) {
+        openDB(1);
+
+        SQLiteStatement stmt;
+
+        if (operation == 1) {
+
+            stmt = db.compileStatement("INSERT INTO " + ExhibitorLikeTable.LIKE_TABLE
+                    + " ( "
+                    + ExhibitorLikeTable.ID + ","
+                    + ExhibitorLikeTable.isFav + ") VALUES(?,?)");
+
+            stmt.bindString(1, sessionId);
+            stmt.bindString(2, "1");
+            stmt.execute();
+
+        } else {
+            try {
+                db.delete(ExhibitorLikeTable.LIKE_TABLE, ExhibitorLikeTable.ID + "=?", new String[]{sessionId});
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        closeDb();
     }
 
 }

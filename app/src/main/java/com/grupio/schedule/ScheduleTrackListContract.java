@@ -2,7 +2,7 @@ package com.grupio.schedule;
 
 import android.content.Context;
 
-import com.grupio.data.ScheduleData;
+import com.grupio.data.TrackData;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public interface ScheduleTrackListContract {
 
     interface ScheduleView {
-        void showLis(List<ScheduleData> mList);
+        void showList(List<TrackData> mList);
     }
 
     interface SchedulePresenterImp {
@@ -25,6 +25,6 @@ public interface ScheduleTrackListContract {
     }
 
     interface ScheduleOnInteraction {
-        void onListFetch(List<ScheduleData> mList);
+        void onListFetch(List<TrackData> mList);
     }
 }
