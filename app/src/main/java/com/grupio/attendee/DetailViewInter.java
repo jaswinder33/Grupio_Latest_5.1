@@ -83,4 +83,14 @@ public interface DetailViewInter {
 
     void setHeadersColors(String colors);
 
+    void showSessionHeader();
+
+    void showSessionDate(String date);
+
+    void showSessionTime(String time);
+
+    void showSessionLocation(String location);
+
+    void showMaxAttendee(String maxAttendee);
+
 }

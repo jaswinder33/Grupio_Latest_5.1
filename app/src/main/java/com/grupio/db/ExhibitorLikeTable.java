@@ -14,9 +14,11 @@ public class ExhibitorLikeTable {
     //like table fields
     public static final String ID = "id";
     public static final String isFav = "isFav";
+    public static final String CALENDARID = "calendarId";
 
     public static final String CREATE_EXHIBITOR_LIKE_TABLE = "CREATE TABLE IF NOT EXISTS " + LIKE_TABLE
             + " ( "
             + ID + " TEXT, "
-            + isFav + " TEXT);";
+            + isFav + " TEXT, "
+            + CALENDARID + " TEXT);";
 }

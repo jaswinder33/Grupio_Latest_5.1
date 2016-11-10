@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.grupio.R;
 import com.grupio.apis.SendContactAPI;
+import com.grupio.backend.DateTime;
 import com.grupio.dao.AttendeeDAO;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.ExhibitorDAO;
@@ -38,6 +39,7 @@ public class ListDetailController<T extends Person> implements ListDetailControl
     private AttendeesData mAttendeeData;
     private SpeakerData mSpeakerData;
     private ExhibitorData mExhibitorData;
+    private ScheduleData mScheduleData;
     private Context mContext;
 
     public ListDetailController(T type, Context mContext) {
@@ -47,12 +49,13 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
     @Override
     public void validateDetailData(Person data, OnValidationComplete mListener) {
-        castObj(data);
+        castObj(data, mListener);
         fetchEventColor(mListener);
         validateImage(mListener);
         validateName(mListener);
         validateTitle(mListener);
         validateLocation(mListener);
+
         validateCompany(mListener);
         validateFavBtn(mListener);
         validateWebsiteBtn(mListener);
@@ -65,6 +68,11 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         validateSessionList(mListener);
         validateResourceList(mListener);
         validateAttendeeList(mListener);
+
+
+        validateSessionDate(mListener);
+        validateSessionTime(mListener);
+        validateMaxAttendeeLimit(mListener);
     }
 
 
@@ -162,13 +170,21 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         boolean flag = false;
         if (type instanceof ExhibitorData) {
             flag = mExhibitorData.isFav();
+        } else if (type instanceof ScheduleData) {
+            flag = mScheduleData.isSessionFav();
         }
         flag = !flag;
+
 
         ExhibitorDAO.getInstance(mContext).likeUnlikeExhb(id, flag ? 1 : 0);
         ListWatcher.getInstance().notifyList();
 
-        mExhibitorData.setIsFav(flag ? "1" : "0");
+        if (type instanceof ExhibitorData) {
+            mExhibitorData.setIsFav(flag ? "1" : "0");
+        } else if (type instanceof ScheduleData) {
+            mScheduleData.setSessionFav(flag);
+        }
+
         mListener.onFavDone(flag);
     }
 
@@ -199,7 +215,7 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         api.doCall(id);
     }
 
-    private void castObj(Person data) {
+    private void castObj(Person data, OnValidationComplete mListener) {
         if (type instanceof AttendeesData) {
             mAttendeeData = (AttendeesData) data;
         } else if (type instanceof SpeakerData) {
@@ -207,6 +223,10 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         } else if (type instanceof ExhibitorData) {
             mExhibitorData = (ExhibitorData) data;
             mExhibitorData = ExhibitorDAO.getInstance(mContext).getExhibitorDetal(mExhibitorData.getExhibitorId());
+        } else if (type instanceof ScheduleData) {
+            mScheduleData = (ScheduleData) data;
+            mScheduleData = SessionDAO.getInstance(mContext).getSessionWithId(mScheduleData.getSession_id());
+            mListener.onSessionHeaderValiation();
         }
     }
 
@@ -217,7 +237,6 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         String imageUrl = "", largeImageUrl = "";
 
         if (type instanceof AttendeesData) {
-
             showImage = EventDAO.getInstance(mContext).getValue(EventTable.HIDE_ATTENDEE_IMAGES).equalsIgnoreCase("n");
             imageUrl = mAttendeeData.getImage();
             largeImageUrl = mAttendeeData.getLarge_image();
@@ -229,6 +248,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             showImage = EventDAO.getInstance(mContext).getValue(EventTable.HIDE_EXHIBITOR_IMAGES).equalsIgnoreCase("n");
             imageUrl = mExhibitorData.getImage();
             largeImageUrl = mExhibitorData.getImageLarge();
+        } else if (type instanceof ScheduleData) {
+
         }
 
         if (showImage) {
@@ -252,10 +273,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             lastName = mSpeakerData.getLast_name();
         } else if (type instanceof ExhibitorData) {
             firstName = mExhibitorData.getName();
+        } else if (type instanceof ScheduleData) {
+            firstName = mScheduleData.getName();
         }
 
         String name_order = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER);
-        if (type instanceof ExhibitorData) {
+        if (type instanceof ExhibitorData || type instanceof ScheduleData) {
             mListener.onNameValidated(firstName);
         } else {
             if (name_order.equals("firstname_lastname")) {
@@ -275,6 +298,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             title = mSpeakerData.getTitle();
         } else if (type instanceof ExhibitorData) {
             // no title present for exhibitors
+        } else if (type instanceof ScheduleData) {
+            title = mScheduleData.getName();
         }
 
         if (!TextUtils.isEmpty(title)) {
@@ -292,6 +317,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
         if (type instanceof ExhibitorData) {
             location = mExhibitorData.getLocation();
+        } else if (type instanceof ScheduleData) {
+            location = mScheduleData.getLocation();
         }
 
         if (!TextUtils.isEmpty(location)) {
@@ -299,8 +326,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 //                location = LocalisationDataProcessor.BOOTH + ":" + location;
 //            }
 
-            location = "Booth" + ":" + location;
-            mListener.onCompanyValidated(location);
+            if (type instanceof ExhibitorData) {
+                location = "Booth" + ":" + location;
+                mListener.onCompanyValidated(location);
+            } else if (type instanceof ScheduleData) {
+                mListener.onLocationValidation("Location: " + location);
+            }
         }
     }
 
@@ -333,6 +364,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
     private void validateFavBtn(OnValidationComplete mListener) {
         if (type instanceof ExhibitorData) {
             mListener.onFavBtnValidated(mExhibitorData.isFav());
+        } else if (type instanceof ScheduleData) {
+            mListener.onFavBtnValidated(mScheduleData.isSessionFav());
         }
     }
 
@@ -562,6 +595,31 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
     public void fetchEventColor(OnValidationComplete mListener) {
         mListener.onEventColorFetch(EventDAO.getInstance(mContext).getValue(EventTable.COLOR_THEME));
+    }
+
+    public void validateSessionDate(OnValidationComplete mListener) {
+        if (type instanceof ScheduleData) {
+            String formattedDate = DateTime.getInstance().formatDate("MMM d, yyyy", mScheduleData.getStart_time());
+            mListener.onDateValidation("Date: " + formattedDate);
+        }
+    }
+
+    public void validateSessionTime(OnValidationComplete mListener) {
+
+        if (type instanceof ScheduleData) {
+            String startTime = DateTime.getInstance().getTime(mScheduleData.getStart_time());
+            String endTime = DateTime.getInstance().getTime(mScheduleData.getEnd_time());
+
+            mListener.onTimeValidation("Time: " + startTime + " - " + endTime);
+        }
+
+    }
+
+    public void validateMaxAttendeeLimit(OnValidationComplete mListener) {
+        if (type instanceof ScheduleData && !mScheduleData.getMaxSeatsAvailable().equals("0")) {
+            mListener.onMaxAttendeeValidation(mScheduleData.getMaxSeatsAvailable());
+        }
+
     }
 
 }

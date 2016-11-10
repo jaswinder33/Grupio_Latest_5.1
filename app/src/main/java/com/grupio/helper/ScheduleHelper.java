@@ -12,12 +12,14 @@ import android.provider.CalendarContract;
 import com.grupio.animation.SlideOut;
 import com.grupio.apis.LikeUnlikeSessionAPI;
 import com.grupio.dao.EventDAO;
+import com.grupio.dao.SessionDAO;
 import com.grupio.dao.VersionDao;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.TrackData;
 import com.grupio.data.VersionData;
 import com.grupio.data.mapList;
 import com.grupio.db.EventTable;
+import com.grupio.session.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,25 +37,21 @@ import java.util.TimeZone;
  */
 public class ScheduleHelper {
 
-
     public static boolean isLoginRequiredToLike(Context mContext, Class<?> mClassName) {
 
-        if (EventDAO.getInstance(mContext).getValue(EventTable.MYSCHEDULE_LOGIN_ENABLED).equals("y")) {
+        if (EventDAO.getInstance(mContext).getValue(EventTable.MYSCHEDULE_LOGIN_ENABLED).equals("y") && Preferences.getInstances(mContext).getAttendeeId() == null) {
             Intent mIntent = new Intent();
             mIntent.setClass(mContext, mClassName);
             mIntent.putExtra("from", mClassName.getSimpleName());
             mContext.startActivity(mIntent);
             SlideOut.getInstance().startAnimation((Activity) mContext);
-
             return true;
-
         }
 
         return false;
     }
 
-    public static void saveToCalendar(Context mContext, ScheduleData mScheduleData) {
-
+    public static String saveToCalendar(Context mContext, ScheduleData mScheduleData) {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar starttime = Calendar.getInstance();
@@ -72,11 +70,14 @@ public class ScheduleHelper {
         values.put(CalendarContract.Events.DTEND, endtime.getTimeInMillis());
         values.put(CalendarContract.Events.TITLE, mScheduleData.getName());
         values.put(CalendarContract.Events.DESCRIPTION, mScheduleData.getSummary());
-        values.put(CalendarContract.Events.CALENDAR_ID, 3);
+        values.put(CalendarContract.Events.CALENDAR_ID, 1);
         values.put(CalendarContract.Events.HAS_ALARM, 1);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
 
+        SessionDAO.getInstance(mContext).persistCalendarId(uri.getLastPathSegment(), mScheduleData.getSession_id());
+
+        return uri.getLastPathSegment();
     }
 
     public static void removeFromCalendar(Context mContext, ScheduleData mScheduleData) {
@@ -90,6 +91,34 @@ public class ScheduleHelper {
 
     public static void addRemoveSession(String operation, String sessionId, Context mContext) {
         new LikeUnlikeSessionAPI(mContext).doCall(operation, sessionId);
+    }
+
+    // 09:00AM - 10:10AM
+    public static String formatSessionDate(String startDate, String endDate) {
+        String date = "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Calendar mCalStart = Calendar.getInstance();
+        Calendar mCalEnd = Calendar.getInstance();
+
+        try {
+            mCalStart.setTime(sdf.parse(startDate));
+            mCalEnd.setTime(sdf.parse(endDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        final SimpleDateFormat sdfTime = new SimpleDateFormat("h:mma");
+        Calendar calFinal = Calendar.getInstance();
+
+        calFinal.setTimeInMillis(mCalStart.getTimeInMillis());
+        date = sdfTime.format(calFinal.getTime()) + " - ";
+
+        calFinal.setTimeInMillis(mCalEnd.getTimeInMillis());
+        date += sdfTime.format(calFinal.getTime());
+
+        return date;
     }
 
     public List<ScheduleData> parseJSON(Context mContext, String response) {
@@ -446,5 +475,6 @@ public class ScheduleHelper {
         }
         return mapList;
     }
+
 
 }

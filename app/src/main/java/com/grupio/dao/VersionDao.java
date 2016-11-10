@@ -133,9 +133,11 @@ public class VersionDao extends BaseDAO {
             if (mCursor != null) {
                 mCursor.close();
             }
+
+            closeDb();
+
         }
 
-        closeDb();
 
     }
 

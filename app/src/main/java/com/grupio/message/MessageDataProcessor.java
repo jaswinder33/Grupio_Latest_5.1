@@ -86,7 +86,6 @@ public class MessageDataProcessor {
                     }
 
                     try {
-
                         mData.setDatetime(Utility.convertUTCtoMyTime(mDataArray.getJSONObject(i).getString("datetime")));
                     } catch (JSONException e) {
                         e.printStackTrace();

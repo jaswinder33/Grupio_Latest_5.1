@@ -91,6 +91,18 @@ public interface ListDetailControllerInter {
         void onFavDone(boolean flag);
 
         void onEventColorFetch(String color);
+
+        void onSessionHeaderValiation();
+
+        void onDateValidation(String date);
+
+        void onTimeValidation(String time);
+
+        void onLocationValidation(String location);
+
+        void onMaxAttendeeValidation(String maxAttendee);
+
+
     }
 
 }

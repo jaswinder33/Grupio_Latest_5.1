@@ -48,6 +48,13 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     public static final int CONNECT_REQUEST = 201;
     public static final String LIST_DETAIL = "ListDetailActivity";
+
+    public static final String SESSIONS = "session";
+    public static final String SPONSOR = "sponsor";
+    public static final String EXHIBITOR = "exhibitor";
+    public static final String ATTENDEE = "attendee";
+    public static final String SPEAKER = "speaker";
+    Button mFavSessionBtn, mSessionNotes, mSessionSocial;
     AdapterView.OnItemClickListener sessionListItemClick = (parent, view, position, id1) -> {
         ScheduleData sData = (ScheduleData) parent.getAdapter().getItem(position);
         Intent intent = new Intent(ListDetailActivity.this, ScheduleDetail.class);
@@ -117,7 +124,10 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
         }
     };
-
+    //Schedule variables
+    private LinearLayout sessionLay;
+    private TextView sessionTitle, sessionDate, sessionTime, sessionLocation, maxAttendeeLimit;
+    private RelativeLayout mSessionBtnsLay;
 
     @Override
     public boolean isHeaderForGridPage() {
@@ -230,6 +240,24 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
         mFavBtn = (Button) findViewById(R.id.addSessionBtn);
         websiteBtn = (Button) findViewById(R.id.exbWebBtn);
+
+        /**
+         * Session Variables
+         */
+
+        sessionLay = (LinearLayout) findViewById(R.id.sessionlay);
+
+        sessionTitle = (TextView) findViewById(R.id.sessionTitle);
+        sessionDate = (TextView) findViewById(R.id.sessionDate);
+        sessionTime = (TextView) findViewById(R.id.sessionTime);
+        sessionLocation = (TextView) findViewById(R.id.sessionLocation);
+        maxAttendeeLimit = (TextView) findViewById(R.id.sessionAttendeeLimit);
+        mSessionBtnsLay = (RelativeLayout) findViewById(R.id.sessionBtnsLay);
+
+        mFavSessionBtn = (Button) findViewById(R.id.addFavSessionBtn);
+        mSessionNotes = (Button) findViewById(R.id.shareSocialBtn);
+        mSessionSocial = (Button) findViewById(R.id.noteSocialBtn);
+
     }
 
     @Override
@@ -251,6 +279,12 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 websiteBtn.setOnClickListener(this);
                 mFavBtn.setOnClickListener(this);
                 break;
+
+            case SESSIONS:
+                mFavSessionBtn.setOnClickListener(this);
+                mSessionNotes.setOnClickListener(this);
+                mSessionSocial.setOnClickListener(this);
+                break;
         }
     }
 
@@ -265,6 +299,9 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
             case "exhibitor":
                 return new ListDetailPresenter(new ExhibitorData(), this, ListDetailActivity.this);
+
+            case SESSIONS:
+                return new ListDetailPresenter(new ScheduleData(), this, ListDetailActivity.this);
 
             default:
                 return null;
@@ -308,8 +345,13 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void showTitle(String titleStr) {
-        title.setVisibility(View.VISIBLE);
-        title.setText(titleStr);
+        if (type.equals(SESSIONS)) {
+            sessionTitle.setVisibility(View.VISIBLE);
+            sessionTitle.setText(titleStr);
+        } else {
+            title.setVisibility(View.VISIBLE);
+            title.setText(titleStr);
+        }
     }
 
     @Override
@@ -543,7 +585,12 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     @Override
     public void doFavBtnAction(boolean flag) {
         int drawable = flag ? R.drawable.btn_addtoschedule_on_detail : R.drawable.btn_addtoschedule_off_detail;
-        mFavBtn.setBackgroundResource(drawable);
+        if (type.equals(SESSIONS)) {
+            mFavSessionBtn.setBackgroundResource(drawable);
+        } else {
+            mFavBtn.setBackgroundResource(drawable);
+        }
+
     }
 
     @Override
@@ -559,6 +606,36 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         sessionheader.setBackgroundColor(Color.parseColor(colors));
         resourceHeader.setBackgroundColor(Color.parseColor(colors));
         attendeeHeader.setBackgroundColor(Color.parseColor(colors));
+    }
+
+    @Override
+    public void showSessionHeader() {
+        sessionLay.setVisibility(View.VISIBLE);
+        mSessionBtnsLay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showSessionDate(String date) {
+        sessionDate.setVisibility(View.VISIBLE);
+        sessionDate.setText(date);
+    }
+
+    @Override
+    public void showSessionTime(String time) {
+        sessionTime.setVisibility(View.VISIBLE);
+        sessionTime.setText(time);
+    }
+
+    @Override
+    public void showSessionLocation(String location) {
+        sessionLocation.setVisibility(View.VISIBLE);
+        sessionLocation.setText(location);
+    }
+
+    @Override
+    public void showMaxAttendee(String maxAttendee) {
+        maxAttendeeLimit.setVisibility(View.VISIBLE);
+        maxAttendeeLimit.setText(maxAttendee);
     }
 
     @Override
@@ -597,6 +674,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 getPresenter().openLinks("website");
                 break;
 
+            case R.id.addFavSessionBtn:
             case R.id.addSessionBtn:
                 getPresenter().doFav(id);
                 break;
@@ -604,6 +682,13 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             case R.id.exbWebBtn:
                 getPresenter().openLinks("websiteBtn");
                 break;
+
+            case R.id.shareSocialBtn:
+                break;
+
+            case R.id.noteSocialBtn:
+                break;
+
         }
 
     }
@@ -815,4 +900,5 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         super.onResume();
         getPresenter().validateData(mperson);
     }
+
 }

@@ -152,26 +152,6 @@ public class MessageController implements ControllerInter {
     @Override
     public void sendMessage(final MessageData msg, final OnTaskComplete mListener) {
 
-//        SendMsgAPI msgAPI = new SendMsgAPI(mContext);
-//        msgAPI.doCall(msg, new APICallBack() {
-//            @Override
-//            public void onSuccess() {
-//
-//                if(!isInbox){
-//                    MessageCountWatcher.getInstance().updateSentList();
-//                }
-//
-//                fetchMessageListOfParticularThreadFromDb(msg.getThread_id(), mListener);
-//            }
-//
-//            @Override
-//            public void onFailure(String msg) {
-//
-//
-//                mListener.onFailure(msg);
-//            }
-//        });
-
         SendMsgAPI msgAPI = new SendMsgAPI(mContext, new APICallBack() {
             @Override
             public void onSuccess() {

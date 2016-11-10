@@ -111,7 +111,7 @@ public class SessionDAO extends BaseDAO {
 
         String query = "";
 
-        query = "select sessions.*,likes.isFav, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track";// where sessions.start_time like " + date + "%'";
+        query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track";// where sessions.start_time like " + date + "%'";
 
         if (trackName != null) {
             if (date == null) {
@@ -121,7 +121,7 @@ public class SessionDAO extends BaseDAO {
             }
         } else {
             if (date == null) {
-                query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions);";
+                query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions)";
             } else {
                 query += " where sessions.start_time like '" + date + "%'";
             }
@@ -158,7 +158,9 @@ public class SessionDAO extends BaseDAO {
                     sd.setSpeakerListAsString(mCursor.getString(10));
                     sd.setResourceListAsString(mCursor.getString(11));
                     sd.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
-                    sd.setColor(mCursor.getString(13) != null ? mCursor.getString(13) : "#");
+                    sd.setCalenderAddId(mCursor.getString(13));
+
+                    sd.setColor(mCursor.getString(14) != null ? mCursor.getString(14) : "#");
 
                     sd.setSpeakerNameAsString(SpeakerDAO.getInstance(mContext).getSpeakerNames(mCursor.getString(10), db, isFirstName));
 
@@ -283,12 +285,18 @@ public class SessionDAO extends BaseDAO {
         ScheduleData sd = new ScheduleData();
         String query;
         if (showTracks) {
-            query = "select sessions.*, session_tracks.color " +
-                    "from " + SessionTable.SESSION_TABLE + " " +
-                    "left join " + SessionTracksTable.SESSION_TRACKS_TABLE + " on sessions.track = session_tracks.track where sessions.id ='" + id + "' order by name collate nocase;";
-//            query = "Select * from " + SessionTable.SESSION_TABLE + " where " + SessionTable.ID + "='" + id + "';";
+            query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color " +
+                    " from " + SessionTable.SESSION_TABLE + " " +
+                    " left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id " +
+                    " left join " + SessionTracksTable.SESSION_TRACKS_TABLE + " on sessions.track = session_tracks.track where sessions.id ='" + id + "' order by name collate nocase;";
         } else {
-            query = "Select * from " + SessionTable.SESSION_TABLE + " where " + SessionTable.ID + "='" + id + "' order by name collate nocase;";
+
+            query = "select sessions.*,likes.isFav,likes.calendarId "
+                    + " from " + SessionTable.SESSION_TABLE
+                    + " left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id "
+                    + "where sessions.id ='" + id + "';";
+
+//            query = "Select * from " + SessionTable.SESSION_TABLE + " where " + SessionTable.ID + "='" + id + "' order by name collate nocase;";
         }
 
         Cursor mCursor = null;
@@ -310,9 +318,11 @@ public class SessionDAO extends BaseDAO {
                     sd.setMaxSeatsAvailable(mCursor.getString(9));
                     sd.setSpeakerListAsString(mCursor.getString(10));
                     sd.setResourceListAsString(mCursor.getString(11));
+                    sd.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
+                    sd.setCalenderAddId(mCursor.getString(13));
 
                     try {
-                        sd.setColor(mCursor.getString(12));
+                        sd.setColor(mCursor.getString(14));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -358,5 +368,33 @@ public class SessionDAO extends BaseDAO {
 
         closeDb();
     }
+
+    public void persistCalendarId(String eventId, String sessionId) {
+        openDB(1);
+
+        String query = "update " + ExhibitorLikeTable.LIKE_TABLE + " set " + ExhibitorLikeTable.CALENDARID + "='" + eventId + "' where " + ExhibitorLikeTable.ID + "='" + sessionId + "';";
+
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null) {
+                mCursor.moveToFirst();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+
+        }
+
+        closeDb();
+    }
+
+
 
 }

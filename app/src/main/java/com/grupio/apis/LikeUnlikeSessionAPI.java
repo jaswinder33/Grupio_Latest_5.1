@@ -5,7 +5,6 @@ import android.content.Context;
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.CookieRequest;
-import com.grupio.dao.SessionDAO;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
 
@@ -43,12 +42,7 @@ public class LikeUnlikeSessionAPI extends BaseAsyncTask<String, Void> {
         mParamList.put("device_token", Preferences.getInstances(mContext).getDeviceToken());
 
         APIRequest apiRequest = new CookieRequest();
-        String response = apiRequest.requestResponse(url, mParamList, mContext);
-
-
-        if (parseResponse(response)) {
-            SessionDAO.getInstance(mContext).likeUnlikeSession(sessionId, operation.equals("add") ? 1 : 0);
-        }
+        apiRequest.requestResponse(url, mParamList, mContext);
 
         return null;
     }

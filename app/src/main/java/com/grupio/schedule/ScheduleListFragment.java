@@ -1,5 +1,6 @@
 package com.grupio.schedule;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,6 +8,9 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.grupio.R;
+import com.grupio.animation.SlideOut;
+import com.grupio.attendee.ListDetailActivity;
+import com.grupio.attendee.ListWatcher;
 import com.grupio.data.ScheduleData;
 import com.grupio.fragments.BaseFragment;
 import com.grupio.interfaces.ClickHandler;
@@ -22,11 +26,22 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
  * Created by JSN on 7/11/16.
  */
 
-public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> implements ScheduleListContract.View {
+public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> implements ScheduleListContract.View, ListWatcher.Watcher {
 
     private static ScheduleListFragment mScheduleListFragment;
+
+
     AdapterView.OnItemClickListener mListClick = (adapterView, view1, i, l) -> {
 
+        ScheduleData mScheduleData = (ScheduleData) adapterView.getAdapter().getItem(i);
+
+        Intent mIntent = new Intent();
+        mIntent.setClass(getActivity(), ListDetailActivity.class);
+        mIntent.setType(ListDetailActivity.SESSIONS);
+        mIntent.putExtra("id", mScheduleData.getSession_id());
+        mIntent.putExtra("data", mScheduleData);
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(getActivity());
     };
     private TextView noDataAvailableTxt;
     private StickyListHeadersListView mListView;
@@ -93,6 +108,7 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
     @Override
     public void setListeners() {
+        ListWatcher.getInstance().registerListener(this);
         mListView.setOnItemClickListener(mListClick);
     }
 
@@ -148,7 +164,7 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
         String[] dateArr = date.split("-");
 
         Calendar cal = Calendar.getInstance();
-        cal.set(intValue(dateArr[0]), intValue(dateArr[1]), intValue(dateArr[2]));
+        cal.set(intValue(dateArr[0]), intValue(dateArr[1]) - 1, intValue(dateArr[2]));
 
         int dd = cal.get(Calendar.DATE);
         String mm = months[cal.get(Calendar.MONTH)];
@@ -163,5 +179,13 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
     public Integer intValue(String value) {
         return Integer.parseInt(value);
+    }
+
+    @Override
+    public void refreshList() {
+        String searchQuery = searchEditTxt.getText().toString();
+
+        searchQuery = searchQuery.equals("") ? null : searchQuery;
+        getPresenter().fetchList(trackid, searchQuery, mdateList.get(counter), getActivity());
     }
 }

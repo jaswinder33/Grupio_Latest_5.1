@@ -279,6 +279,31 @@ public class ListDetailPresenter<T extends Person> implements DetailPresenterInt
         mListener.setHeadersColors(color);
     }
 
+    @Override
+    public void onSessionHeaderValiation() {
+        mListener.showSessionHeader();
+    }
+
+    @Override
+    public void onDateValidation(String date) {
+        mListener.showSessionDate(date);
+    }
+
+    @Override
+    public void onTimeValidation(String time) {
+        mListener.showSessionTime(time);
+    }
+
+    @Override
+    public void onLocationValidation(String location) {
+        mListener.showSessionLocation(location);
+    }
+
+    @Override
+    public void onMaxAttendeeValidation(String maxAttendee) {
+        mListener.showMaxAttendee(maxAttendee);
+    }
+
 
     @Override
     public void onPermissionAskedForSendContactRequest() {
