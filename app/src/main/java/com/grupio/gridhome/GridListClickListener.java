@@ -154,6 +154,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     performClick(mBundle, logisticsClick);
                     break;
                 case "my account":
+                    performClick(mBundle, loginClick);
                     break;
 
                 case "survey":

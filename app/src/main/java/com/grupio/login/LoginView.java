@@ -28,5 +28,7 @@ public interface LoginView {
 
     void goToDiscussionBoard();
 
+    void downloadDocument();
+
     void navigateScreen(Bundle mbundle, Class<?> className);
 }

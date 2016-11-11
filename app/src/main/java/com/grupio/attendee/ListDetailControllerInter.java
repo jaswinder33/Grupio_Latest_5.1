@@ -3,6 +3,7 @@ package com.grupio.attendee;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
+import com.grupio.data.SpeakerData;
 import com.grupio.interfaces.Person;
 
 import java.util.List;
@@ -102,6 +103,7 @@ public interface ListDetailControllerInter {
 
         void onMaxAttendeeValidation(String maxAttendee);
 
+        void onSpeakerListValidation(List<SpeakerData> mList, String headerLocale);
 
     }
 

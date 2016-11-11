@@ -13,17 +13,24 @@ import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideIn;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.message.SendMessageActivity;
+import com.grupio.data.LogisticsData;
 import com.grupio.message.MessageActivity;
 import com.grupio.session.ConstantData;
+import com.grupio.session.Preferences;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginView {
 
     private TextView userName, userPassword;
     private Button submitBtn;
-    private String menuFrom;
-    private Boolean isForConnectBtn = false;
+    private Button mLogoutBtn;
+
+    private String menuFrom = "";
     private String attendeeId = "";
     private boolean isForMessage = false;
+    private Boolean isForConnectBtn = false;
+    private LogisticsData mSessionDoc;
+    private String sessionDocAction = "";
+
 
     @Override
     public boolean isHeaderForGridPage() {
@@ -50,11 +57,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         userName = (TextView) findViewById(R.id.userName);
         userPassword = (TextView) findViewById(R.id.userpassword);
         submitBtn = (Button) findViewById(R.id.submitBtn);
+
+        mLogoutBtn = (Button) findViewById(R.id.logoutBtn);
     }
 
     @Override
     public void setListeners() {
         submitBtn.setOnClickListener(this);
+        mLogoutBtn.setOnClickListener(this);
     }
 
     @Override
@@ -142,6 +152,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
+    public void downloadDocument() {
+
+
+        Intent mIntent = new Intent();
+        mIntent.putExtra("data", mSessionDoc);
+        setResult(RESULT_OK, mIntent);
+        onBackPressed();
+    }
+
+    @Override
     public void navigateScreen(Bundle mbundle, Class<?> className) {
         Intent mIntent = new Intent(this, className);
         mIntent.putExtras(mbundle);
@@ -156,6 +176,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         switch (v.getId()) {
             case R.id.submitBtn:
                 getPresenter().doLogin(this, userName.getText().toString(), userPassword.getText().toString());
+                break;
+
+            case R.id.logoutBtn:
+                Preferences.getInstances(this).setAttendeeId(null);
                 break;
         }
     }
@@ -186,6 +210,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            try {
+                mSessionDoc = (LogisticsData) mBundle.getSerializable("data");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                sessionDocAction = (String) mBundle.get("action");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

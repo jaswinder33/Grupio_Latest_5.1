@@ -55,7 +55,6 @@
     <string name="like_unlike_schedule_api">/myschedule.php?format=json</string>>
 
 
-
     <!-- ################################################################### -->
     <!-- ################################################################### -->
     <!-- ################################################################### -->
@@ -181,5 +180,11 @@
     <string name="remove_schedule">Do you want to remove this session from your schedule?</string>
     <string name="add_schedule_to_calendar">Add this to your calendar?</string>
     <string name="remove_schedule_from_calendar">Event removed from your calendar</string>
+    <string name="title_activity_social">SocialActivity</string>
+
+    <!-- Social -->
+    <string name="share">Share</string>
+    <string name="title_activity_notes">NotesActivity</string>
+    <string name="title_activity_notes_details">NotesDetailsActivity</string>
 
 </resources>

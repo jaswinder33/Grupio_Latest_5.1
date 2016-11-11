@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -144,6 +145,8 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
     @Override
     public void showList(List<ScheduleData> mList) {
+
+        Log.i("ScheduleList", "showList: List refreshed \nStatus: " + mList.get(0).isSessionFav());
         ScheduleAdapter mAdapter = new ScheduleAdapter(getActivity());
         mAdapter.addAll(mList);
         mListView.setAdapter(mAdapter);
@@ -153,7 +156,9 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
     public void showDate(List<String> mDateList) {
         mdateList = new ArrayList<>();
         mdateList.addAll(mDateList);
-        setDate(mDateList.get(0));
+        if (!mdateList.isEmpty()) {
+            setDate(mDateList.get(0));
+        }
     }
 
     public void setDate(String date) {

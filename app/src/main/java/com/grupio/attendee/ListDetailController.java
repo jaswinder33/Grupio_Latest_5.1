@@ -11,6 +11,7 @@ import com.grupio.dao.EventDAO;
 import com.grupio.dao.ExhibitorDAO;
 import com.grupio.dao.MenuDAO;
 import com.grupio.dao.SessionDAO;
+import com.grupio.dao.SpeakerDAO;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
@@ -19,6 +20,7 @@ import com.grupio.data.SpeakerData;
 import com.grupio.db.EventTable;
 import com.grupio.helper.AttendeeProcessor;
 import com.grupio.helper.ExhibitorProcessor;
+import com.grupio.helper.ScheduleHelper;
 import com.grupio.helper.SpeakerProcessor;
 import com.grupio.interfaces.Person;
 import com.grupio.message.apis.APICallBack;
@@ -64,6 +66,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         validateChatBtn(mListener);
         validateConnectInfo(mListener);
         validateInterest(mListener);
+
+
         validateBio(mListener);
         validateSessionList(mListener);
         validateResourceList(mListener);
@@ -73,6 +77,9 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         validateSessionDate(mListener);
         validateSessionTime(mListener);
         validateMaxAttendeeLimit(mListener);
+
+        validateSpeakerList(mListener);
+
     }
 
 
@@ -174,17 +181,14 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             flag = mScheduleData.isSessionFav();
         }
         flag = !flag;
-
-
         ExhibitorDAO.getInstance(mContext).likeUnlikeExhb(id, flag ? 1 : 0);
-        ListWatcher.getInstance().notifyList();
 
         if (type instanceof ExhibitorData) {
             mExhibitorData.setIsFav(flag ? "1" : "0");
         } else if (type instanceof ScheduleData) {
-            mScheduleData.setSessionFav(flag);
+            ScheduleHelper.addRemoveSession(flag ? "add" : "delete", mScheduleData.getSession_id(), mContext);
         }
-
+        ListWatcher.getInstance().notifyList();
         mListener.onFavDone(flag);
     }
 
@@ -489,8 +493,13 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             text = mExhibitorData.getDescription();
 //            locale = LocalisationDataProcessor.EXHIBITORS_DESCRIPTION;
             locale = "Description";
+        } else if (type instanceof ScheduleData) {
+//            locale = LocalisationDataProcessor.EXHIBITORS_DESCRIPTION;
+            text = mScheduleData.getSummary();
+            locale = "Description";
         }
         if (!TextUtils.isEmpty(text)) {
+
             mListener.onBiovalidated(text, locale);
         }
     }
@@ -561,6 +570,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             String resourceAsString = mExhibitorData.getResourceListAsSrings();
             ExhibitorProcessor ep = new ExhibitorProcessor();
             mList.addAll(ep.parseResourceList(resourceAsString));
+        } else if (type instanceof ScheduleData) {
+            String resourceAsString = mScheduleData.getResourceListAsString();
+
+            ScheduleHelper scheduleHelper = new ScheduleHelper();
+            mList.addAll(scheduleHelper.getSessionLinks(resourceAsString));
+
         }
 
         if (mList.size() > 0) {
@@ -622,4 +637,29 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
     }
 
+    public void validateSpeakerList(OnValidationComplete mListener) {
+
+        if (type instanceof ScheduleData) {
+
+            List<String> mSpeakerIdList = new ArrayList<>();
+
+            List<SpeakerData> mSpeakerList = new ArrayList<>();
+
+
+            String speakers = mScheduleData.getSpeakerListAsString();
+            ScheduleHelper mHelper = new ScheduleHelper();
+            mSpeakerIdList.addAll(mHelper.getSpeakerList(speakers));
+
+            for (int i = 0; i < mSpeakerIdList.size(); i++) {
+                mSpeakerList.add(SpeakerDAO.getInstance(mContext).getSpeakerDetail(mSpeakerIdList.get(i)));
+            }
+
+            if (!mSpeakerList.isEmpty()) {
+                mListener.onSpeakerListValidation(mSpeakerList, "Speakers");
+            }
+
+        }
+
+
+    }
 }

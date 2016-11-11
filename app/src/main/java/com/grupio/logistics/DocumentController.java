@@ -22,7 +22,9 @@ import com.grupio.data.MapsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
 import com.grupio.data.mapList;
+import com.grupio.login.LoginActivity;
 import com.grupio.message.apis.APICallBack;
+import com.grupio.session.Preferences;
 
 import java.io.File;
 
@@ -102,6 +104,14 @@ public class DocumentController<K, V extends DocInter> {
     public void downloadResource(V objV) {
 
         createVariables(objV);
+
+        if (objV instanceof LogisticsData) {
+            if (mLogisticData.isLoginRequired() && Preferences.getInstances(mContext).getAttendeeId() == null) {
+                login("download");
+                return;
+            }
+        }
+
         if (checkIfFileExists()) {
             AlertDialog mdialog = new AlertDialog.Builder(mContext).setMessage("This file already exists. Do you want to redownload this file?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -131,6 +141,13 @@ public class DocumentController<K, V extends DocInter> {
     public void viewDoc(V objV) {
         createVariables(objV);
 
+        if (objV instanceof LogisticsData) {
+            if (mLogisticData.isLoginRequired() && Preferences.getInstances(mContext).getAttendeeId() == null) {
+                login("view");
+                return;
+            }
+        }
+
         if (checkIfFileExists()) {
             if (Utility.isValidType(type)) {
                 File mFile = new File(Utility.getBaseFolder(mContext, folderName), fName);
@@ -142,13 +159,22 @@ public class DocumentController<K, V extends DocInter> {
     }
 
     /**
-     * Open files in appropriate way.
+     * Open url in appropriate way.
      *
      * @param objV
      */
     public void handleDocument(V objV) {
 
         createVariables(objV);
+
+        if (objV instanceof LogisticsData) {
+
+            if (mLogisticData.isLoginRequired() && Preferences.getInstances(mContext).getAttendeeId() == null) {
+                login("link");
+                return;
+
+            }
+        }
 
         Uri uri = Uri.parse(url);
         String videoId = uri.getQueryParameter("v");
@@ -168,7 +194,8 @@ public class DocumentController<K, V extends DocInter> {
      *
      * @param objV
      */
-    public void createVariables(V objV) {
+    private void createVariables(V objV) {
+
         if (typeV instanceof mapList) {
             mapListObj = (mapList) objV;
 
@@ -213,7 +240,7 @@ public class DocumentController<K, V extends DocInter> {
     /**
      * Open video file
      */
-    public void open3gpOrmp4() {
+    private void open3gpOrmp4() {
 //        Intent VideoActivityIntent = new Intent(mContext, VideoActivity.class);
 //        VideoActivityIntent.putExtra("videoUrl", url);
 //        VideoActivityIntent.putExtra("videoName", name);
@@ -226,7 +253,7 @@ public class DocumentController<K, V extends DocInter> {
      *
      * @param videoId
      */
-    public void openYoutubeVideo(String videoId) {
+    private void openYoutubeVideo(String videoId) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
         intent.putExtra("VIDEO_ID", videoId);
         mContext.startActivity(intent);
@@ -236,17 +263,39 @@ public class DocumentController<K, V extends DocInter> {
     /**
      * Open link in webview
      */
-    public void openWebView() {
+    private void openWebView() {
         Intent mapIntent = new Intent(mContext, WebViewActivity.class);
         mapIntent.putExtra("url", url);
         mContext.startActivity(mapIntent);
         SlideOut.getInstance().startAnimation((Activity) mContext);
     }
 
+    private void login(String action) {
+        Intent mIntent = new Intent(mContext, LoginActivity.class);
+        mIntent.putExtra("from", "sessionDoc");
+        mIntent.putExtra("action", action);
+        mIntent.putExtra("data", mLogisticData);
+
+        switch (action) {
+            case "view":
+                ((BaseActivity) mContext).startActivityForResult(mIntent, BaseActivity.VIEW_DOC);
+                break;
+            case "download":
+                ((BaseActivity) mContext).startActivityForResult(mIntent, BaseActivity.DOWNLODA_DOC);
+                break;
+            case "link":
+                ((BaseActivity) mContext).startActivityForResult(mIntent, BaseActivity.URL_DOC);
+                break;
+        }
+
+
+        SlideOut.getInstance().startAnimation((Activity) mContext);
+    }
+
     /**
      * Assign Folder name according to type of typeK variable.
      */
-    public void guessFolderName() {
+    private void guessFolderName() {
         if (typeK instanceof AttendeesData) {
             folderName = mContext.getString(R.string.attendee_resources);
         } else if (typeK instanceof SpeakerData) {
@@ -265,7 +314,7 @@ public class DocumentController<K, V extends DocInter> {
      *
      * @return
      */
-    public boolean checkIfFileExists() {
+    private boolean checkIfFileExists() {
         return Utility.isThisfileExists(mContext, folderName, fName);
     }
 
@@ -274,7 +323,7 @@ public class DocumentController<K, V extends DocInter> {
      *
      * @param openFile
      */
-    public void downloadFile(boolean openFile) {
+    private void downloadFile(boolean openFile) {
 
         ((BaseActivity) mContext).showProgressDialog("Loading...");
 
@@ -294,9 +343,31 @@ public class DocumentController<K, V extends DocInter> {
             public void onFailure(String msg) {
                 ((BaseActivity) mContext).hideProgressDialog();
                 Toast.makeText(mContext, mContext.getString(R.string.file_download_failed), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(mContext, LocalisationDataProcessor.PROBLEM_LOADING_REQUEST, Toast.LENGTH_SHORT).show();
             }
         });
         downloadFile.doCall(url, folderName);
     }
+
+   /* private ProgressDialog mProgressDialog;
+
+    public void showProgressDialog(String msg) {
+        if (mProgressDialog == null) {
+            setProgressDialog(msg);
+            mProgressDialog.show();
+        }
+    }
+
+    private void setProgressDialog(String message) {
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(message);
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }*/
+
 }

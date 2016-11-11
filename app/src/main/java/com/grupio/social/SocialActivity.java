@@ -1,17 +1,12 @@
-package com.grupio.schedule;
-
+package com.grupio.social;
 
 import android.os.Bundle;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
-import com.grupio.attendee.ListWatcher;
-import com.grupio.backend.Permissions;
 
-public class ScheduleListActivity extends BaseActivity {
-
-    String trackid = null;
+public class SocialActivity extends BaseActivity {
 
     @Override
     public int getLayout() {
@@ -39,7 +34,7 @@ public class ScheduleListActivity extends BaseActivity {
     }
 
     @Override
-    public ScheduleListPresenter setPresenter() {
+    public Object setPresenter() {
         return null;
     }
 
@@ -50,29 +45,25 @@ public class ScheduleListActivity extends BaseActivity {
 
     @Override
     public void setUp() {
-        getData();
-        Bundle mBundle = new Bundle();
-        mBundle.putString("trackId", trackid);
-        Utility.addFragment(this, ScheduleListFragment.getInstance(mBundle), false);
-
-        Permissions.getInstance().hasCalendarPermission(this).askForPermissions(this, CALENDAR_PERMISSION);
+        handleLeftBtn(getData());
+        Utility.addFragment(this, SocialFragment.getInstance(), false);
     }
 
     @Override
     public void handleRightBtnClick() {
+
     }
 
-    public void getData() {
+
+    public boolean getData() {
+
+        boolean isFromGridPage = false;
         Bundle mBundle = getIntent().getExtras();
 
         if (mBundle != null) {
-            trackid = mBundle.getString("track");
+            isFromGridPage = mBundle.getBoolean("isFromGrid");
         }
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ListWatcher.getInstance().unregisterListener();
+        return isFromGridPage;
     }
 }

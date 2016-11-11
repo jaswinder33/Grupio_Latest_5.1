@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,18 @@ import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.helper.ScheduleHelper;
 import com.grupio.interfaces.ClickHandler;
 import com.grupio.interfaces.Person;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.DocumentController;
 import com.grupio.logistics.LogisticsAdapter;
 import com.grupio.schedule.ScheduleDetail;
+import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.services.EmailService;
 import com.grupio.services.Service;
+import com.grupio.social.SocialActivity;
+import com.grupio.speakers.SpeakerAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -47,6 +52,8 @@ import java.util.List;
 public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implements DetailViewInter {
 
     public static final int CONNECT_REQUEST = 201;
+
+
     public static final String LIST_DETAIL = "ListDetailActivity";
 
     public static final String SESSIONS = "session";
@@ -63,6 +70,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         SlideOut.getInstance().startAnimation(ListDetailActivity.this);
     };
     AdapterView.OnItemClickListener attendeeListItemClick = (parent, view, position, id1) -> {
+
         AttendeesData mData = (AttendeesData) parent.getAdapter().getItem(position);
 
         Intent mIntent = new Intent(ListDetailActivity.this, ListDetailActivity.class);
@@ -73,6 +81,20 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         startActivity(mIntent);
         SlideOut.getInstance().startAnimation(ListDetailActivity.this);
     };
+
+    AdapterView.OnItemClickListener speakerListItemClick = (parent, view, position, id1) -> {
+
+        SpeakerData mData = (SpeakerData) parent.getAdapter().getItem(position);
+
+        Intent mIntent = new Intent(ListDetailActivity.this, ListDetailActivity.class);
+        mIntent.putExtra("id", mData.getAttendee_id());
+        mIntent.setType("speaker");
+        mIntent.putExtra("data", mData);
+
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(ListDetailActivity.this);
+    };
+
     private String id;
     private Person mperson;
     private ImageView image;
@@ -103,6 +125,8 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     private TextView attendeeHeader;
     private ListView attendeeList;
     private String type = "";
+
+
     AdapterView.OnItemClickListener resourceListItemClick = (parent, view, position, id1) -> {
 
         LogisticsData mapObjt = (LogisticsData) parent.getAdapter().getItem(position);
@@ -122,12 +146,18 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mController2.handleDocument(mapObjt);
                 break;
 
+            case SESSIONS:
+                DocumentController<ScheduleHelper, LogisticsData> mController3 = new DocumentController<>(new ScheduleHelper(), new LogisticsData(), ListDetailActivity.this);
+                mController3.handleDocument(mapObjt);
+                break;
+
         }
     };
     //Schedule variables
     private LinearLayout sessionLay;
     private TextView sessionTitle, sessionDate, sessionTime, sessionLocation, maxAttendeeLimit;
     private RelativeLayout mSessionBtnsLay;
+    private ScheduleData mScheduleData;
 
     @Override
     public boolean isHeaderForGridPage() {
@@ -145,6 +175,11 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             id = mIntent.getStringExtra("id");
             mperson = (Person) mIntent.getSerializableExtra("data");
         }
+
+        if (type.equals(SESSIONS)) {
+            mScheduleData = (ScheduleData) mperson;
+        }
+
     }
 
     /**
@@ -318,7 +353,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         handleRightBtn(false, null);
         getData();
         registerListeners();
-
     }
 
     @Override
@@ -458,23 +492,23 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         resourceListLay.setVisibility(View.VISIBLE);
         resourceHeader.setText(headerLocale);
 
-        String folderName = "";
         LogisticsAdapter mAdapter = null;
 
         switch (type) {
             case "attendee":
-                folderName = getString(R.string.attendee_resources);
                 mAdapter = new LogisticsAdapter(this, new AttendeesData());
                 break;
 
             case "speaker":
-                folderName = getString(R.string.speaker_resources);
                 mAdapter = new LogisticsAdapter(this, new SpeakerData());
                 break;
 
             case "exhibitor":
-                folderName = getString(R.string.exhibitor_resources);
                 mAdapter = new LogisticsAdapter(this, new ExhibitorData());
+                break;
+
+            case SESSIONS:
+                mAdapter = new LogisticsAdapter(this, new ScheduleData());
                 break;
 
         }
@@ -488,6 +522,8 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void showAttendeeList(String headerLocale, List<AttendeesData> mList) {
+
+
         attendeeListLay.setVisibility(View.VISIBLE);
         attendeeHeader.setText(headerLocale);
 
@@ -584,13 +620,13 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void doFavBtnAction(boolean flag) {
+
         int drawable = flag ? R.drawable.btn_addtoschedule_on_detail : R.drawable.btn_addtoschedule_off_detail;
         if (type.equals(SESSIONS)) {
             mFavSessionBtn.setBackgroundResource(drawable);
         } else {
             mFavBtn.setBackgroundResource(drawable);
         }
-
     }
 
     @Override
@@ -639,6 +675,19 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     }
 
     @Override
+    public void showSpeakerList(List<SpeakerData> mList, String headerLocale) {
+        attendeeListLay.setVisibility(View.VISIBLE);
+        attendeeHeader.setText(headerLocale);
+
+        SpeakerAdapter mAdapter = new SpeakerAdapter(this);
+        mAdapter.addAll(mList);
+        attendeeList.setAdapter(mAdapter);
+        Utility.setListViewHeightBasedOnChildren(attendeeList);
+        attendeeList.setOnItemClickListener(speakerListItemClick);
+
+    }
+
+    @Override
     public void onClick(View v) {
         super.onClick(v);
 
@@ -676,7 +725,42 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
             case R.id.addFavSessionBtn:
             case R.id.addSessionBtn:
-                getPresenter().doFav(id);
+
+                if (type.equals(SESSIONS)) {
+
+                    if (!ScheduleHelper.isLoginRequiredToLike(this, ScheduleTrackListActivity.class)) {
+
+                        ClickHandler mAddScheduleToCalendar = () -> {
+                            mScheduleData.setCalenderAddId(ScheduleHelper.saveToCalendar(this, mScheduleData));
+                        };
+
+                        ClickHandler mRemoveScheduleFromCalendar = () -> {
+                            ScheduleHelper.removeFromCalendar(this, mScheduleData);
+                        };
+
+                        ClickHandler mAddSchedule = () -> {
+                            mScheduleData.setSessionFav(true);
+                            BaseActivity.CustomDialog.getDialog(this, mAddScheduleToCalendar).show(this.getString(R.string.add_schedule_to_calendar));
+                            getPresenter().doFav(id);
+                        };
+
+                        ClickHandler mRemoveSchedule = () -> {
+                            mScheduleData.setSessionFav(false);
+                            getPresenter().doFav(id);
+                            if (mScheduleData.getCalenderAddId() != null) {
+                                BaseActivity.CustomDialog.getDialog(this, mRemoveScheduleFromCalendar).singledBtnDialog(true).show(this.getString(R.string.remove_schedule_from_calendar));
+                            }
+                        };
+
+                        if (mScheduleData.isSessionFav()) {
+                            BaseActivity.CustomDialog.getDialog(this, mRemoveSchedule).show(this.getString(R.string.remove_schedule));
+                        } else {
+                            BaseActivity.CustomDialog.getDialog(this, mAddSchedule).show(this.getString(R.string.add_schedule));
+                        }
+                    }
+                } else {
+                    getPresenter().doFav(id);
+                }
                 break;
 
             case R.id.exbWebBtn:
@@ -684,6 +768,10 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 break;
 
             case R.id.shareSocialBtn:
+                Intent intent = new Intent(this, SocialActivity.class);
+                intent.putExtra("isFromGrid", false);
+                startActivity(intent);
+                SlideOut.getInstance().startAnimation(this);
                 break;
 
             case R.id.noteSocialBtn:
@@ -823,20 +911,15 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
         linear.addView(msg);
 
-        msg.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-                smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.setData(Uri.parse("sms:" + number));
-                startActivity(smsIntent);
-                adb.dismiss();
-            }
-
+        msg.setOnClickListener(view -> {
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+            smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            smsIntent.setType("vnd.android-dir/mms-sms");
+            smsIntent.setData(Uri.parse("sms:" + number));
+            startActivity(smsIntent);
+            adb.dismiss();
         });
+
 
         /**
          * Cancel button
@@ -891,6 +974,27 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
         if (requestCode == CONNECT_REQUEST && resultCode == RESULT_OK) {
             getPresenter().sendContactRequest(id, false);
+        } else if (requestCode == VIEW_DOC && resultCode == RESULT_OK) {
+
+            Bundle mBundle = data.getExtras();
+            LogisticsData mDatat = (LogisticsData) mBundle.getSerializable("data");
+
+            DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), this);
+            mController.viewDoc(mDatat);
+        } else if (requestCode == DOWNLODA_DOC && resultCode == RESULT_OK) {
+
+            Bundle mBundle = data.getExtras();
+            LogisticsData mDatat = (LogisticsData) mBundle.getSerializable("data");
+
+            DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), this);
+            mController.downloadResource(mDatat);
+
+        } else if (requestCode == URL_DOC && resultCode == RESULT_OK) {
+            Bundle mBundle = data.getExtras();
+            LogisticsData mDatat = (LogisticsData) mBundle.getSerializable("data");
+
+            DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), this);
+            mController.handleDocument(mDatat);
         }
 
     }
@@ -900,5 +1004,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         super.onResume();
         getPresenter().validateData(mperson);
     }
+
 
 }

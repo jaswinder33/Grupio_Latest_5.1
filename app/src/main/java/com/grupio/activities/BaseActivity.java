@@ -42,8 +42,15 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     public static final int SD_READ_WRITE_PERMISSION = 100;
     public static final int CALL_PERMISSION = 101;
     public static final int CALENDAR_PERMISSION = 102;
+
+    //Resource list variables
+    public static final int VIEW_DOC = 103;
+    public static final int DOWNLODA_DOC = 104;
+    public static final int URL_DOC = 105;
+
     public static final String REFRESH = "refresh";
     public static final String ADD = "add";
+    public static final String EMAIL = "email";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -129,6 +136,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         }
     }
 
+
     /**
      * Handle resources of right button on header
      *
@@ -145,6 +153,10 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
                     break;
 
                 case ADD:
+                    rightBtn.setBackgroundResource(R.drawable.add_btn_top);
+                    break;
+
+                case EMAIL:
                     rightBtn.setBackgroundResource(R.drawable.add_btn_top);
                     break;
             }
@@ -382,12 +394,19 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         public void show(String message) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
             dialog.setMessage(message);
-            dialog.setPositiveButton(okStr, (dialogInterface, i) -> mClick.handleClick());
+            dialog.setPositiveButton(okStr, (dialogInterface, i) -> {
+                mClick.handleClick();
+            });
             if (!isSingleBtn) {
                 dialog.setNegativeButton(cancelStr, (dialogInterface, i) -> {
+
                 });
             }
             dialog.create().show();
         }
+
+//        public void showCustom(String message, View view){
+//        }
+
     }
 }

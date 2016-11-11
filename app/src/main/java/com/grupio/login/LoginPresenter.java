@@ -68,6 +68,7 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
                 break;
 
             case "schedule":
+
                 break;
 
             case "mycalendar":
@@ -150,6 +151,10 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
 
             case "ListDetailActivity":
                 mListener.goToListDetailActivity();
+                break;
+
+            case "sessionDoc":
+                mListener.downloadDocument();
                 break;
 
         }

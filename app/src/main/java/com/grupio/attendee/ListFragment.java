@@ -341,6 +341,7 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         queryStr = queryStr.equals("") ? null : queryStr;
 
         getPresenter().fetchList(queryStr, category);
+
     }
 
 

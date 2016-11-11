@@ -5,6 +5,7 @@ import android.content.Context;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
+import com.grupio.data.SpeakerData;
 import com.grupio.interfaces.Person;
 
 import java.util.List;
@@ -302,6 +303,11 @@ public class ListDetailPresenter<T extends Person> implements DetailPresenterInt
     @Override
     public void onMaxAttendeeValidation(String maxAttendee) {
         mListener.showMaxAttendee(maxAttendee);
+    }
+
+    @Override
+    public void onSpeakerListValidation(List<SpeakerData> mList, String headerLocale) {
+        mListener.showSpeakerList(mList, headerLocale);
     }
 
 

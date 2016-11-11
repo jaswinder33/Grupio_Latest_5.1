@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <include layout="@layout/layout_banner" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_header_height">
+
+        <!--   <Button
+               android:layout_width="100dp"
+               android:layout_height="" />-->
+    </RelativeLayout>
+
+
+    <com.grupio.notes.RuledView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.grupio.notes.RuledView
+        android:id="@+id/notesDesc"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/transparent"
+        android:gravity="top|left"
+        android:padding="@dimen/rules_text_padding"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16" />
+
+
+</LinearLayout>

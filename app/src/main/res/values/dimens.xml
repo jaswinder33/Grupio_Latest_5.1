@@ -57,5 +57,8 @@
     <!-- Logistics List -->
     <dimen name="logistics_child_height">48dp</dimen>
 
+    <!--Notes-->
+    <dimen name="rules_text_padding">6dp</dimen>
+
 
 </resources>

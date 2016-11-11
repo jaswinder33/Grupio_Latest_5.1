@@ -24,7 +24,6 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
 
     public SpeakerAdapter(Context context) {
         super(context);
-
         hideSpeakerImage = EventDAO.getInstance(context).getValue(EventTable.HIDE_SPEAKER_IMAGES).equals("n");
     }
 

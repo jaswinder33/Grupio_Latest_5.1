@@ -13,6 +13,7 @@ import com.grupio.base.SimpleBaseListAdapter;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
+import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
 
 /**
@@ -80,6 +81,9 @@ public class LogisticsAdapter<T> extends SimpleBaseListAdapter<LogisticsData, Lo
         } else if (folderType instanceof LogisticsData) {
             DocumentController<LogisticsData, LogisticsData> mController = new DocumentController<>(new LogisticsData(), new LogisticsData(), getContext());
             mController.viewDoc(getItem(position));
+        } else if (folderType instanceof ScheduleData) {
+            DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), getContext());
+            mController.viewDoc(getItem(position));
         }
     }
 
@@ -95,6 +99,9 @@ public class LogisticsAdapter<T> extends SimpleBaseListAdapter<LogisticsData, Lo
             mController.downloadResource(getItem(position));
         } else if (folderType instanceof LogisticsData) {
             DocumentController<LogisticsData, LogisticsData> mController = new DocumentController<>(new LogisticsData(), new LogisticsData(), getContext());
+            mController.downloadResource(getItem(position));
+        } else if (folderType instanceof ScheduleData) {
+            DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), getContext());
             mController.downloadResource(getItem(position));
         }
     }

@@ -3,6 +3,7 @@ package com.grupio.attendee;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
+import com.grupio.data.SpeakerData;
 
 import java.util.List;
 
@@ -92,5 +93,7 @@ public interface DetailViewInter {
     void showSessionLocation(String location);
 
     void showMaxAttendee(String maxAttendee);
+
+    void showSpeakerList(List<SpeakerData> mList, String headerLocale);
 
 }

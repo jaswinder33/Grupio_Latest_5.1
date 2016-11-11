@@ -1,6 +1,8 @@
 package com.grupio.data;
 
-public class LogisticsData implements DocInter {
+import java.io.Serializable;
+
+public class LogisticsData implements DocInter, Serializable {
 
     private String userName = "";
 
@@ -10,6 +12,7 @@ public class LogisticsData implements DocInter {
     private String doctype = "";
     private String type = "";
     private String order = "";
+    private boolean isLoginRequired = false;
 
     public String getUserName() {
         return userName;
@@ -65,5 +68,13 @@ public class LogisticsData implements DocInter {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isLoginRequired() {
+        return isLoginRequired;
+    }
+
+    public void setLoginRequired(boolean loginRequired) {
+        isLoginRequired = loginRequired;
     }
 }
