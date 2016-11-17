@@ -105,6 +105,10 @@ public interface ListDetailControllerInter {
 
         void onSpeakerListValidation(List<SpeakerData> mList, String headerLocale);
 
+        void showSocialBtn();
+
+        void showNotesBtn();
+
     }
 
 }

@@ -533,7 +533,7 @@ public class SpeakerDAO extends BaseDAO {
             if (mJsonArray != null && mJsonArray.length() > 0) {
 
                 for (int i = 0; i < mJsonArray.length(); i++) {
-                    idQuery = "'" + mJsonArray.getString(i) + "',";
+                    idQuery += "'" + mJsonArray.getString(i) + "',";
                 }
 
                 idQuery = idQuery.substring(0, idQuery.lastIndexOf(","));

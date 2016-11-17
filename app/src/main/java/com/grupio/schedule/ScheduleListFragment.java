@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.animation.SlideOut;
+import com.grupio.attendee.ListConstant;
 import com.grupio.attendee.ListDetailActivity;
 import com.grupio.attendee.ListWatcher;
 import com.grupio.data.ScheduleData;
@@ -38,7 +38,7 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
         Intent mIntent = new Intent();
         mIntent.setClass(getActivity(), ListDetailActivity.class);
-        mIntent.setType(ListDetailActivity.SESSIONS);
+        mIntent.setType(ListConstant.SESSION);
         mIntent.putExtra("id", mScheduleData.getSession_id());
         mIntent.putExtra("data", mScheduleData);
         startActivity(mIntent);
@@ -145,8 +145,6 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
     @Override
     public void showList(List<ScheduleData> mList) {
-
-        Log.i("ScheduleList", "showList: List refreshed \nStatus: " + mList.get(0).isSessionFav());
         ScheduleAdapter mAdapter = new ScheduleAdapter(getActivity());
         mAdapter.addAll(mList);
         mListView.setAdapter(mAdapter);

@@ -7,12 +7,10 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -22,26 +20,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class PostRequest extends APIRequest {
 
-	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-		for (Entry<String, String> entry : params.entrySet()) {
-			if (first)
-				first = false;
-			else
-				result.append("&");
-
-			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-		}
-		return result.toString();
-	}
-
 	@Override
 	public String requestResponse(String endPoint, Map<String, String> params, Context mContext) {
-
-//		String link = "https://conf.dharanet.com/conf/v1/main/activities.php?format=json";
 
 		String response = "";
 		URL url;
@@ -85,6 +65,21 @@ public class PostRequest extends APIRequest {
 
 		return response.toString();
 
+	}
+
+	@Override
+	protected String getRequestType() {
+		return "POST";
+	}
+
+	@Override
+	protected Map<String, String> getCustomHeaders() {
+
+		Map<String, String> mHeaderList = new HashMap<>();
+		mHeaderList.put("Accept", "application/json");
+		mHeaderList.put("ClientVersion", String.valueOf(1));
+
+		return mHeaderList;
 	}
 
 }

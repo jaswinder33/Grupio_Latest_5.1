@@ -32,6 +32,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider729411620470468"
+            android:exported="true" />
+
         <activity
             android:name=".eventlist.EventListActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -61,11 +71,7 @@
         <activity
             android:name=".home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:parentActivityName=".activities.BaseActivity"
             android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.grupio.activities.BaseActivity" />
         </activity>
         <activity
             android:name=".activities.WebViewActivity"
@@ -116,10 +122,10 @@
             android:name=".venuemaps.VenueMapActivity"
             android:label="@string/title_activity_venue_map"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".venuemaps.SimpleListActivity"
-            android:label="@string/title_activity_simple_list"
-            android:theme="@style/AppTheme" />
+        <!-- <activity
+             android:name=".venuemaps.SimpleListActivity"
+             android:label="@string/title_activity_simple_list"
+             android:theme="@style/AppTheme" />-->
         <activity
             android:name=".schedule.ScheduleTrackListActivity"
             android:label="@string/title_activity_schedule_track_list"
@@ -139,7 +145,7 @@
         <activity
             android:name=".notes.NotesDetailsActivity"
             android:label="@string/title_activity_notes_details"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

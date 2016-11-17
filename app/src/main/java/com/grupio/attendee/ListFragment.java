@@ -132,7 +132,6 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         } else if (type instanceof ExhibitorData) {
             return "EXHIBITOR_LIST_VIEW";
         }
-
         return "";
     }
 

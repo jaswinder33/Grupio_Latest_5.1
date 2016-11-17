@@ -24,8 +24,8 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     }
 
     @Override
-    public void fetchNote(Context mContext) {
-
+    public void fetchNote(String type, String id, Context mContext) {
+        mInteractor.fetchNote(type, id, mContext, this);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     }
 
     @Override
-    public void saveNote(NotesData data) {
-
+    public void saveNote(NotesData mNotes, Context mContext) {
+        mInteractor.saveNote(mNotes, mContext, this);
     }
 
     @Override
@@ -54,9 +54,10 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     }
 
     @Override
-    public void onNoteFetch(String noteData) {
-
+    public void onNoteFetch(NotesData noteData) {
+        mListener.showNote(noteData);
     }
+
 
     @Override
     public void onNoteDelete() {
@@ -65,6 +66,10 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
 
     @Override
     public void onNoteSaved() {
+    }
+
+    @Override
+    public void updateNoteId(String id) {
 
     }
 }

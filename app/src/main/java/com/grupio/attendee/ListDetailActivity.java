@@ -39,10 +39,11 @@ import com.grupio.interfaces.Person;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.DocumentController;
 import com.grupio.logistics.LogisticsAdapter;
-import com.grupio.schedule.ScheduleDetail;
+import com.grupio.notes.NotesDetailsActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.services.EmailService;
 import com.grupio.services.Service;
+import com.grupio.session.Preferences;
 import com.grupio.social.SocialActivity;
 import com.grupio.speakers.SpeakerAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -56,18 +57,21 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     public static final String LIST_DETAIL = "ListDetailActivity";
 
-    public static final String SESSIONS = "session";
     public static final String SPONSOR = "sponsor";
     public static final String EXHIBITOR = "exhibitor";
     public static final String ATTENDEE = "attendee";
     public static final String SPEAKER = "speaker";
     Button mFavSessionBtn, mSessionNotes, mSessionSocial;
     AdapterView.OnItemClickListener sessionListItemClick = (parent, view, position, id1) -> {
+
         ScheduleData sData = (ScheduleData) parent.getAdapter().getItem(position);
-        Intent intent = new Intent(ListDetailActivity.this, ScheduleDetail.class);
-        intent.putExtra("session_id", sData.getSession_id());
+        Intent intent = new Intent(ListDetailActivity.this, ListDetailActivity.class);
+        intent.setType(ListConstant.SESSION);
+        intent.putExtra("id", sData.getSession_id());
+        intent.putExtra("data", sData);
         startActivity(intent);
         SlideOut.getInstance().startAnimation(ListDetailActivity.this);
+
     };
     AdapterView.OnItemClickListener attendeeListItemClick = (parent, view, position, id1) -> {
 
@@ -146,7 +150,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mController2.handleDocument(mapObjt);
                 break;
 
-            case SESSIONS:
+            case ListConstant.SESSION:
                 DocumentController<ScheduleHelper, LogisticsData> mController3 = new DocumentController<>(new ScheduleHelper(), new LogisticsData(), ListDetailActivity.this);
                 mController3.handleDocument(mapObjt);
                 break;
@@ -176,7 +180,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             mperson = (Person) mIntent.getSerializableExtra("data");
         }
 
-        if (type.equals(SESSIONS)) {
+        if (type.equals(ListConstant.SESSION)) {
             mScheduleData = (ScheduleData) mperson;
         }
 
@@ -315,10 +319,8 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mFavBtn.setOnClickListener(this);
                 break;
 
-            case SESSIONS:
+            case ListConstant.SESSION:
                 mFavSessionBtn.setOnClickListener(this);
-                mSessionNotes.setOnClickListener(this);
-                mSessionSocial.setOnClickListener(this);
                 break;
         }
     }
@@ -335,7 +337,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             case "exhibitor":
                 return new ListDetailPresenter(new ExhibitorData(), this, ListDetailActivity.this);
 
-            case SESSIONS:
+            case ListConstant.SESSION:
                 return new ListDetailPresenter(new ScheduleData(), this, ListDetailActivity.this);
 
             default:
@@ -379,7 +381,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void showTitle(String titleStr) {
-        if (type.equals(SESSIONS)) {
+        if (type.equals(ListConstant.SESSION)) {
             sessionTitle.setVisibility(View.VISIBLE);
             sessionTitle.setText(titleStr);
         } else {
@@ -507,7 +509,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mAdapter = new LogisticsAdapter(this, new ExhibitorData());
                 break;
 
-            case SESSIONS:
+            case ListConstant.SESSION:
                 mAdapter = new LogisticsAdapter(this, new ScheduleData());
                 break;
 
@@ -523,7 +525,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     @Override
     public void showAttendeeList(String headerLocale, List<AttendeesData> mList) {
 
-
         attendeeListLay.setVisibility(View.VISIBLE);
         attendeeHeader.setText(headerLocale);
 
@@ -532,7 +533,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         attendeeList.setAdapter(mAdapter);
         Utility.setListViewHeightBasedOnChildren(attendeeList);
         attendeeList.setOnItemClickListener(attendeeListItemClick);
-
 
     }
 
@@ -596,7 +596,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     @Override
     public void sendEmail(String emailAddress) {
         Service emailService = new Service(new EmailService());
-        emailService.sendMessage(emailAddress, ListDetailActivity.this);
+        emailService.sendMessage(emailAddress, ListDetailActivity.this, null);
     }
 
     @Override
@@ -622,7 +622,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     public void doFavBtnAction(boolean flag) {
 
         int drawable = flag ? R.drawable.btn_addtoschedule_on_detail : R.drawable.btn_addtoschedule_off_detail;
-        if (type.equals(SESSIONS)) {
+        if (type.equals(ListConstant.SESSION)) {
             mFavSessionBtn.setBackgroundResource(drawable);
         } else {
             mFavBtn.setBackgroundResource(drawable);
@@ -688,6 +688,18 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     }
 
     @Override
+    public void showNotesButton() {
+        mSessionNotes.setVisibility(View.VISIBLE);
+        mSessionNotes.setOnClickListener(this);
+    }
+
+    @Override
+    public void showSocialButton() {
+        mSessionSocial.setVisibility(View.VISIBLE);
+        mSessionSocial.setOnClickListener(this);
+    }
+
+    @Override
     public void onClick(View v) {
         super.onClick(v);
 
@@ -726,7 +738,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             case R.id.addFavSessionBtn:
             case R.id.addSessionBtn:
 
-                if (type.equals(SESSIONS)) {
+                if (type.equals(ListConstant.SESSION)) {
 
                     if (!ScheduleHelper.isLoginRequiredToLike(this, ScheduleTrackListActivity.class)) {
 
@@ -769,12 +781,33 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
             case R.id.shareSocialBtn:
                 Intent intent = new Intent(this, SocialActivity.class);
-                intent.putExtra("isFromGrid", false);
+                intent.putExtra("session_name", mScheduleData.getName());
                 startActivity(intent);
                 SlideOut.getInstance().startAnimation(this);
                 break;
 
             case R.id.noteSocialBtn:
+
+                Intent mIntent;
+                if (Preferences.getInstances(this).getUserInfo() == null) {
+                    mIntent = new Intent(this, LoginActivity.class);
+                    mIntent.putExtra("from", ListConstant.SESSION);
+                } else {
+                    mIntent = new Intent(this, NotesDetailsActivity.class);
+                    if (type.equals(ListConstant.SESSION)) {
+                        mIntent.putExtra("type", ListConstant.SESSION);
+                    } else if (type.equals(ListConstant.EXHIBITOR)) {
+                        mIntent.putExtra("type", ListConstant.EXHIBITOR);
+                    }
+                }
+
+                if (type.equals(ListConstant.SESSION)) {
+                    mIntent.putExtra("id", mScheduleData.getSession_id());
+                }
+
+                startActivity(mIntent);
+                SlideOut.getInstance().startAnimation(this);
+
                 break;
 
         }

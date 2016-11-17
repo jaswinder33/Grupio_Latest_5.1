@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.grupio.R;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
+import com.grupio.attendee.ListConstant;
 import com.grupio.attendee.ListDetailActivity;
 import com.grupio.dao.ExhibitorDAO;
 import com.grupio.dao.SessionDAO;
@@ -131,7 +132,8 @@ public class WebViewActivity extends BaseActivity {
                     mIntent.setClass(WebViewActivity.this, ListActivity.class);
                     break;
                 case SESSIONS:
-//                    mIntent.setClass(WebViewActivity.this, ListActivity.class);
+                    mIntent.putExtra("type", ListConstant.SESSION);
+                    mIntent.setClass(WebViewActivity.this, ListActivity.class);
                     break;
             }
 
@@ -152,17 +154,16 @@ public class WebViewActivity extends BaseActivity {
         if (mData instanceof ExhibitorData) {
             mIntent.putExtra("id", ((ExhibitorData) mData).getExhibitorId());
             mIntent.setType("exhibitor");
-            mIntent.putExtra("data", mData);
-            startActivity(mIntent);
-            SlideOut.getInstance().startAnimation(this);
+//            mIntent.putExtra("data", mData);
+//            startActivity(mIntent);
+//            SlideOut.getInstance().startAnimation(this);
+        } else if (mData instanceof ScheduleData) {
+            mIntent.putExtra("id", ((ScheduleData) mData).getSession_id());
+            mIntent.setType(ListConstant.SESSION);
         }
-//        else if(mData instanceof ScheduleData){
-//            mIntent.putExtra("id",((ScheduleData) mData).getSession_id());
-//            mIntent.setType("Sessions");
-//        }
-//        mIntent.putExtra("data", mData);
-//        startActivity(mIntent);
-//        SlideOut.getInstance().startAnimation(this);
+        mIntent.putExtra("data", mData);
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(this);
     }
 
     public class CustomWebClient extends WebViewClient {

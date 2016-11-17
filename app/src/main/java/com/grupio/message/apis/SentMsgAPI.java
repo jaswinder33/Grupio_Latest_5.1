@@ -52,7 +52,7 @@ public class SentMsgAPI extends AsyncTask<String, Void, Boolean> {
         //   "&page_num=0&threads_per_page="+ Preferences.getInstances(mContext).getTotalMessages()+ "&sent_messages=1";
 
         String url = mContext.getString(R.string.base_url) + mContext.getString(R.string.message_sent_api) + "&page_num=0&threads_per_page=10&sent_messages=1";// + params[0];
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         result = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
 

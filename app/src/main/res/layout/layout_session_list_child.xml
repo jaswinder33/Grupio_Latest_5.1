@@ -1,90 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/favBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:background="@color/transparent"
-        app:srcCompat="@drawable/ic_star_off" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/addBtn"
-        android:layout_toRightOf="@+id/favBtn"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/sessionName"
+        <ImageButton
+            android:id="@+id/favBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            app:srcCompat="@drawable/ic_star_off" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="How Brand Development Helped increase interest in two Pubic Health Programs in Maine"
-            android:textSize="@dimen/text_14" />
+            android:layout_toLeftOf="@+id/addBtn"
+            android:layout_toRightOf="@+id/favBtn"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
-        <TextView
-            android:id="@+id/sessionSpeakerList"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/sessionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="How Brand Development Helped increase interest in two Pubic Health Programs in Maine"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/sessionSpeakerList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="Speaker List"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sessionDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="10:10 AM - 11:00 AM"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/sessionLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="Location:"
+                android:textSize="@dimen/text_12"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/sessionTrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"
+                android:gravity="center_horizontal"
+                android:text="Track: Breakout session"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
-            android:text="Speaker List"
-            android:textSize="@dimen/text_12"
-            android:textStyle="bold" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_add" />
 
-        <TextView
-            android:id="@+id/sessionDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
-            android:text="10:10 AM - 11:00 AM"
-            android:textSize="@dimen/text_12" />
 
-        <TextView
-            android:id="@+id/sessionLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
-            android:text="Location:"
-            android:textSize="@dimen/text_12"
-            android:visibility="visible" />
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/sessionTrack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorAccent"
-            android:gravity="center_horizontal"
-            android:text="Track: Breakout session"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/childList"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@color/transparent"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_add" />
+        android:visibility="gone" />
 
+</LinearLayout>
 
-</RelativeLayout>

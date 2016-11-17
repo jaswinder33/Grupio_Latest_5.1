@@ -32,7 +32,7 @@ public class SendContactAPI extends BaseAsyncTask<String, Boolean> {
     public Boolean handleBackground(String... params) {
 
         url = url + "&event_id=" + ConstantData.EVENT_ID + "&sendto=" + params[0];
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         String response = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
 //{"description":"Success"}

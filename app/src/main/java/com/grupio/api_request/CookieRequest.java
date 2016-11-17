@@ -11,10 +11,9 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -25,26 +24,14 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class CookieRequest extends APIRequest {
 
-	private static String getPostDataString(Map<String, String> params) throws UnsupportedEncodingException {
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			if (first)
-				first = false;
-			else
-				result.append("&");
+	Context mContext;
 
-			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-		}
-		return result.toString();
+	public CookieRequest(Context mContext) {
+		this.mContext = mContext;
 	}
 
 	@Override
 	public String requestResponse(String endPoint, Map<String, String> params, Context mContext) {
-
-//		String link = "http://conf.dharanet.com/conf/v1/main/chat_frnds.php?format=json";
 
 		String response = "";
 		URL url;
@@ -87,6 +74,21 @@ public class CookieRequest extends APIRequest {
 
 		return response.toString();
 
+	}
+
+	@Override
+	protected String getRequestType() {
+		return "POST";
+	}
+
+	@Override
+	protected Map<String, String> getCustomHeaders() {
+
+		Map<String, String> mHeaderList = new HashMap<>();
+		mHeaderList.put("Accept", "application/json");
+		mHeaderList.put("Cookie", "attendee_id=" + Preferences.getInstances(mContext).getAttendeeId() + ";" + "event_id=" + ConstantData.EVENT_ID + ";" + "organization_id=" + BuildConfig.ORG_ID);
+
+		return mHeaderList;
 	}
 
 }

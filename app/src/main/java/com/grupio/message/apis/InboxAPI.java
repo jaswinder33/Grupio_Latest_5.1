@@ -49,7 +49,7 @@ public class InboxAPI extends BaseAsyncTask<String, Boolean> {
 
         url += params[0];
 
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         String result = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
         if (result != null && !TextUtils.isEmpty(result)) {

@@ -17,35 +17,37 @@ public interface NotesContract {
 
         void showList(List<NotesData> mList);
 
-        void showNote(String text);
+        void showNote(NotesData note);
+
+        void onNoteSaved(NotesData mNote);
+
+        void upateNoteId(String id);
     }
 
     interface Presenter {
 
         void fetchList(Context mContext);
 
-        void fetchNote(Context mContext);
+        void fetchNote(String type, String id, Context mContext);
 
         void delete(Context mContext);
 
         void doEmail(Context mContext);
 
-        void saveNote(NotesData data);
+        void saveNote(NotesData mNotes, Context mContext);
     }
 
     interface Interactor {
 
-        void fetchListFromDb(Context mContext, OnInteraction mListener);
+        void fetchList(Context mContext, OnInteraction mListener);
 
-        void fetchListFromServer(Context mContext, OnInteraction mListener);
-
-        void fetchNote(Context mContext, OnInteraction mListener);
+        void fetchNote(String type, String id, Context mContext, OnInteraction mListener);
 
         void delete(Context mContext, OnInteraction mListener);
 
         void doEmail(Context mContext, OnInteraction mListener);
 
-        void saveNote(NotesData data);
+        void saveNote(NotesData mNotes, Context mContext, OnInteraction mListener);
     }
 
     interface OnInteraction {
@@ -54,12 +56,13 @@ public interface NotesContract {
 
         void onListFetch(List<NotesData> mList);
 
-        void onNoteFetch(String noteData);
+        void onNoteFetch(NotesData noteData);
 
         void onNoteDelete();
 
         void onNoteSaved();
 
+        void updateNoteId(String id);
 
     }
 

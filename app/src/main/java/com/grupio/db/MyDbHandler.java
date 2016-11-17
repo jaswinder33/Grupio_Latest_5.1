@@ -33,7 +33,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 }
             }
         }
-        return mMyDbHandler;//= new MyDbHandler(context);
+        return mMyDbHandler;
     }
 
     public synchronized SQLiteDatabase getDBObject(int isWrtitable) {
@@ -44,18 +44,15 @@ public class MyDbHandler extends SQLiteOpenHelper {
     }
 
     public synchronized void closeDb() {
-
-//        synchronized (MyDbHandler.class) {
         if (mOpenCounter.decrementAndGet() == 0) {
             db.close();
         }
-//        }
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SessionNotes.CREATE_SESSION_NOTES_TABLE);
+        db.execSQL(NotesTable.CREATE_NOTES_TABLE);
         db.execSQL(MessageTable.CREATE_MSG_TABLE);
         db.execSQL(AttendeeTable.CREATE_ATTENDEE_TABLE);
         db.execSQL(SpeakerTable.CREATE_SPEAKER_TABLE);
@@ -74,7 +71,5 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-
     }
 }

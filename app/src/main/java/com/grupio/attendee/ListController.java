@@ -34,7 +34,6 @@ public class ListController<T extends Person> implements ControllerInter {
     private Context mContext;
     private boolean isFirstName = false;
     private T type;
-    private Person mPerson;
 
     /**
      * Constructor

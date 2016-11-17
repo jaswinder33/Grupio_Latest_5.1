@@ -96,4 +96,8 @@ public interface DetailViewInter {
 
     void showSpeakerList(List<SpeakerData> mList, String headerLocale);
 
+    void showNotesButton();
+
+    void showSocialButton();
+
 }

@@ -310,6 +310,15 @@ public class ListDetailPresenter<T extends Person> implements DetailPresenterInt
         mListener.showSpeakerList(mList, headerLocale);
     }
 
+    @Override
+    public void showSocialBtn() {
+        mListener.showSocialButton();
+    }
+
+    @Override
+    public void showNotesBtn() {
+        mListener.showNotesButton();
+    }
 
     @Override
     public void onPermissionAskedForSendContactRequest() {

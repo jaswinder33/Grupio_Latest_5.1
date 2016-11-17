@@ -115,7 +115,7 @@ public class SessionDAO extends BaseDAO {
 
         if (trackName != null) {
             if (date == null) {
-                query += " where sessions.start_time=(select min(sessions.start_time) from sessions where sessions.track='" + trackName + "')";
+                query += " where sessions.start_time=(select min(sessions.start_time) from sessions where sessions.track='" + trackName + "' and " + SessionTable.PARENT_SESSION_ID + " = '0')";
             } else {
                 query += " where sessions.start_time like '" + date + "%'";
             }
@@ -151,7 +151,12 @@ public class SessionDAO extends BaseDAO {
                     sd.setTrack(mCursor.getString(4));
                     sd.setSummary(mCursor.getString(5));
                     sd.setLocation(mCursor.getString(6));
+
                     sd.setParent_session_id(mCursor.getString(7));
+                    if (!sd.getParent_session_id().equals("0")) {
+                        continue;
+                    }
+
                     sd.setHas_child(mCursor.getString(8));
                     sd.setMaxSeatsAvailable(mCursor.getString(9));
 
@@ -184,16 +189,16 @@ public class SessionDAO extends BaseDAO {
 
     public List<String> getDateList(String trackName) {
 
-//        "select distinct strftime('%d-%m-%Y',start_time) from sessions";
-
-
         String query = "select distinct date(" + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " ";
 
         if (trackName != null) {
             query += " where " + SessionTable.TRACK + "='" + trackName + "'";
+            query += " and date(" + SessionTable.START_TIME + ") not in (select  date(" + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " where parent_session_id != 0)";
+        } else {
+            query += " where date(" + SessionTable.START_TIME + ") not in (select  date(" + SessionTable.START_TIME + ") from " + SessionTable.SESSION_TABLE + " where parent_session_id != 0)";
         }
 
-        query += " order by " + SessionTable.START_TIME + ";";
+        query += " order by " + SessionTable.START_TIME;
 
         List<String> dateslist = new ArrayList<>();
 
@@ -389,12 +394,73 @@ public class SessionDAO extends BaseDAO {
             if (mCursor != null && !mCursor.isClosed()) {
                 mCursor.close();
             }
-
         }
-
         closeDb();
     }
 
+    /**
+     * Return list of all child sessions of provided parent session id
+     *
+     * @param parentId
+     */
+    public List<ScheduleData> getChildSessions(String parentId) {
+
+        String name_order = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER);
+        boolean isFirstName = name_order.equals("firstname_lastname");
+        openDB(0);
+        List<ScheduleData> mScheduleDataList = new ArrayList<>();
+
+        String query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.parent_session_id='" + parentId + "' order by sessions.start_time;";
+
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.moveToFirst()) {
+
+                ScheduleData sd;
+                do {
+                    sd = new ScheduleData();
+
+                    sd.setSession_id(mCursor.getString(0));
+                    sd.setName(mCursor.getString(1));
+                    sd.setStart_time(mCursor.getString(2));
+                    sd.setEnd_time(mCursor.getString(3));
+                    sd.setTrack(mCursor.getString(4));
+                    sd.setSummary(mCursor.getString(5));
+                    sd.setLocation(mCursor.getString(6));
+
+                    sd.setParent_session_id(mCursor.getString(7));
+
+                    sd.setHas_child(mCursor.getString(8));
+                    sd.setMaxSeatsAvailable(mCursor.getString(9));
+
+                    sd.setSpeakerListAsString(mCursor.getString(10));
+                    sd.setResourceListAsString(mCursor.getString(11));
+                    sd.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
+                    sd.setCalenderAddId(mCursor.getString(13));
+
+                    sd.setColor(mCursor.getString(14) != null ? mCursor.getString(14) : "#");
+
+                    sd.setSpeakerNameAsString(SpeakerDAO.getInstance(mContext).getSpeakerNames(mCursor.getString(10), db, isFirstName));
+
+                    mScheduleDataList.add(sd);
+                } while (mCursor.moveToNext());
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return mScheduleDataList;
+
+    }
 
 
 }

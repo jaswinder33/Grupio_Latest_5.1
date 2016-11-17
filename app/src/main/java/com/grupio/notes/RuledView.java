@@ -29,7 +29,7 @@ public class RuledView extends EditText {
         int height = this.getMeasuredHeight();
         int line_height = this.getLineHeight();
         int page_size = height / line_height + 1;
-        int posY = 15;
+        int posY = 20;
         if (count < page_size) {
             count = page_size;
         }

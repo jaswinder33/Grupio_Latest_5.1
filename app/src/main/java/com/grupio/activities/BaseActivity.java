@@ -63,11 +63,6 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     private Presenter mPresenter;
     private ProgressDialog mProgressDialog;
 
-    protected void onCreate(Bundle savedInstanceState, boolean initializeFB) {
-        onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -9,7 +9,7 @@ import com.grupio.activities.BaseActivity;
 import com.grupio.attendee.ListWatcher;
 import com.grupio.backend.Permissions;
 
-public class ScheduleListActivity extends BaseActivity {
+public class ScheduleListActivity extends BaseActivity<Void> {
 
     String trackid = null;
 
@@ -39,7 +39,7 @@ public class ScheduleListActivity extends BaseActivity {
     }
 
     @Override
-    public ScheduleListPresenter setPresenter() {
+    public Void setPresenter() {
         return null;
     }
 

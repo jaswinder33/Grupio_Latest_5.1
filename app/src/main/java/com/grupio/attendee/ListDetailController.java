@@ -80,6 +80,9 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
         validateSpeakerList(mListener);
 
+        validateShareBtn(mListener);
+        validateNotesBtn(mListener);
+
     }
 
 
@@ -657,9 +660,30 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             if (!mSpeakerList.isEmpty()) {
                 mListener.onSpeakerListValidation(mSpeakerList, "Speakers");
             }
+        }
+    }
 
+    public void validateShareBtn(OnValidationComplete mListener) {
+
+        if (type instanceof ScheduleData) {
+            boolean isMenuPresent = MenuDAO.getInstance(mContext).checkIfMenuExists(mContext.getResources().getString(R.string.social));
+
+            if (isMenuPresent) {
+                mListener.showSocialBtn();
+            }
         }
 
+    }
 
+    public void validateNotesBtn(OnValidationComplete mListener) {
+        if (type instanceof ScheduleData) {
+
+            boolean showBtn = EventDAO.getInstance(mContext).getValue(EventTable.SHOW_NOTES_BUTTON).equals("y");
+
+            if (showBtn) {
+                mListener.showNotesBtn();
+            }
+
+        }
     }
 }

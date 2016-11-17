@@ -71,7 +71,7 @@ public class MarkMsgAsReadAPI extends AsyncTask<String, Void, Boolean> {
 
         String url = mContext.getString(R.string.base_url) + mContext.getString(R.string.mark_msg_as_read_api) + "&message_id=" + params[0];
 
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         result = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
         if (result != null) {

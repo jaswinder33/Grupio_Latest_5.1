@@ -12,26 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_header_height">
 
-        <!--   <Button
-               android:layout_width="100dp"
-               android:layout_height="" />-->
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Session Notes"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="Save" />
     </RelativeLayout>
 
-
-    <com.grupio.notes.RuledView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.grupio.notes.RuledView
-        android:id="@+id/notesDesc"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:background="@color/transparent"
-        android:gravity="top|left"
-        android:padding="@dimen/rules_text_padding"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_16" />
+        android:fillViewport="true">
+
+        <com.grupio.notes.RuledView
+            android:id="@+id/notesDesc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="top|left"
+            android:padding="@dimen/rules_text_padding"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_16" />
+    </ScrollView>
 
 
 </LinearLayout>

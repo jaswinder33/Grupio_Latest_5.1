@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,8 +8,10 @@
     <include layout="@layout/layout_banner" />
 
     <EditText
+        android:id="@+id/shareField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/bannerLay"
         android:layout_margin="10dp"
         android:background="@drawable/rectangle_stroke_only"
         android:elevation="5dp"
@@ -19,17 +22,71 @@
         android:text="" />
 
     <Button
+        android:id="@+id/shareBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/shareField"
         android:layout_margin="10dp"
         android:background="@drawable/header_background"
-        android:text="@string/share" />
+        android:text="@string/share"
+        android:textColor="@color/white" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Comiing soon..."
-        android:textSize="20dp" />
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/twitterBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:elevation="5dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_twitter" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/linkedinBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:elevation="5dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_linkedin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/facebookBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:elevation="5dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_facebook_logo" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -27,11 +27,7 @@ public class EventListPresenter implements EventListPresenterImp, EventControlle
         if (mListener != null) {
             mListener.showProgess();
 
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    mController.fetchEventListFromServer(query, EventListPresenter.this);
-                }
-            };
+            Runnable runnable = () -> mController.fetchEventListFromServer(query, EventListPresenter.this);
             new Thread(runnable).start();
         }
     }

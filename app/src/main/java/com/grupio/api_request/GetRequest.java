@@ -72,4 +72,14 @@ public class GetRequest extends APIRequest {
 
 		return response.toString();
 	}
+
+	@Override
+	protected String getRequestType() {
+		return "GET";
+	}
+
+	@Override
+	protected Map<String, String> getCustomHeaders() {
+		return null;
+	}
 }

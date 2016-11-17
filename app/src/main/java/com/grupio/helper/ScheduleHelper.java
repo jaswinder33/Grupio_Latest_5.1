@@ -12,7 +12,6 @@ import android.text.TextUtils;
 
 import com.grupio.animation.SlideOut;
 import com.grupio.apis.LikeUnlikeSessionAPI;
-import com.grupio.attendee.ListWatcher;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.SessionDAO;
 import com.grupio.dao.VersionDao;
@@ -79,7 +78,7 @@ public class ScheduleHelper {
 
         SessionDAO.getInstance(mContext).persistCalendarId(uri.getLastPathSegment(), mScheduleData.getSession_id());
 
-        ListWatcher.getInstance().notifyList();
+//        ListWatcher.getInstance().notifyList();
 
         return uri.getLastPathSegment();
     }
@@ -129,7 +128,6 @@ public class ScheduleHelper {
     public List<ScheduleData> parseJSON(Context mContext, String response) {
 
         List<ScheduleData> mList = new ArrayList<>();
-
 
         JSONObject jsonObject = null;
         try {
@@ -207,6 +205,12 @@ public class ScheduleHelper {
                     }
 
                     try {
+                        sd.setHas_child(jsonArray.getJSONObject(i).getString("has_child"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
                         sd.setMaxSeatsAvailable(jsonArray.getJSONObject(i).getString("max_limit_of_attendees"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -217,21 +221,21 @@ public class ScheduleHelper {
                         JSONArray speakerList = jsonArray.getJSONObject(i).getJSONArray("speaker_id");
                         sd.setSpeakerListAsString(speakerList.toString());
 
-                        //compatibility with old code
-                        try {
-                            JSONArray jarray = speakerList;
-
-                            if (jarray != null && jarray.length() != 0) {
-                                String[] speakersArray = new String[jarray.length()];
-
-                                for (int j = 0; j < jarray.length(); j++) {
-                                    speakersArray[j] = jarray.getString(j);
-                                }
-                                sd.setSpeakes(speakersArray);
-                            }
-                        } catch (Exception e) {
-
-                        }
+//                        //compatibility with old code
+//                        try {
+//                            JSONArray jarray = speakerList;
+//
+//                            if (jarray != null && jarray.length() != 0) {
+//                                String[] speakersArray = new String[jarray.length()];
+//
+//                                for (int j = 0; j < jarray.length(); j++) {
+//                                    speakersArray[j] = jarray.getString(j);
+//                                }
+//                                sd.setSpeakes(speakersArray);
+//                            }
+//                        } catch (Exception e) {
+//
+//                        }
 
 
                     } catch (JSONException e) {

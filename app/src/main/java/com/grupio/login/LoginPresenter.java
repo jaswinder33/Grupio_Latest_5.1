@@ -3,6 +3,8 @@ package com.grupio.login;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.grupio.attendee.ListConstant;
+
 /**
  * Created by JSN on 13/10/16.
  */
@@ -67,8 +69,8 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
                 //Leave pending
                 break;
 
-            case "schedule":
-
+            case ListConstant.SESSION:
+                mListener.goToNotesActivity();
                 break;
 
             case "mycalendar":

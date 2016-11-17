@@ -59,7 +59,7 @@ public class SendMsgAPI extends BaseAsyncTask<MessageData, Boolean> {
         paramList.put("thread_id", mMessageData.getThread_id());
         paramList.put("format", "json");
 
-        APIRequest apiCall = new CookieRequest();
+        APIRequest apiCall = new CookieRequest(mContext);
         String result = apiCall.requestResponse(url, paramList, mContext);
 
         if (result != null) {

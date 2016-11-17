@@ -59,7 +59,7 @@ public class MessageCountAPI extends AsyncTask<Void, Void, Boolean> {
 
         String url = mContext.getString(R.string.base_url) + mContext.getString(R.string.message_count);
 
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         result = apiRequest.requestResponse(url, new HashMap<>(), mContext);
 
 //{"data":{"UnreadMessages":"0","TotalMessages":"0"}}

@@ -28,6 +28,8 @@ public interface LoginView {
 
     void goToDiscussionBoard();
 
+    void goToNotesActivity();
+
     void downloadDocument();
 
     void navigateScreen(Bundle mbundle, Class<?> className);

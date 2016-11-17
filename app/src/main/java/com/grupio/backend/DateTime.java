@@ -1,5 +1,7 @@
 package com.grupio.backend;
 
+import android.os.SystemClock;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +14,51 @@ public class DateTime {
 
     public static DateTime getInstance() {
         return new DateTime();
+    }
+
+    /**
+     * Get current time with UTC timezone
+     *
+     * @return
+     */
+//    public String currentTimeInUTC() {
+//
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        df.setTimeZone(TimeZone.getDefault());
+//        String formattedDate = "";
+//        try {
+//            Date date = df.parse(SystemClock.);
+//            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            formattedDate = df.format(date);
+//        } catch (ParseException e) {
+//
+//            e.printStackTrace();
+//        }
+//
+//        return formattedDate;
+//
+//        return formattedDate;
+//
+//
+//    }
+
+//    public String formatDate(Date date) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        return sdf.format(date);
+//    }
+//
+//    public String formatDate(long timestamp) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        return sdf.format(timestamp);
+//    }
+//
+//    public Date getCurrentTime(){
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        return sdf.parse(new Date());
+//    }
+    public static boolean timeStampExpired(int timeStamp) {
+        return (SystemClock.currentThreadTimeMillis() - timeStamp > 0);
     }
 
     /**
@@ -50,23 +97,6 @@ public class DateTime {
 
         return sdfTime.format(mCal.getTime());
 
-    }
-
-    /**
-     * Format given date with given format
-     *
-     * @param format
-     * @param date
-     * @return
-     */
-    public String formatDate(String format, String date) {
-
-        SimpleDateFormat sdfTime = new SimpleDateFormat(format);
-        Calendar mCal = Calendar.getInstance();
-
-        mCal.setTimeInMillis(getTimeInMillis(date));
-
-        return sdfTime.format(mCal.getTime());
     }
 
 
@@ -110,47 +140,21 @@ public class DateTime {
 //        return sdf.format(mCal.getTime());
 //    }
 
-
     /**
-     * Get current time with UTC timezone
+     * Format given date with given format
      *
+     * @param format
+     * @param date
      * @return
      */
-//    public String currentTimeInUTC() {
-//
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        df.setTimeZone(TimeZone.getDefault());
-//        String formattedDate = "";
-//        try {
-//            Date date = df.parse(SystemClock.);
-//            df.setTimeZone(TimeZone.getTimeZone("UTC"));
-//            formattedDate = df.format(date);
-//        } catch (ParseException e) {
-//
-//            e.printStackTrace();
-//        }
-//
-//        return formattedDate;
-//
-//        return formattedDate;
-//
-//
-//    }
+    public String formatDate(String format, String date) {
 
-//    public String formatDate(Date date) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        return sdf.format(date);
-//    }
-//
-//    public String formatDate(long timestamp) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        return sdf.format(timestamp);
-//    }
-//
-//    public Date getCurrentTime(){
-//
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        return sdf.parse(new Date());
-//    }
+        SimpleDateFormat sdfTime = new SimpleDateFormat(format);
+        Calendar mCal = Calendar.getInstance();
+
+        mCal.setTimeInMillis(getTimeInMillis(date));
+
+        return sdfTime.format(mCal.getTime());
+    }
 
 }

@@ -181,7 +181,7 @@ public class EventListActivity extends BaseActivity<EventListPresenter> implemen
 
     @Override
     public void onFailure(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_LONG).show());
     }
 
     @Override
@@ -197,15 +197,12 @@ public class EventListActivity extends BaseActivity<EventListPresenter> implemen
     @Override
     public void showEventList(List<EventData> mlist) {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("Event List Size", mlist.size() + "");
-                checkForPermissions();
-                EventListAdapter mAdapter = new EventListAdapter(EventListActivity.this);
-                mAdapter.addAll(mlist);
-                lstEvent.setAdapter(mAdapter);
-            }
+        runOnUiThread(() -> {
+            Log.i("Event List Size", mlist.size() + "");
+            checkForPermissions();
+            EventListAdapter mAdapter = new EventListAdapter(EventListActivity.this);
+            mAdapter.addAll(mlist);
+            lstEvent.setAdapter(mAdapter);
         });
 
     }

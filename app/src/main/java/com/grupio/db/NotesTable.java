@@ -4,9 +4,9 @@ package com.grupio.db;
  * Created by JSN on 4/10/16.
  */
 
-public class SessionNotes {
+public class NotesTable {
 
-    public static final String SESSION_NOTES_TABLE = "session_notes";
+    public static final String NOTES_TABLE = "notes";
 
     //fields
     public static final String NOTE_ID = "note_id";            // text
@@ -16,8 +16,8 @@ public class SessionNotes {
     public static final String NOTE_SYNC = "note_syn_require";    // text, 0-synced, 1- not synced, default = 0
 
 
-    public static final String CREATE_SESSION_NOTES_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + SESSION_NOTES_TABLE + " (" +
+    public static final String CREATE_NOTES_TABLE =
+            "CREATE TABLE IF NOT EXISTS " + NOTES_TABLE + " (" +
                     NOTE_ID + " TEXT, "
                     + NOTE_TYPE + " TEXT NOT NULL, "
                     + NOTE_TEXT + " TEXT, " +

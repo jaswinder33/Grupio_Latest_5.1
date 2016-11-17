@@ -52,7 +52,10 @@
     <string name="live_api">/livefeeds.php?format=json&amp;livefeedformat=new&amp;event_id=</string>
 
     <!--Schedule APIs-->
-    <string name="like_unlike_schedule_api">/myschedule.php?format=json</string>>
+    <string name="like_unlike_schedule_api">/myschedule.php?format=json</string>
+
+    <!--Notes-->
+    <string name="session_note">/sessionNotes.php?format=json</string>
 
 
     <!-- ################################################################### -->

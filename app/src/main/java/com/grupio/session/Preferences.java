@@ -149,4 +149,13 @@ public class Preferences {
     public void setExhibitorCategory(String response) {
         editor.putString("exhibitor_category", response).commit();
     }
+
+    public void setLinkedinToken(String token) {
+        editor.putString("linkedin", token).commit();
+    }
+
+    public String getLinedinToken() {
+        return pref.getString("linkedin", null);
+    }
+
 }

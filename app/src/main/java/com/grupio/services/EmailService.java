@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import com.grupio.message.apis.APICallBack;
+
 import java.util.List;
 
 /**
@@ -12,18 +14,14 @@ import java.util.List;
  */
 
 public class EmailService implements ServiceContract {
-    @Override
-    public void sendMessage(String message) {
 
-
-    }
 
     @Override
-    public void sendMessage(String address, Context mContext) {
+    public void sendMessage(String str, Context mContext, APICallBack mListener) {
         try {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/html");
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{str});
             ResolveInfo best = null;
             try {
                 final PackageManager pm = mContext.getPackageManager();

@@ -23,6 +23,7 @@ import com.grupio.schedule.ScheduleListActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
+import com.grupio.social.SocialActivity;
 import com.grupio.venuemaps.VenueMapActivity;
 
 /**
@@ -45,6 +46,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick discussionBoardClick = mBundle -> sendIntent(WebViewActivity.class, mBundle);
     MenuClick scheduleTracklistClick = mBundle -> sendIntent(ScheduleTrackListActivity.class, mBundle);
     MenuClick scheduleListClick = mBundle -> sendIntent(ScheduleListActivity.class, mBundle);
+    MenuClick socialClick = mBundle -> sendIntent(SocialActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -134,6 +136,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "social":
+                    performClick(mBundle, socialClick);
                     break;
 
                 case "logistics":
@@ -210,7 +213,6 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                         mBundle.putString("url", url);
                         performClick(mBundle, discussionBoardClick);
                     }
-
 
                     break;
 

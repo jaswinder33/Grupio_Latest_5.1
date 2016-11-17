@@ -41,7 +41,7 @@ public class LikeUnlikeSessionAPI extends BaseAsyncTask<String, Void> {
         mParamList.put("device_id", Preferences.getInstances(mContext).getDeviceID());
         mParamList.put("device_token", Preferences.getInstances(mContext).getDeviceToken());
 
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
         apiRequest.requestResponse(url, mParamList, mContext);
 
         return null;

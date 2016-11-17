@@ -15,6 +15,7 @@ import com.grupio.animation.SlideOut;
 import com.grupio.attendee.message.SendMessageActivity;
 import com.grupio.data.LogisticsData;
 import com.grupio.message.MessageActivity;
+import com.grupio.notes.NotesDetailsActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
 
@@ -30,7 +31,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private Boolean isForConnectBtn = false;
     private LogisticsData mSessionDoc;
     private String sessionDocAction = "";
-
+    private String id = "";
 
     @Override
     public boolean isHeaderForGridPage() {
@@ -152,9 +153,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
+    public void goToNotesActivity() {
+        Bundle mBundle = new Bundle();
+        mBundle.putString("type", menuFrom);
+        mBundle.putString("id", id);
+        navigateScreen(mBundle, NotesDetailsActivity.class);
+        SlideOut.getInstance().startAnimation(this);
+    }
+
+    @Override
     public void downloadDocument() {
-
-
         Intent mIntent = new Intent();
         mIntent.putExtra("data", mSessionDoc);
         setResult(RESULT_OK, mIntent);
@@ -180,6 +188,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
             case R.id.logoutBtn:
                 Preferences.getInstances(this).setAttendeeId(null);
+                Preferences.getInstances(this).saveUserInfo(null);
                 break;
         }
     }
@@ -219,6 +228,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
             try {
                 sessionDocAction = (String) mBundle.get("action");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                id = mBundle.getString("id");
             } catch (Exception e) {
                 e.printStackTrace();
             }

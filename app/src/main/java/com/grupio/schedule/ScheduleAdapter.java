@@ -1,14 +1,17 @@
 package com.grupio.schedule;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
+import com.grupio.attendee.ListWatcher;
 import com.grupio.base.BaseListAdapter;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.SessionDAO;
@@ -16,6 +19,9 @@ import com.grupio.data.ScheduleData;
 import com.grupio.db.EventTable;
 import com.grupio.helper.ScheduleHelper;
 import com.grupio.interfaces.ClickHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JSN on 7/11/16.
@@ -50,6 +56,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
 
         ScheduleData mScheduleData = getItem(position);
 
+        //Handle Star button
         if (mScheduleData.isSessionFav()) {
             mHolder.mLikeBtn.setImageResource(R.drawable.ic_star_on);
             mHolder.mLikeBtn.setColorFilter(Color.BLUE);
@@ -60,6 +67,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
 
         mHolder.sessionName.setText(mScheduleData.getName());
 
+        //Handle Location text
         if (!TextUtils.isEmpty(mScheduleData.getLocation())) {
             mHolder.sessionLocation.setVisibility(View.VISIBLE);
             mHolder.sessionLocation.setText("Location: " + mScheduleData.getLocation());
@@ -67,6 +75,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             mHolder.sessionLocation.setVisibility(View.GONE);
         }
 
+        //handle track color
         if (showTrackColor) {
             try {
                 mHolder.sessionTrack.setBackgroundColor(Color.parseColor(getItem(position).getColor()));
@@ -77,14 +86,18 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             mHolder.sessionTrack.setBackgroundColor(Color.WHITE);
         }
 
+        //Hanle track
         if (TextUtils.isEmpty(getItem(position).getTrack())) {
             mHolder.sessionTrack.setVisibility(View.GONE);
         } else {
             mHolder.sessionTrack.setVisibility(View.VISIBLE);
+            mHolder.sessionTrack.setText(mScheduleData.getTrack());
         }
 
+        //Handle time
         mHolder.sessionDate.setText(ScheduleHelper.formatSessionDate(mScheduleData.getStart_time(), mScheduleData.getEnd_time()));
 
+        //Handle Speaker name
         if (TextUtils.isEmpty(mScheduleData.getSpeakerNameAsString())) {
             mHolder.speakerList.setVisibility(View.INVISIBLE);
         } else {
@@ -92,6 +105,14 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             mHolder.speakerList.setText(mScheduleData.getSpeakerNameAsString());
         }
 
+        //Handle + button
+        if (mScheduleData.getHas_child().equals("1")) {
+            mHolder.addBtn.setVisibility(View.VISIBLE);
+        } else {
+            mHolder.addBtn.setVisibility(View.GONE);
+        }
+
+        //Handle star button click
         mHolder.mLikeBtn.setOnClickListener(view -> {
 
             if (!ScheduleHelper.isLoginRequiredToLike(getContext(), ScheduleTrackListActivity.class)) {
@@ -122,7 +143,6 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
                     notifyDataSetChanged();
                 };
 
-
                 if (mScheduleData.isSessionFav()) {
                     BaseActivity.CustomDialog.getDialog(getContext(), mRemoveSchedule).show(getContext().getString(R.string.remove_schedule));
                 } else {
@@ -131,7 +151,46 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             }
         });
 
+        mHolder.addBtn.setTag(0);
+        //handle + button click
+        mHolder.addBtn.setOnClickListener(view -> {
+
+            //Unregister watcher to prevent it refreshing whole list.
+            ListWatcher.getInstance().unregisterListener();
+
+            int i = (int) mHolder.addBtn.getTag();
+
+            if (i == 1) {
+                mHolder.mChildSessionList.setVisibility(View.GONE);
+                mHolder.addBtn.setImageResource(R.drawable.ic_add);
+                mHolder.addBtn.setTag(0);
+            } else {
+                List<ScheduleData> mScheduleDataList = new ArrayList<>();
+                addAll(SessionDAO.getInstance(getContext()).getChildSessions(getItem(position).getSession_id()));
+
+                if (!mScheduleDataList.isEmpty()) {
+                    ScheduleAdapter mAdapter = new ScheduleAdapter(getContext());
+                    mHolder.mChildSessionList.setAdapter(mAdapter);
+                    mHolder.mChildSessionList.setVisibility(View.VISIBLE);
+                    mHolder.addBtn.setImageResource(R.drawable.ic_minus);
+                    mHolder.addBtn.setTag(1);
+                } else {
+                    mHolder.addBtn.setTag(0);
+                    mHolder.mChildSessionList.setVisibility(View.GONE);
+                }
+            }
+
+            Fragment fragment = ((ScheduleListActivity) getContext()).getFragmentManager().findFragmentById(R.id.container);
+
+            if (fragment != null) {
+                //Register watcher again.
+                ListWatcher.getInstance().registerListener((ListWatcher.Watcher) fragment);
+            }
+
+        });
+
     }
+
 
     @Override
     public ViewHolder setViewHolder(View convertView) {
@@ -142,6 +201,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
 
         ImageButton mLikeBtn, addBtn;
         TextView sessionName, speakerList, sessionDate, sessionLocation, sessionTrack;
+        ListView mChildSessionList;
 
         ViewHolder(View view) {
             mLikeBtn = (ImageButton) view.findViewById(R.id.favBtn);
@@ -151,6 +211,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             sessionDate = (TextView) view.findViewById(R.id.sessionDate);
             sessionLocation = (TextView) view.findViewById(R.id.sessionLocation);
             sessionTrack = (TextView) view.findViewById(R.id.sessionTrack);
+            mChildSessionList = (ListView) view.findViewById(R.id.childList);
         }
     }
 

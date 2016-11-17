@@ -76,7 +76,7 @@ public class LoadMoreMsgAPI extends AsyncTask<Void, Void, Boolean> {
 
         String url = mContext.getString(R.string.base_url) + mContext.getString(R.string.load_more_msg_api);
 
-        APIRequest apiRequest = new CookieRequest();
+        APIRequest apiRequest = new CookieRequest(mContext);
 
         Map<String, String> paramList = new HashMap<>();
         paramList.put("page_num", "0");
