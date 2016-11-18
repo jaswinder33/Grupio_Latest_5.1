@@ -9,6 +9,7 @@
     <include layout="@layout/layout_banner" />
 
     <RelativeLayout
+        android:id="@+id/noteHeaderLay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_header_height">
 
@@ -28,7 +29,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="Save" />
+            android:background="@drawable/book_btn"
+            android:text="Save"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <ScrollView

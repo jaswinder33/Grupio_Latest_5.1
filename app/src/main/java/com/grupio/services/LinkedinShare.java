@@ -10,7 +10,7 @@ import com.grupio.social.LinkedinDialog;
  * Created by JSN on 15/11/16.
  */
 
-public class LinkedinShare implements ServiceContract {
+public class LinkedinShare implements ServiceContract<String> {
 
     @Override
     public void sendMessage(String str, Context mContext, APICallBack mListener) {

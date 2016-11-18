@@ -1,14 +1,17 @@
 package com.grupio.notes;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 import com.grupio.attendee.ListConstant;
+import com.grupio.data.EmailData;
 import com.grupio.services.EmailService;
 import com.grupio.services.Service;
 
@@ -18,12 +21,11 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
 
     private static final String INSERT = "0";
     private static final String UPDATE = "1";
-    String id;
-    String type;
     private TextView headingTxt;
     private Button saveBtn;
     private RuledView mRuledView;
     private NotesData mNotesData = new NotesData();
+    private RelativeLayout noteHeaderLay;
 
     @Override
     public int getLayout() {
@@ -35,6 +37,7 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
         headingTxt = (TextView) findViewById(R.id.heading);
         saveBtn = (Button) findViewById(R.id.saveBtn);
         mRuledView = (RuledView) findViewById(R.id.notesDesc);
+        noteHeaderLay = (RelativeLayout) findViewById(R.id.noteHeaderLay);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
     public void setUp() {
         getData();
         handleRightBtn(true, EMAIL);
-        getPresenter().fetchNote(type, id, this);
+        getPresenter().fetchNote(mNotesData.getNoteType(), mNotesData.getNoteId(), this);
     }
 
     @Override
@@ -79,8 +82,9 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
             return;
         }
 
-        Service mEmailService = new Service(new EmailService());
-        mEmailService.sendMessage(text, this, null);
+        Service<EmailData> mEmailService = new Service(new EmailService());
+        EmailData emailData = new EmailData("", "My To-dos", text);
+        mEmailService.sendMessage(emailData, this, null);
 
     }
 
@@ -101,26 +105,31 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
 
     @Override
     public void showNote(NotesData note) {
-        mNotesData = note;
+        mNotesData.setId(note.getId());
         mRuledView.setText(note.getNoteText());
     }
 
     @Override
     public void onNoteSaved(NotesData mNote) {
         mNotesData = mNote;
-        showToast("Note Saved!");
+        runOnUiThread(() -> showToast("Note Saved!"));
     }
 
     @Override
     public void upateNoteId(String id) {
+        mNotesData.setId(id);
+    }
 
+    @Override
+    public void setHeaderColor(String colorCode) {
+        noteHeaderLay.setBackgroundColor(Color.parseColor(colorCode));
     }
 
     public void getData() {
         Bundle mbundle = getIntent().getExtras();
         if (mbundle != null) {
-            id = mbundle.getString("id");
-            type = mbundle.getString("type");
+            mNotesData.setNoteId(mbundle.getString("id"));
+            mNotesData.setNoteType(mbundle.getString("type"));
         }
     }
 
@@ -143,15 +152,15 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
                 mNote.setNoteText(text);
                 mNote.setNoteSync("0");
 
-                if (mNotesData.getNoteId().equals(id)) {
+                if (mNotesData.getId().equals("0")) {
                     mNote.setLastOperation(INSERT);
                 } else {
                     mNote.setLastOperation(UPDATE);
                 }
 
-                if (type.equals(ListConstant.SESSION)) {
+                if (mNotesData.getNoteType().equals(ListConstant.SESSION)) {
                     mNote.setNoteType(ListConstant.SESSION);
-                } else if (type.equals(ListConstant.EXHIBITOR)) {
+                } else if (mNotesData.getNoteType().equals(ListConstant.EXHIBITOR)) {
                     mNote.setNoteType(ListConstant.EXHIBITOR);
                 } else {
                     mNote.setNoteType("notes");

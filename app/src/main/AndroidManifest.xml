@@ -71,8 +71,7 @@
         <activity
             android:name=".home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activities.WebViewActivity"
             android:label="@string/title_activity_web_view"
@@ -122,10 +121,12 @@
             android:name=".venuemaps.VenueMapActivity"
             android:label="@string/title_activity_venue_map"
             android:theme="@style/AppTheme" />
-        <!-- <activity
+        <!--
+             <activity
              android:name=".venuemaps.SimpleListActivity"
              android:label="@string/title_activity_simple_list"
-             android:theme="@style/AppTheme" />-->
+             android:theme="@style/AppTheme" />
+        -->
         <activity
             android:name=".schedule.ScheduleTrackListActivity"
             android:label="@string/title_activity_schedule_track_list"
@@ -146,6 +147,10 @@
             android:name=".notes.NotesDetailsActivity"
             android:label="@string/title_activity_notes_details"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".notes.NotesListActivity"
+            android:label="@string/title_activity_notes_list"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

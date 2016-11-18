@@ -29,6 +29,7 @@ import com.grupio.animation.SlideOut;
 import com.grupio.attendee.message.SendMessageActivity;
 import com.grupio.backend.Permissions;
 import com.grupio.data.AttendeesData;
+import com.grupio.data.EmailData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
@@ -595,8 +596,9 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void sendEmail(String emailAddress) {
-        Service emailService = new Service(new EmailService());
-        emailService.sendMessage(emailAddress, ListDetailActivity.this, null);
+        Service<EmailData> emailService = new Service(new EmailService());
+        EmailData email = new EmailData(emailAddress, "", "");
+        emailService.sendMessage(email, ListDetailActivity.this, null);
     }
 
     @Override

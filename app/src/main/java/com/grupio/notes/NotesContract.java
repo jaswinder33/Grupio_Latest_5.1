@@ -22,11 +22,13 @@ public interface NotesContract {
         void onNoteSaved(NotesData mNote);
 
         void upateNoteId(String id);
+
+        void setHeaderColor(String colorCode);
     }
 
     interface Presenter {
 
-        void fetchList(Context mContext);
+        <T> void fetchList(T type, Context mContext);
 
         void fetchNote(String type, String id, Context mContext);
 
@@ -39,7 +41,7 @@ public interface NotesContract {
 
     interface Interactor {
 
-        void fetchList(Context mContext, OnInteraction mListener);
+        <T> void fetchList(T type, Context mContext, OnInteraction mListener);
 
         void fetchNote(String type, String id, Context mContext, OnInteraction mListener);
 
@@ -60,10 +62,11 @@ public interface NotesContract {
 
         void onNoteDelete();
 
-        void onNoteSaved();
+        void onNoteSaved(NotesData noteData);
 
         void updateNoteId(String id);
 
+        void onColorFetch(String colorCode);
     }
 
 }

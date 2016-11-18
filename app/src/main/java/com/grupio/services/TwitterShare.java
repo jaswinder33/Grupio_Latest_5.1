@@ -8,7 +8,7 @@ import com.grupio.message.apis.APICallBack;
  * Created by JSN on 15/11/16.
  */
 
-public class TwitterShare implements ServiceContract {
+public class TwitterShare implements ServiceContract<String> {
 
     @Override
     public void sendMessage(String str, Context mContext, APICallBack mListener) {

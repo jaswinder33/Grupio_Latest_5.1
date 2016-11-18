@@ -9,6 +9,7 @@ public class NotesTable {
     public static final String NOTES_TABLE = "notes";
 
     //fields
+    public static final String ID = "id";
     public static final String NOTE_ID = "note_id";            // text
     public static final String NOTE_TYPE = "note_type";            // text 2-session_note
     public static final String NOTE_TEXT = "note_text";            // text
@@ -18,7 +19,8 @@ public class NotesTable {
 
     public static final String CREATE_NOTES_TABLE =
             "CREATE TABLE IF NOT EXISTS " + NOTES_TABLE + " (" +
-                    NOTE_ID + " TEXT, "
+                    ID + " TEXT DEFAULT '0', "
+                    + NOTE_ID + " TEXT, "
                     + NOTE_TYPE + " TEXT NOT NULL, "
                     + NOTE_TEXT + " TEXT, " +
                     LAST_OPERATION + " TEXT, "

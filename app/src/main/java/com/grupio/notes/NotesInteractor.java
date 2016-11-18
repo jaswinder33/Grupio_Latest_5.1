@@ -5,13 +5,9 @@ import android.content.Context;
 import com.grupio.Utils.Utility;
 import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.SessionNote;
+import com.grupio.dao.EventDAO;
 import com.grupio.dao.NotesDAO;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.grupio.db.EventTable;
 
 /**
  * Created by JSN on 11/11/16.
@@ -20,25 +16,27 @@ import java.util.List;
 public class NotesInteractor implements NotesContract.Interactor {
 
     @Override
-    public void fetchList(Context mContext, NotesContract.OnInteraction mListener) {
+    public <T> void fetchList(T type, Context mContext, NotesContract.OnInteraction mListener) {
 
         if (Utility.hasInternet(mContext)) {
-            fetchListFromServer(mContext, mListener);
-        } else {
-            fetchListFromDb(mContext, mListener);
-        }
+            if (type instanceof NotesData) {
+                fetchNoteListFromServer(mContext, mListener);
+            } else {
 
+            }
+        } else {
+            if (type instanceof NotesData) {
+                fetchNoteListFromDb(mContext, mListener);
+            } else {
+                fetchToDoListFromDb(mContext, mListener);
+            }
+        }
     }
 
     @Override
     public void fetchNote(String type, String id, Context mContext, NotesContract.OnInteraction mListener) {
-
-        List<NotesData> mNotesList = new ArrayList<>();
-        mNotesList.addAll(NotesDAO.getInstance(mContext).getNote(id, type));
-
-        if (!mNotesList.isEmpty()) {
-            mListener.onNoteFetch(mNotesList.get(0));
-        }
+        mListener.onColorFetch(EventDAO.getInstance(mContext).getValue(EventTable.COLOR_THEME));
+        mListener.onNoteFetch(NotesDAO.getInstance(mContext).getNote(id, type));
     }
 
     @Override
@@ -54,16 +52,9 @@ public class NotesInteractor implements NotesContract.Interactor {
     @Override
     public void saveNote(NotesData mNotes, Context mContext, NotesContract.OnInteraction mListener) {
         NotesDAO.getInstance(mContext).saveNote(mNotes);
-        mListener.onNoteSaved();
+        mListener.onNoteSaved(NotesDAO.getInstance(mContext).getNote(mNotes.getNoteId(), mNotes.getNoteType()));
 
-        JSONObject mJObj = new JSONObject();
-        try {
-            mJObj.put("session_id", mNotes.getNoteId());
-            mJObj.put("notes", mNotes.getNoteText());
-            mJObj.put("operation", mNotes.getLastOperation());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        mListener.onNoteSaved(NotesDAO.getInstance(mContext).getNote(mNotes.getNoteId(), mNotes.getNoteType()));
 
         new SessionNote(mContext, new APICallBackWithResponse() {
             @Override
@@ -80,14 +71,22 @@ public class NotesInteractor implements NotesContract.Interactor {
             public void onFailure(String msg) {
 
             }
-        }).doCall(mJObj.toString());
+        }).doCall(mNotes);
 
     }
 
-    public void fetchListFromServer(Context mContext, NotesContract.OnInteraction mListener) {
+    public void fetchNoteListFromServer(Context mContext, NotesContract.OnInteraction mListener) {
     }
 
-    public void fetchListFromDb(Context mContext, NotesContract.OnInteraction mListener) {
+    public void fetchNoteListFromDb(Context mContext, NotesContract.OnInteraction mListener) {
+    }
+
+    public void fetchToDoListFromServer(Context mContext, NotesContract.OnInteraction mListener) {
+
+    }
+
+    public void fetchToDoListFromDb(Context mContext, NotesContract.OnInteraction mListener) {
+
     }
 
 }

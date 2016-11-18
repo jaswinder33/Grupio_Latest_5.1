@@ -8,7 +8,7 @@ import com.grupio.message.apis.APICallBack;
  * Created by JSN on 17/10/16.
  */
 
-public class Service {
+public class Service<T> {
 
     private ServiceContract serviceContract;
 
@@ -16,8 +16,7 @@ public class Service {
         this.serviceContract = serviceContract;
     }
 
-    public void sendMessage(String messageString, Context mContext, APICallBack mListener) {
-        serviceContract.sendMessage(messageString, mContext, mListener);
+    public void sendMessage(T data, Context mContext, APICallBack mListener) {
+        serviceContract.sendMessage(data, mContext, mListener);
     }
-
 }

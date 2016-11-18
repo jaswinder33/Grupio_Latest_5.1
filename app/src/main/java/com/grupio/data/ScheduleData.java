@@ -38,7 +38,17 @@ public class ScheduleData implements Person {
     private String session_id;
 
     private boolean isSessionFav = false;
+    private boolean isPlus = false;
+
     private String speakerNameAsString;
+
+    public boolean isPlus() {
+        return isPlus;
+    }
+
+    public void setPlus(boolean plus) {
+        isPlus = plus;
+    }
 
     public String getSpeakerNameAsString() {
         return speakerNameAsString;

@@ -62,8 +62,12 @@ public class SocialActivity extends BaseActivity<Void> {
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
 
-        Bundle mbundle = new Bundle();
-        mbundle.putString("session_name", getData());
+        Bundle mbundle = null;
+        if (getData() != null) {
+            mbundle = new Bundle();
+            mbundle.putString("session_name", getData());
+        }
+
         Utility.addFragment(this, SocialFragment.getInstance(mbundle), false);
     }
 
@@ -80,6 +84,7 @@ public class SocialActivity extends BaseActivity<Void> {
             handleLeftBtn(false);
         } else {
             handleLeftBtn(true);
+            return null;
         }
         return name;
     }

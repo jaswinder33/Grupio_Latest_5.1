@@ -19,6 +19,7 @@ import com.grupio.home.HomeActivity;
 import com.grupio.login.LoginActivity;
 import com.grupio.logistics.LogisticsActivity;
 import com.grupio.message.MessageActivity;
+import com.grupio.notes.NotesListActivity;
 import com.grupio.schedule.ScheduleListActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.session.ConstantData;
@@ -47,6 +48,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick scheduleTracklistClick = mBundle -> sendIntent(ScheduleTrackListActivity.class, mBundle);
     MenuClick scheduleListClick = mBundle -> sendIntent(ScheduleListActivity.class, mBundle);
     MenuClick socialClick = mBundle -> sendIntent(SocialActivity.class, mBundle);
+    MenuClick myNotesClick = mBundle -> sendIntent(NotesListActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -217,9 +219,14 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "my_notes":
+                    mBundle = new Bundle();
+                    mBundle.putString("from", "my_notes");
+                    performClick(mBundle, myNotesClick);
                     break;
 
                 case "things_to_do":
+                    mBundle = new Bundle();
+                    mBundle.putString("from", "things_to_do");
                     break;
                 case "photo_gallery":
                     break;

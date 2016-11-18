@@ -18,8 +18,10 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
         mInteractor = new NotesInteractor();
     }
 
+
+
     @Override
-    public void fetchList(Context mContext) {
+    public <T> void fetchList(T type, Context mContext) {
 
     }
 
@@ -65,11 +67,17 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     }
 
     @Override
-    public void onNoteSaved() {
+    public void onNoteSaved(NotesData noteData) {
+        mListener.onNoteSaved(noteData);
     }
 
     @Override
     public void updateNoteId(String id) {
+        mListener.upateNoteId(id);
+    }
 
+    @Override
+    public void onColorFetch(String colorCode) {
+        mListener.setHeaderColor(colorCode);
     }
 }

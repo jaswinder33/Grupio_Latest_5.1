@@ -54,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <TextView
@@ -69,7 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            app:srcCompat="@drawable/ic_right_arrow" />
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_right_arrow" />/>
 
     </LinearLayout>
 

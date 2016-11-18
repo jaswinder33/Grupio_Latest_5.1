@@ -152,7 +152,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
                     break;
 
                 case EMAIL:
-                    rightBtn.setBackgroundResource(R.drawable.add_btn_top);
+                    rightBtn.setBackgroundResource(R.drawable.ic_envelope);
                     break;
             }
             rightBtn.setOnClickListener(this);

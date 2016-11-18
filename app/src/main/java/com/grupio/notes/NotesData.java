@@ -2,6 +2,7 @@ package com.grupio.notes;
 
 public class NotesData {
 
+    private String id = "0";
     private String noteId = "";
     private String noteType = "";
     private String noteText = "";
@@ -13,6 +14,14 @@ public class NotesData {
     private boolean isSelected = false;
 
     public NotesData() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean isSelected() {

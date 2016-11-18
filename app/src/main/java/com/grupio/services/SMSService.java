@@ -8,7 +8,7 @@ import com.grupio.message.apis.APICallBack;
  * Created by JSN on 17/10/16.
  */
 
-public class SMSService implements ServiceContract {
+public class SMSService implements ServiceContract<String> {
 
     @Override
     public void sendMessage(String address, Context mContext, APICallBack mListener) {

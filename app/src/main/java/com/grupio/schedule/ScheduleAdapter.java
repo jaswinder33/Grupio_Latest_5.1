@@ -155,26 +155,37 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
         //handle + button click
         mHolder.addBtn.setOnClickListener(view -> {
 
-            //Unregister watcher to prevent it refreshing whole list.
+            //Unregister watcher to prevent it collapse child list
             ListWatcher.getInstance().unregisterListener();
 
             int i = (int) mHolder.addBtn.getTag();
 
-            if (i == 1) {
-                mHolder.mChildSessionList.setVisibility(View.GONE);
+            List<ScheduleData> mScheduleDataList = new ArrayList<>();
+            mScheduleDataList.addAll(SessionDAO.getInstance(getContext()).getChildSessions(getItem(position).getSession_id()));
+
+            if (getItem(position).isPlus()) {
+
+                for (int j = 0; j < getCount(); j++) {
+                    for (int k = 0; k < mScheduleDataList.size(); k++) {
+                        if (getItem(j).getSession_id().equals(mScheduleDataList.get(k).getSession_id())) {
+                            remove(getItem(j));
+                        }
+                    }
+                }
+
+                getItem(position).setPlus(false);
                 mHolder.addBtn.setImageResource(R.drawable.ic_add);
                 mHolder.addBtn.setTag(0);
             } else {
-                List<ScheduleData> mScheduleDataList = new ArrayList<>();
-                addAll(SessionDAO.getInstance(getContext()).getChildSessions(getItem(position).getSession_id()));
 
                 if (!mScheduleDataList.isEmpty()) {
-                    ScheduleAdapter mAdapter = new ScheduleAdapter(getContext());
-                    mHolder.mChildSessionList.setAdapter(mAdapter);
-                    mHolder.mChildSessionList.setVisibility(View.VISIBLE);
-                    mHolder.addBtn.setImageResource(R.drawable.ic_minus);
+                    mHolder.addBtn.setImageResource(R.drawable.ic_minus_simple);
+                    mHolder.addBtn.setColorFilter(Color.BLACK);
                     mHolder.addBtn.setTag(1);
+                    getItem(position).setPlus(true);
+                    addAll(mScheduleDataList);
                 } else {
+                    getItem(position).setPlus(false);
                     mHolder.addBtn.setTag(0);
                     mHolder.mChildSessionList.setVisibility(View.GONE);
                 }

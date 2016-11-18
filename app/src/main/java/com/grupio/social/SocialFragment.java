@@ -38,6 +38,9 @@ public class SocialFragment extends BaseFragment<Void> implements View.OnClickLi
     private ImageButton twitter, linkedinBtn, facebookBtn;
     private Button shareButton;
 
+    public SocialFragment() {
+    }
+
     public static SocialFragment getInstance(Bundle mBundle) {
         mSocialFragment = new SocialFragment();
         if (mBundle != null) {
@@ -118,7 +121,7 @@ public class SocialFragment extends BaseFragment<Void> implements View.OnClickLi
 
                 break;
             case R.id.linkedinBtn:
-                Service mService = new Service(new LinkedinShare());
+                Service<String> mService = new Service(new LinkedinShare());
                 mService.sendMessage(mShareTxtField.getText().toString(), getActivity(), mListener);
                 break;
             case R.id.facebookBtn:

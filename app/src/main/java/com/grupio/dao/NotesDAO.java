@@ -7,9 +7,6 @@ import android.database.Cursor;
 import com.grupio.db.NotesTable;
 import com.grupio.notes.NotesData;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by JSN on 17/11/16.
  */
@@ -53,6 +50,7 @@ public class NotesDAO extends BaseDAO {
         }
 
         ContentValues cv = new ContentValues();
+        cv.put(NotesTable.ID, mNotesData.getId());
         cv.put(NotesTable.NOTE_ID, mNotesData.getNoteId());
         cv.put(NotesTable.NOTE_TYPE, mNotesData.getNoteType());
         cv.put(NotesTable.NOTE_TEXT, mNotesData.getNoteText());
@@ -68,9 +66,10 @@ public class NotesDAO extends BaseDAO {
         closeDb();
     }
 
-    public List<NotesData> getNote(String id, String type) {
+    public NotesData getNote(String id, String type) {
 
-        List<NotesData> mNoteslist = new ArrayList<>();
+        NotesData mNotesData;
+        mNotesData = new NotesData();
 
         String query = "select * from " + NotesTable.NOTES_TABLE + " where " + NotesTable.NOTE_ID + "='" + id + "' and " + NotesTable.NOTE_TYPE + "='" + type + "';";
 
@@ -82,17 +81,16 @@ public class NotesDAO extends BaseDAO {
             if (mCursor != null) {
                 mCursor.moveToFirst();
 
-                NotesData mNotesData;
+
                 do {
-                    mNotesData = new NotesData();
 
-                    mNotesData.setNoteId(mCursor.getString(0));
-                    mNotesData.setNoteType(mCursor.getString(1));
-                    mNotesData.setNoteText(mCursor.getString(2));
-                    mNotesData.setLastOperation(mCursor.getString(3));
-                    mNotesData.setNoteSync(mCursor.getString(4));
+                    mNotesData.setId(mCursor.getString(0));
+                    mNotesData.setNoteId(mCursor.getString(1));
+                    mNotesData.setNoteType(mCursor.getString(2));
+                    mNotesData.setNoteText(mCursor.getString(3));
+                    mNotesData.setLastOperation(mCursor.getString(4));
+                    mNotesData.setNoteSync(mCursor.getString(5));
 
-                    mNoteslist.add(mNotesData);
                 } while (mCursor.moveToNext());
 
             }
@@ -106,7 +104,7 @@ public class NotesDAO extends BaseDAO {
             closeDb();
         }
 
-        return mNoteslist;
+        return mNotesData;
 
     }
 
