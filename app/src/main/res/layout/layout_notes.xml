@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/logistics_child_height"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/noteTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/checkbox"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingRight="16dp"
+        android:text="Hi This is sample message with sample text on it."
+        android:textSize="@dimen/text_16" />
+
+    <LinearLayout
+        android:id="@+id/alarmLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/noteTxt"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        android:paddingRight="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/alarmTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23-Nov-2016 11:14(EDT)"
+            android:textSize="10dp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/remindertodo" />
+    </LinearLayout>
+
+
+</RelativeLayout>

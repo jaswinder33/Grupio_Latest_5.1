@@ -67,9 +67,13 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.execSQL(LogisticsTable.CREATE_LOGISTICS_TABLE);
         db.execSQL(LiveTable.CREATE_LIVE_TABLE);
         db.execSQL(SurveyTable.CREATE_SURVEY_TABLE);
+        db.execSQL(SponsorTable.CREATE_SPONSOR_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+
     }
+
 }

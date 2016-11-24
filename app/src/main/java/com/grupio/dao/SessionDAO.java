@@ -104,7 +104,6 @@ public class SessionDAO extends BaseDAO {
         String name_order = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER);
         boolean isFirstName = name_order.equals("firstname_lastname");
 
-
         openDB(0);
 
         List<ScheduleData> mScheduleDataList = new ArrayList<>();

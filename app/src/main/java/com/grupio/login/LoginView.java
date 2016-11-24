@@ -33,4 +33,6 @@ public interface LoginView {
     void downloadDocument();
 
     void navigateScreen(Bundle mbundle, Class<?> className);
+
+    void goToMyNotesScreen();
 }

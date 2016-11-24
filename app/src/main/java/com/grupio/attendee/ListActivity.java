@@ -8,6 +8,7 @@ import com.grupio.activities.BaseActivity;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.fragments.BaseFragment;
 
 /**
@@ -65,6 +66,10 @@ public class ListActivity extends BaseActivity {
                     case "Exhibitors":
                         bFrag = new ListFragment<>(new ExhibitorData(), null);
                         handleRightBtn(false, "refresh");
+                        break;
+                    case ListConstant.SPONSOR:
+                        bFrag = new ListFragment<>(new SponsorData(), null);
+                        handleRightBtn(false, null);
                         break;
                 }
                 getFragmentManager().beginTransaction().add(R.id.container, bFrag, bFrag.getClass().getName()).commit();

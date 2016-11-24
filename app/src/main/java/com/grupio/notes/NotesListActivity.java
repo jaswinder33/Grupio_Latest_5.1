@@ -1,5 +1,6 @@
 package com.grupio.notes;
 
+import android.app.Fragment;
 import android.os.Bundle;
 
 import com.grupio.R;
@@ -25,7 +26,7 @@ public class NotesListActivity extends BaseActivity<Void> {
 
     @Override
     public boolean isHeaderForGridPage() {
-        return false;
+        return true;
     }
 
     @Override
@@ -45,31 +46,28 @@ public class NotesListActivity extends BaseActivity<Void> {
 
     @Override
     public void setListeners() {
-
     }
 
     @Override
     public void setUp() {
         getData();
         handleRightBtn(true, ADD);
-        if (type.equals(My_NOTES)) {
-            NoteListFragment<NotesData> mFrag = new NoteListFragment<>(new NotesData());
-            Utility.addFragment(this, mFrag, false);
-        } else {
-
-        }
+        NoteListFragment mFrag = new NoteListFragment(type);
+        Utility.addFragment(this, mFrag, false);
     }
 
     @Override
     public void handleRightBtnClick() {
+        Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
+        if (mFrag != null) {
+            ((NoteListFragment) mFrag).goToNoteDetail("0");
+        }
     }
-
 
     public void getData() {
         Bundle mBundle = getIntent().getExtras();
         if (mBundle != null) {
             type = mBundle.getString("from");
         }
-
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.grupio.R;
 import com.grupio.dao.EventDAO;
 import com.grupio.data.ScheduleData;
+import com.grupio.data.SponsorData;
 import com.grupio.db.EventTable;
 
 import java.lang.reflect.ParameterizedType;
@@ -35,6 +36,7 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     private boolean showHeaders = true;
 
     private boolean isSession = false;
+    private boolean isHeaderFullName = false;
 
     public BaseListAdapter(Context context) {
         super(context, 0);
@@ -46,6 +48,10 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
         if (mPerson instanceof ScheduleData) {
             isSession = true;
+        }
+
+        if (mPerson instanceof SponsorData) {
+            isHeaderFullName = true;
         }
 
     }
@@ -123,17 +129,21 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             holder.session_track.setText(sdf2.format(cal.getTime()));
 
         } else {
-            if (isFirstName) {
-                if (!getFirstName(position).equals("")) {
-                    holder.session_track.setText(getFirstName(position).substring(0, 1).toUpperCase());
-                }
+
+            if (isHeaderFullName) {
+                holder.session_track.setText(getFirstName(position));
             } else {
-                if (!getLastName(position).equals("")) {
-                    holder.session_track.setText(getLastName(position).substring(0, 1).toUpperCase());
+                if (isFirstName) {
+                    if (!getFirstName(position).equals("")) {
+                        holder.session_track.setText(getFirstName(position).substring(0, 1).toUpperCase());
+                    }
+                } else {
+                    if (!getLastName(position).equals("")) {
+                        holder.session_track.setText(getLastName(position).substring(0, 1).toUpperCase());
+                    }
                 }
             }
         }
-
 
         return convertView;
     }
@@ -215,7 +225,6 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

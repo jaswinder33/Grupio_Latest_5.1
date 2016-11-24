@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Email" />
+            android:text="Delete" />
     </LinearLayout>
 
 
@@ -54,7 +54,7 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="150dp"
@@ -63,6 +63,7 @@
             app:srcCompat="@drawable/ic_pages" />
 
         <TextView
+            android:id="@+id/noItemTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

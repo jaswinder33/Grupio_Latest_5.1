@@ -136,6 +136,7 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
                 break;
 
             case "my_notes":
+                mListener.goToMyNotesScreen();
                 break;
 
             case "things_to_do":

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.SponsorDAO;
 import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
@@ -27,8 +28,9 @@ public class SponsorAPI extends BaseApiCall {
     @Override
     public void callApi() {
         APIRequest request = new GetRequest();
-        String response =  request.requestResponse(url, new HashMap<String, String>(), mContext);
+        String response = request.requestResponse(url, new HashMap<>(), mContext);
         if (response != null) {
+            SponsorDAO.getInstance(mContext).insertData(response);
         }
 
         Log.i("API", "SponsorAPI");

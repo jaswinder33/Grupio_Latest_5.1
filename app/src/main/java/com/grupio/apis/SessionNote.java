@@ -24,7 +24,7 @@ public class SessionNote extends BaseAsyncTask<NotesData, Boolean> {
 
     @Override
     public String endPoint() {
-        return mContext.getString(R.string.session_note);
+        return mContext.getString(R.string.session_note_api);
     }
 
     @Override

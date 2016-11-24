@@ -13,6 +13,7 @@ import com.grupio.R;
 import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
+import com.grupio.attendee.ListConstant;
 import com.grupio.dao.SessionTracksDAO;
 import com.grupio.data.MenuData;
 import com.grupio.home.HomeActivity;
@@ -49,6 +50,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick scheduleListClick = mBundle -> sendIntent(ScheduleListActivity.class, mBundle);
     MenuClick socialClick = mBundle -> sendIntent(SocialActivity.class, mBundle);
     MenuClick myNotesClick = mBundle -> sendIntent(NotesListActivity.class, mBundle);
+    MenuClick sponsorClick = mBundle -> sendIntent(ListActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -122,6 +124,9 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "sponsors":
+                    mBundle = new Bundle();
+                    mBundle.putString("type", ListConstant.SPONSOR);
+                    performClick(mBundle, sponsorClick);
                     break;
 
                 case "maps":
@@ -219,14 +224,19 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "my_notes":
-                    mBundle = new Bundle();
-                    mBundle.putString("from", "my_notes");
-                    performClick(mBundle, myNotesClick);
+                    if (!loginRequired(context.getString(R.string.my_notes))) {
+                        mBundle = new Bundle();
+                        mBundle.putString("from", context.getString(R.string.my_notes));
+                        performClick(mBundle, myNotesClick);
+                    }
                     break;
 
                 case "things_to_do":
-                    mBundle = new Bundle();
-                    mBundle.putString("from", "things_to_do");
+                    if (!loginRequired(context.getString(R.string.things_to_do))) {
+                        mBundle = new Bundle();
+                        mBundle.putString("from", context.getString(R.string.things_to_do));
+                        performClick(mBundle, myNotesClick);
+                    }
                     break;
                 case "photo_gallery":
                     break;
@@ -254,5 +264,16 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
+    }
+
+    public boolean loginRequired(String from) {
+        if (Preferences.getInstances(context).getUserInfo() == null) {
+            Bundle mBundle;
+            mBundle = new Bundle();
+            mBundle.putString("from", from);
+            performClick(mBundle, loginClick);
+            return true;
+        }
+        return false;
     }
 }

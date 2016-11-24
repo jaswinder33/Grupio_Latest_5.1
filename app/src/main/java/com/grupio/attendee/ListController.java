@@ -11,9 +11,11 @@ import com.grupio.dao.AttendeeDAO;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.ExhibitorDAO;
 import com.grupio.dao.SpeakerDAO;
+import com.grupio.dao.SponsorDAO;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.db.EventTable;
 import com.grupio.helper.ExhibitorProcessor;
 import com.grupio.interfaces.Person;
@@ -37,7 +39,7 @@ public class ListController<T extends Person> implements ControllerInter {
 
     /**
      * Constructor
-     *
+     * @param type one of type Attendee, Sponsor, Speaker, Exhibitor
      * @param mContext
      */
     public ListController(T type, Context mContext) {
@@ -86,6 +88,8 @@ public class ListController<T extends Person> implements ControllerInter {
             fetchSpeakerListFromDb(queryStr, cateogory, mListener);
         } else if (type instanceof ExhibitorData) {
             fetchExhibitorListFromDb(queryStr, cateogory, false, mListener);
+        } else if (type instanceof SponsorData) {
+            fetchSponsorListFromDb(queryStr, mListener);
         }
 
     }
@@ -110,7 +114,6 @@ public class ListController<T extends Person> implements ControllerInter {
             ExhibitorProcessor exhibitorProcessor = new ExhibitorProcessor();
             mlist.addAll(exhibitorProcessor.parseExhibitorCategory(response));
         }
-
 
         if (mlist != null && mlist.size() > 0) {
             mlist.add(0, "All");
@@ -265,6 +268,15 @@ public class ListController<T extends Person> implements ControllerInter {
                 mlist.addAll(ExhibitorDAO.getInstance(mContext).searchExhibitorByName(cateogory, queryStr, favOnly));
             }
         }
+
+        mlist = mlist != null ? mlist : new ArrayList<>();
+        mListener.onListFetch(mlist);
+
+    }
+
+    private void fetchSponsorListFromDb(String queryStr, onTaskComplete mListener) {
+        List<SponsorData> mlist = new ArrayList<>();
+        mlist.addAll(SponsorDAO.getInstance(mContext).getSponsorList(queryStr));
 
         mlist = mlist != null ? mlist : new ArrayList<>();
         mListener.onListFetch(mlist);

@@ -321,6 +321,11 @@ public class ListDetailPresenter<T extends Person> implements DetailPresenterInt
     }
 
     @Override
+    public void onSponsorHeaderValidation() {
+        mListener.showSponsorDetailLay();
+    }
+
+    @Override
     public void onPermissionAskedForSendContactRequest() {
         if (mListener != null) {
             mListener.askUserToConfirmSendRequest();

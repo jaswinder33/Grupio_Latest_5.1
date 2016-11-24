@@ -13,12 +13,27 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_header_height">
 
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/book_btn"
+            android:text="@string/delete"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Session Notes"
+            android:layout_toLeftOf="@+id/saveBtn"
+            android:layout_toRightOf="@+id/deleteBtn"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
@@ -30,7 +45,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/book_btn"
-            android:text="Save"
+            android:text="@string/save"
             android:textColor="@color/white" />
     </RelativeLayout>
 

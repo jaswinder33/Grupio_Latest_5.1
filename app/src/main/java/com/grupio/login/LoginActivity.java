@@ -16,6 +16,7 @@ import com.grupio.attendee.message.SendMessageActivity;
 import com.grupio.data.LogisticsData;
 import com.grupio.message.MessageActivity;
 import com.grupio.notes.NotesDetailsActivity;
+import com.grupio.notes.NotesListActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
 
@@ -172,9 +173,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void navigateScreen(Bundle mbundle, Class<?> className) {
         Intent mIntent = new Intent(this, className);
-        mIntent.putExtras(mbundle);
+        if (mbundle != null) {
+            mIntent.putExtras(mbundle);
+        }
         startActivity(mIntent);
         finish();
+    }
+
+    @Override
+    public void goToMyNotesScreen() {
+        Bundle mBundle = new Bundle();
+        mBundle.putString("from", getString(R.string.my_notes));
+        navigateScreen(mBundle, NotesListActivity.class);
     }
 
     @Override

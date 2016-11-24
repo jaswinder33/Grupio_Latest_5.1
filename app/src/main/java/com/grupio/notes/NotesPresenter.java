@@ -18,11 +18,15 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
         mInteractor = new NotesInteractor();
     }
 
-
+    @Override
+    public void deleteNotes(List<NotesData> mList, Context mContext) {
+        mListener.showProgress();
+        mInteractor.delete(mList, mContext, this);
+    }
 
     @Override
     public <T> void fetchList(T type, Context mContext) {
-
+        mInteractor.fetchList(type, mContext, this);
     }
 
     @Override
@@ -31,13 +35,8 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     }
 
     @Override
-    public void delete(Context mContext) {
-
-    }
-
-    @Override
-    public void doEmail(Context mContext) {
-
+    public void doEmail(List<NotesData> mList, Context mContext) {
+        mInteractor.doEmail(mList, mContext, this);
     }
 
     @Override
@@ -45,14 +44,17 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
         mInteractor.saveNote(mNotes, mContext, this);
     }
 
-    @Override
-    public void onFailure() {
 
+    @Override
+    public void onFailure(String failure) {
+        mListener.hideProgress();
+        mListener.failure(failure);
     }
 
     @Override
     public void onListFetch(List<NotesData> mList) {
-
+        mListener.hideProgress();
+        mListener.showList(mList);
     }
 
     @Override
@@ -60,10 +62,9 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
         mListener.showNote(noteData);
     }
 
-
     @Override
-    public void onNoteDelete() {
-
+    public void onNoteDelete(List<NotesData> mList) {
+        mListener.showList(mList);
     }
 
     @Override
@@ -79,5 +80,15 @@ public class NotesPresenter implements NotesContract.Presenter, NotesContract.On
     @Override
     public void onColorFetch(String colorCode) {
         mListener.setHeaderColor(colorCode);
+    }
+
+    @Override
+    public void onDeleteBtnShow() {
+        mListener.showDeleteBtn();
+    }
+
+    @Override
+    public void onHeaderText(String text) {
+        mListener.setHeaderText(text);
     }
 }

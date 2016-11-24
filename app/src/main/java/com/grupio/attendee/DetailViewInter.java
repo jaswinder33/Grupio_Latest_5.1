@@ -100,4 +100,6 @@ public interface DetailViewInter {
 
     void showSocialButton();
 
+    void showSponsorDetailLay();
+
 }

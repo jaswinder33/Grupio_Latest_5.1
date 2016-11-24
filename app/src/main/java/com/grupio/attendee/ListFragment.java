@@ -23,6 +23,7 @@ import com.grupio.animation.SlideOut;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.fragments.BaseFragment;
 import com.grupio.interfaces.Person;
 import com.grupio.speakers.SpeakerAdapter;
@@ -35,6 +36,14 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * Created by JSN on 25/7/16.
  */
+
+/**
+ * This class handles list view of Speaker, Sponsor, Exhibitor, Attendees.
+ *
+ * @param <T> referes to the type
+ *            <p>
+ *            Watcher is interface which notifies this list when user perform actions from its detail screen.
+ */
 public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> implements ViewInter, ListWatcher.Watcher, View.OnClickListener {
 
     LinearLayout likeUnlikeLay;
@@ -43,7 +52,9 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
     private AttendeeListAdapter mAttendeeadapter;
     private SpeakerAdapter mSpeakerAdapter;
     private ExhibitorAdapter mExhibitorAdapter;
+    private SponsorAdapter mSponsorAdapter;
     private T type;
+
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -61,6 +72,9 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             } else if (type instanceof ExhibitorData) {
                 mIntent.putExtra("id", ((ExhibitorData) personData).getExhibitorId());
                 mIntent.setType("exhibitor");
+            } else if (type instanceof SponsorData) {
+                mIntent.putExtra("id", ((SponsorData) personData).sponsorId);
+                mIntent.setType(ListConstant.SPONSOR);
             }
 
             mIntent.putExtra("data", personData);
@@ -131,8 +145,10 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             return "SPEAKER_LIST_VIEW";
         } else if (type instanceof ExhibitorData) {
             return "EXHIBITOR_LIST_VIEW";
+        } else if (type instanceof SponsorData) {
+            return "SPONSOR_LIST_VIEW";
         }
-        return "";
+        return null;
     }
 
     @Override
@@ -144,6 +160,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             return "speakers";
         } else if (type instanceof ExhibitorData) {
             return "exhibitors";
+        } else if (type instanceof SponsorData) {
+            return "sponsors";
         }
 
         return "";
@@ -186,6 +204,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         } else if (type instanceof ExhibitorData) {
 //            locale = LocalisationDataProcessor.EXHIBITORS;
             locale = "Exhibitor";
+        } else if (type instanceof SponsorData) {
+            locale = "Sponsor";
         }
 
         setupSearchBar(true, "Loading " + locale);
@@ -219,6 +239,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         } else if (type instanceof ExhibitorData) {
 //            locale = LocalisationDataProcessor.EXHIBITORS;
             locale = "Exhibitors";
+        } else if (type instanceof SponsorData) {
+            locale = "Sponsor";
         }
 
         showProgressDialog(locale);
@@ -259,10 +281,17 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             List<ExhibitorData> mExhibitorList = (List<ExhibitorData>) mList;
             mExhibitorAdapter.addAll(mExhibitorList);
 
+        } else if (type instanceof SponsorData) {
+            mSponsorAdapter = new SponsorAdapter(getActivity());
+            mListView.setAdapter(mSponsorAdapter);
+
+            List<SponsorData> mSponsorList = (List<SponsorData>) mList;
+            mSponsorAdapter.addAll(mSponsorList);
         }
         notifyAdapter();
 
     }
+
 
     @Override
     public void showCategory(List<String> mList) {
@@ -316,6 +345,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             mSpeakerAdapter.notifyDataSetChanged();
         } else if (type instanceof ExhibitorData) {
             mExhibitorAdapter.notifyDataSetChanged();
+        } else if (type instanceof SponsorData) {
+            mSponsorAdapter.notifyDataSetChanged();
         }
     }
 

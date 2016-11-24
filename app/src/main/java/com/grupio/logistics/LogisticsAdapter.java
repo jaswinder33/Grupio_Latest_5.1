@@ -15,6 +15,7 @@ import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 
 /**
  * Created by JSN on 4/8/16.
@@ -84,6 +85,9 @@ public class LogisticsAdapter<T> extends SimpleBaseListAdapter<LogisticsData, Lo
         } else if (folderType instanceof ScheduleData) {
             DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), getContext());
             mController.viewDoc(getItem(position));
+        } else if (folderType instanceof SponsorData) {
+            DocumentController<SponsorData, LogisticsData> mController = new DocumentController<>(new SponsorData(), new LogisticsData(), getContext());
+            mController.viewDoc(getItem(position));
         }
     }
 
@@ -103,6 +107,9 @@ public class LogisticsAdapter<T> extends SimpleBaseListAdapter<LogisticsData, Lo
         } else if (folderType instanceof ScheduleData) {
             DocumentController<ScheduleData, LogisticsData> mController = new DocumentController<>(new ScheduleData(), new LogisticsData(), getContext());
             mController.downloadResource(getItem(position));
+        } else if (folderType instanceof SponsorData) {
+            DocumentController<SponsorData, LogisticsData> mController = new DocumentController<>(new SponsorData(), new LogisticsData(), getContext());
+            mController.viewDoc(getItem(position));
         }
     }
 

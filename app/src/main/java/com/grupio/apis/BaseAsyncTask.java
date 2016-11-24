@@ -61,7 +61,7 @@ public abstract class BaseAsyncTask<Request, Response> extends AsyncTask<Request
             if ((Boolean) mResponse) {
                 mListener.onSuccess();
             } else {
-                mListener.onFailure(null);
+                mListener.onFailure(mContext.getString(R.string.erroor_occured));
             }
         }
     }

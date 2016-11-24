@@ -3,7 +3,6 @@ package com.grupio.logistics;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
@@ -21,6 +20,7 @@ import com.grupio.data.LogisticsData;
 import com.grupio.data.MapsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.data.mapList;
 import com.grupio.login.LoginActivity;
 import com.grupio.message.apis.APICallBack;
@@ -114,17 +114,8 @@ public class DocumentController<K, V extends DocInter> {
 
         if (checkIfFileExists()) {
             AlertDialog mdialog = new AlertDialog.Builder(mContext).setMessage("This file already exists. Do you want to redownload this file?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            downloadFile(false);
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Yes", (dialog, which) -> downloadFile(false)).setNegativeButton("No", (dialog, which) -> {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
                     }).create();
 
             mdialog.show();
@@ -304,6 +295,8 @@ public class DocumentController<K, V extends DocInter> {
             folderName = mContext.getString(R.string.exhibitor_resources);
         } else if (typeK instanceof ScheduleData) {
             folderName = mContext.getString(R.string.session_resources);
+        } else if (typeK instanceof SponsorData) {
+            folderName = mContext.getString(R.string.sponsor_resources);
         } else {
             folderName = mContext.getString(R.string.logistics_resources);
         }
@@ -347,27 +340,4 @@ public class DocumentController<K, V extends DocInter> {
         });
         downloadFile.doCall(url, folderName);
     }
-
-   /* private ProgressDialog mProgressDialog;
-
-    public void showProgressDialog(String msg) {
-        if (mProgressDialog == null) {
-            setProgressDialog(msg);
-            mProgressDialog.show();
-        }
-    }
-
-    private void setProgressDialog(String message) {
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage(message);
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }*/
-
 }

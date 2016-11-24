@@ -55,7 +55,8 @@
     <string name="like_unlike_schedule_api">/myschedule.php?format=json</string>
 
     <!--Notes-->
-    <string name="session_note">/sessionNotes.php?format=json</string>
+    <string name="session_note_api">/sessionNotes.php?format=json</string>
+    <string name="notelist_api">/mynote_todo.php?format=json</string>
 
 
     <!-- ################################################################### -->
@@ -193,8 +194,30 @@
 
     <!--Notes LIst-->
     <string name="no_note_msg">Looks like you have not added any note.</string>
+    <string name="no_todo">No To-do items.</string>
     <string name="add_note_btn">Create a note</string>
+    <string name="add_todo">Add To-do</string>
     <string name="email">Email</string>
     <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="email_notes">Email Notes</string>
+    <string name="delete_notes">Delete Notes</string>
+    <string name="email_to_do">Email To-Dos</string>
+    <string name="delete_to_do">Delete To-Dos</string>
+    <string name="delete_note_msg">Are you sure you want to delete these notes?</string>
+    <string name="empty_delete_list_msg">Please select at-least one note.</string>
+    <string name="note_heading">Add New Note</string>
+    <string name="things_todo_heading">Add New To-do</string>
+    <string name="title_activity_to_do_details">ToDoDetailsActivity</string>
+
+    <!--To-do-->
+    <string name="new_toDo">Add New To-Do</string>
+    <string name="subject">Subject</string>
+    <string name="todo_hint">What do you have to to?</string>
+    <string name="reminder_toggle">ON/OFF Reminder</string>
+    <string name="set_date_time">Set Date &amp; Time</string>
+    <string name="set_date">Set Date</string>
+    <string name="set_time">Set Time</string>
+
 
 </resources>

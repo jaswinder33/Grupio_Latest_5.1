@@ -109,6 +109,8 @@ public interface ListDetailControllerInter {
 
         void showNotesBtn();
 
+        void onSponsorHeaderValidation();
+
     }
 
 }

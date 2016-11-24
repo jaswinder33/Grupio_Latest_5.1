@@ -221,7 +221,7 @@ public class LinkedinDialog extends Dialog {
 
                 long expiresIn = 0;
                 try {
-                    expiresIn = resultJson.has("expires_in") ? resultJson.getInt("expires_in") : 0;
+                    expiresIn = resultJson.has("expires_in") ? resultJson.getLong("expires_in") : 0;
                     expiresIn = expiresIn + addThisTimeStamp;
 
                     boolean isExpired = expiresIn - System.currentTimeMillis() <= 0;

@@ -5,8 +5,8 @@ package com.grupio.data;
  */
 public class VersionData {
 
-    public String name;
-    public String oldVersion;
-    public String newVersion;
+    public String name = "";
+    public String oldVersion = "";
+    public String newVersion = "";
 
 }

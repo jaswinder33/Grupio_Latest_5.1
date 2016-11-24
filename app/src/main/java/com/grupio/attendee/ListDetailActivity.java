@@ -34,7 +34,9 @@ import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.helper.ScheduleHelper;
+import com.grupio.helper.SponsorHelper;
 import com.grupio.interfaces.ClickHandler;
 import com.grupio.interfaces.Person;
 import com.grupio.login.LoginActivity;
@@ -54,15 +56,8 @@ import java.util.List;
 public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implements DetailViewInter {
 
     public static final int CONNECT_REQUEST = 201;
-
-
-    public static final String LIST_DETAIL = "ListDetailActivity";
-
-    public static final String SPONSOR = "sponsor";
-    public static final String EXHIBITOR = "exhibitor";
-    public static final String ATTENDEE = "attendee";
-    public static final String SPEAKER = "speaker";
     Button mFavSessionBtn, mSessionNotes, mSessionSocial;
+
     AdapterView.OnItemClickListener sessionListItemClick = (parent, view, position, id1) -> {
 
         ScheduleData sData = (ScheduleData) parent.getAdapter().getItem(position);
@@ -99,7 +94,11 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         startActivity(mIntent);
         SlideOut.getInstance().startAnimation(ListDetailActivity.this);
     };
-
+    //Sponsor variables
+    LinearLayout layoutSponsor;
+    TextView sponsorName;
+    ImageView sponsorImage;
+    TextView sponsorWebsiteBtn;
     private String id;
     private Person mperson;
     private ImageView image;
@@ -130,8 +129,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     private TextView attendeeHeader;
     private ListView attendeeList;
     private String type = "";
-
-
     AdapterView.OnItemClickListener resourceListItemClick = (parent, view, position, id1) -> {
 
         LogisticsData mapObjt = (LogisticsData) parent.getAdapter().getItem(position);
@@ -156,6 +153,10 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mController3.handleDocument(mapObjt);
                 break;
 
+            case ListConstant.SPONSOR:
+                DocumentController<SponsorData, LogisticsData> mController4 = new DocumentController<>(new SponsorData(), new LogisticsData(), ListDetailActivity.this);
+                mController4.handleDocument(mapObjt);
+                break;
         }
     };
     //Schedule variables
@@ -298,6 +299,14 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         mSessionNotes = (Button) findViewById(R.id.shareSocialBtn);
         mSessionSocial = (Button) findViewById(R.id.noteSocialBtn);
 
+        /**
+         * Sponsor Variables
+         */
+        layoutSponsor = (LinearLayout) findViewById(R.id.layout_sponsor);
+        sponsorName = (TextView) findViewById(R.id.nameSponsor);
+        sponsorImage = (ImageView) findViewById(R.id.imageSponsor);
+        sponsorWebsiteBtn = (TextView) findViewById(R.id.websiteBtnSponsor);
+
     }
 
     @Override
@@ -323,6 +332,10 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
             case ListConstant.SESSION:
                 mFavSessionBtn.setOnClickListener(this);
                 break;
+
+            case ListConstant.SPONSOR:
+                sponsorWebsiteBtn.setOnClickListener(this);
+                break;
         }
     }
 
@@ -330,16 +343,19 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     public ListDetailPresenter setPresenter() {
         switch (type) {
             case "attendee":
-                return new ListDetailPresenter(new AttendeesData(), this, ListDetailActivity.this);
+                return new ListDetailPresenter<>(new AttendeesData(), this, this);
 
             case "speaker":
-                return new ListDetailPresenter(new SpeakerData(), this, ListDetailActivity.this);
+                return new ListDetailPresenter<>(new SpeakerData(), this, this);
 
             case "exhibitor":
-                return new ListDetailPresenter(new ExhibitorData(), this, ListDetailActivity.this);
+                return new ListDetailPresenter<>(new ExhibitorData(), this, this);
 
             case ListConstant.SESSION:
-                return new ListDetailPresenter(new ScheduleData(), this, ListDetailActivity.this);
+                return new ListDetailPresenter<>(new ScheduleData(), this, this);
+
+            case ListConstant.SPONSOR:
+                return new ListDetailPresenter<>(new SponsorData(), this, this);
 
             default:
                 return null;
@@ -370,14 +386,25 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void showImage(String url) {
-        image.setVisibility(View.VISIBLE);
-        ImageLoader.getInstance().displayImage(url, image, Utility.getDisplayOptionsAttendee());
+        if (type.equals(ListConstant.SPONSOR)) {
+            sponsorImage.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(url, sponsorImage, SponsorHelper.sponsorDisplayOptions());
+        } else {
+            image.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(url, image, Utility.getDisplayOptionsAttendee());
+        }
     }
 
     @Override
     public void showName(String nameStr) {
-        name.setVisibility(View.VISIBLE);
-        name.setText(nameStr);
+        if (type.equals(ListConstant.SPONSOR)) {
+            sponsorName.setVisibility(View.VISIBLE);
+            sponsorName.setText(nameStr);
+            sponsorName.setTextColor(Color.WHITE);
+        } else {
+            name.setVisibility(View.VISIBLE);
+            name.setText(nameStr);
+        }
     }
 
     @Override
@@ -514,6 +541,9 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 mAdapter = new LogisticsAdapter(this, new ScheduleData());
                 break;
 
+            case ListConstant.SPONSOR:
+                mAdapter = new LogisticsAdapter(this, new SponsorData());
+                break;
         }
 
         mAdapter.addAll(mList);
@@ -616,6 +646,17 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
     @Override
     public void showWebSiteBtn(String locale) {
+
+        if (type.equals(ListConstant.SPONSOR)) {
+            sponsorWebsiteBtn.setVisibility(View.VISIBLE);
+            sponsorWebsiteBtn.setText(locale);
+        } else {
+            websiteBtn.setVisibility(View.VISIBLE);
+            websiteBtn.setText(locale);
+        }
+
+
+
         websiteBtn.setVisibility(View.VISIBLE);
         websiteBtn.setText(locale);
     }
@@ -702,6 +743,12 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     }
 
     @Override
+    public void showSponsorDetailLay() {
+        layoutSponsor.setVisibility(View.VISIBLE);
+        layoutSponsor.setBackgroundResource(R.drawable.pattern_bg);
+    }
+
+    @Override
     public void onClick(View v) {
         super.onClick(v);
 
@@ -777,6 +824,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                 }
                 break;
 
+            case R.id.websiteBtnSponsor:
             case R.id.exbWebBtn:
                 getPresenter().openLinks("websiteBtn");
                 break;
@@ -831,6 +879,8 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
 
             case "exhibitor":
                 return "EXHIBITOR_VIEW";
+            case ListConstant.SPONSOR:
+                return "";
         }
         return null;
     }

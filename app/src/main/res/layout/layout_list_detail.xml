@@ -111,8 +111,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    >
+                    android:padding="15dp">
+
                     <Button
                         android:id="@+id/addSessionBtn"
                         android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
                         android:background="@drawable/btn_addtoschedule_off_detail"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                     <!--android:background="@drawable/btn_addtoschedule_off_detail"-->
                     <Button
                         android:id="@+id/exbWebBtn"
@@ -183,7 +183,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/sessionlay"
@@ -259,6 +259,14 @@
 
 
                 </LinearLayout>
+
+                <include
+                    android:id="@+id/layout_sponsor"
+                    layout="@layout/layout_sponsor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
             </RelativeLayout>
 
             <include

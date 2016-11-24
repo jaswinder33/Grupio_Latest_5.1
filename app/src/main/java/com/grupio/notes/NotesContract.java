@@ -24,17 +24,24 @@ public interface NotesContract {
         void upateNoteId(String id);
 
         void setHeaderColor(String colorCode);
+
+        void failure(String msg);
+
+        void showDeleteBtn();
+
+        void setHeaderText(String text);
+
     }
 
     interface Presenter {
+
+        void deleteNotes(List<NotesData> mList, Context mContext);
 
         <T> void fetchList(T type, Context mContext);
 
         void fetchNote(String type, String id, Context mContext);
 
-        void delete(Context mContext);
-
-        void doEmail(Context mContext);
+        void doEmail(List<NotesData> mList, Context mContext);
 
         void saveNote(NotesData mNotes, Context mContext);
     }
@@ -45,28 +52,35 @@ public interface NotesContract {
 
         void fetchNote(String type, String id, Context mContext, OnInteraction mListener);
 
-        void delete(Context mContext, OnInteraction mListener);
+        void delete(List<NotesData> mList, Context mContext, OnInteraction mListener);
 
-        void doEmail(Context mContext, OnInteraction mListener);
+        void doEmail(List<NotesData> mList, Context mContext, OnInteraction mListener);
 
         void saveNote(NotesData mNotes, Context mContext, OnInteraction mListener);
+
+
     }
 
     interface OnInteraction {
 
-        void onFailure();
+        void onFailure(String failure);
 
         void onListFetch(List<NotesData> mList);
 
         void onNoteFetch(NotesData noteData);
 
-        void onNoteDelete();
+        void onNoteDelete(List<NotesData> mList);
 
         void onNoteSaved(NotesData noteData);
 
         void updateNoteId(String id);
 
         void onColorFetch(String colorCode);
+
+        void onDeleteBtnShow();
+
+        void onHeaderText(String text);
+
     }
 
 }

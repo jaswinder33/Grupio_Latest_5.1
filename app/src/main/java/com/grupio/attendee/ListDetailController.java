@@ -17,11 +17,13 @@ import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
 import com.grupio.data.SpeakerData;
+import com.grupio.data.SponsorData;
 import com.grupio.db.EventTable;
 import com.grupio.helper.AttendeeProcessor;
 import com.grupio.helper.ExhibitorProcessor;
 import com.grupio.helper.ScheduleHelper;
 import com.grupio.helper.SpeakerProcessor;
+import com.grupio.helper.SponsorHelper;
 import com.grupio.interfaces.Person;
 import com.grupio.message.apis.APICallBack;
 import com.grupio.session.Preferences;
@@ -42,6 +44,7 @@ public class ListDetailController<T extends Person> implements ListDetailControl
     private SpeakerData mSpeakerData;
     private ExhibitorData mExhibitorData;
     private ScheduleData mScheduleData;
+    private SponsorData mSponsorData;
     private Context mContext;
 
     public ListDetailController(T type, Context mContext) {
@@ -117,6 +120,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             mListener.onCallHandled(mSpeakerData.getPrimary_phone());
         } else if (type instanceof ExhibitorData) {
             mListener.onCallHandled(mExhibitorData.getContact_phone());
+        } else if (type instanceof SponsorData) {
+            mListener.onCallHandled(mSponsorData.phone);
         }
     }
 
@@ -128,6 +133,8 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             mListener.onEmail(mSpeakerData.getEmail());
         } else if (type instanceof ExhibitorData) {
             mListener.onEmail(mExhibitorData.getContact_email());
+        } else if (type instanceof SponsorData) {
+            mListener.onEmail(mSponsorData.email);
         }
     }
 
@@ -163,6 +170,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             switch (typeOfLink) {
                 case "websiteBtn":
                     url = mExhibitorData.getWeburl();
+                    break;
+            }
+        } else if (type instanceof SponsorData) {
+            switch (typeOfLink) {
+                case "websiteBtn":
+                    url = mSponsorData.webUrl;
                     break;
             }
         }
@@ -234,6 +247,9 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             mScheduleData = (ScheduleData) data;
             mScheduleData = SessionDAO.getInstance(mContext).getSessionWithId(mScheduleData.getSession_id());
             mListener.onSessionHeaderValiation();
+        } else if (type instanceof SponsorData) {
+            mSponsorData = (SponsorData) data;
+            mListener.onSponsorHeaderValidation();
         }
     }
 
@@ -257,10 +273,14 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             largeImageUrl = mExhibitorData.getImageLarge();
         } else if (type instanceof ScheduleData) {
 
+        } else if (type instanceof SponsorData) {
+            showImage = EventDAO.getInstance(mContext).getValue(EventTable.HIDE_SPONSOR_IMAGES).equals("n");
+            imageUrl = mSponsorData.url;
+            largeImageUrl = mSponsorData.largeUrl;
         }
 
         if (showImage) {
-            String url = !TextUtils.isEmpty(imageUrl) ? imageUrl : largeImageUrl;
+            String url = !TextUtils.isEmpty(imageUrl) ? largeImageUrl : imageUrl;
             if (!url.contains("https") && !url.contains("http")) {
                 url = "http://conf.dharanet.com/conf/v1/main" + url;
             }
@@ -282,10 +302,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             firstName = mExhibitorData.getName();
         } else if (type instanceof ScheduleData) {
             firstName = mScheduleData.getName();
+        } else if (type instanceof SponsorData) {
+            firstName = mSponsorData.name;
         }
 
         String name_order = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER);
-        if (type instanceof ExhibitorData || type instanceof ScheduleData) {
+        if (type instanceof ExhibitorData || type instanceof ScheduleData || type instanceof SponsorData) {
             mListener.onNameValidated(firstName);
         } else {
             if (name_order.equals("firstname_lastname")) {
@@ -360,12 +382,19 @@ public class ListDetailController<T extends Person> implements ListDetailControl
     }
 
     private void validateWebsiteBtn(OnValidationComplete mListener) {
+
+        String url = "";
+
         if (type instanceof ExhibitorData) {
-            if (!TextUtils.isEmpty(mExhibitorData.getWeburl())) {
-//                mListener.onWebsiteBtnValidated(true, LocalisationDataProcessor.GO_TO_WEBSITE);
-                mListener.onWebsiteBtnValidated(true, "Go To Website");
-            }
+            url = mExhibitorData.getWeburl();
+        } else if (type instanceof SponsorData) {
+            url = mSponsorData.webUrl;
         }
+        if (!TextUtils.isEmpty(url)) {
+//                mListener.onWebsiteBtnValidated(true, LocalisationDataProcessor.GO_TO_WEBSITE);
+            mListener.onWebsiteBtnValidated(true, "Go To Website");
+        }
+
     }
 
     private void validateFavBtn(OnValidationComplete mListener) {
@@ -442,6 +471,9 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         } else if (type instanceof ExhibitorData) {
             email = mExhibitorData.getContact_email();
             phone = mExhibitorData.getContact_phone();
+        } else if (type instanceof SponsorData) {
+            email = mSponsorData.email;
+            phone = mSponsorData.phone;
         }
 
         if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(phone) || !TextUtils.isEmpty(twitter) || !TextUtils.isEmpty(linkedin) || !TextUtils.isEmpty(website)) {
@@ -499,6 +531,9 @@ public class ListDetailController<T extends Person> implements ListDetailControl
         } else if (type instanceof ScheduleData) {
 //            locale = LocalisationDataProcessor.EXHIBITORS_DESCRIPTION;
             text = mScheduleData.getSummary();
+            locale = "Description";
+        } else if (type instanceof SponsorData) {
+            text = mSponsorData.description;
             locale = "Description";
         }
         if (!TextUtils.isEmpty(text)) {
@@ -579,6 +614,11 @@ public class ListDetailController<T extends Person> implements ListDetailControl
             ScheduleHelper scheduleHelper = new ScheduleHelper();
             mList.addAll(scheduleHelper.getSessionLinks(resourceAsString));
 
+        } else if (type instanceof SponsorData) {
+            String resources = mSponsorData.sponsorLink;
+
+            SponsorHelper sHelper = new SponsorHelper();
+            mList.addAll(sHelper.parseResourceList(resources));
         }
 
         if (mList.size() > 0) {
@@ -677,13 +717,12 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
     public void validateNotesBtn(OnValidationComplete mListener) {
         if (type instanceof ScheduleData) {
-
             boolean showBtn = EventDAO.getInstance(mContext).getValue(EventTable.SHOW_NOTES_BUTTON).equals("y");
-
             if (showBtn) {
                 mListener.showNotesBtn();
             }
-
         }
     }
+
+
 }

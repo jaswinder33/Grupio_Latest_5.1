@@ -61,4 +61,9 @@
     <dimen name="rules_text_padding">6dp</dimen>
 
 
+    <!--Sponsor List-->
+    <dimen name="no_image_height">80dp</dimen>
+    <dimen name="no_image_width">200dp</dimen>
+    <dimen name="sponsor_list_child_height">130dp</dimen>
+
 </resources>

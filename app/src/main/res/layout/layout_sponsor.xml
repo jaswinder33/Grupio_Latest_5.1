@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/greytransparent"
+    android:minHeight="@dimen/sponsor_list_child_height"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/nameSponsor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Name"
+        android:textSize="@dimen/text_16" />
+
+    <ImageView
+        android:id="@+id/imageSponsor"
+        android:layout_width="@dimen/no_image_width"
+        android:layout_height="@dimen/no_image_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:src="@drawable/no_image_l" />
+
+    <TextView
+        android:id="@+id/websiteBtnSponsor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/header_background"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Go To Website"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</LinearLayout>
