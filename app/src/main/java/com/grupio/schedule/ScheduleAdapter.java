@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 import com.grupio.attendee.ListWatcher;
+import com.grupio.backend.DateTime;
 import com.grupio.base.BaseListAdapter;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.SessionDAO;
@@ -118,10 +119,11 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
             if (!ScheduleHelper.isLoginRequiredToLike(getContext(), ScheduleTrackListActivity.class)) {
 
                 ClickHandler mAddScheduleToCalendar = () -> {
-                    getItem(position).setCalenderAddId(ScheduleHelper.saveToCalendar(getContext(), mScheduleData));
+
+                    getItem(position).setCalenderAddId(DateTime.getInstance().saveToCalendar(getContext(), mScheduleData));
                 };
 
-                ClickHandler mRemoveScheduleFromCalendar = () -> ScheduleHelper.removeFromCalendar(getContext(), mScheduleData);
+                ClickHandler mRemoveScheduleFromCalendar = () -> DateTime.getInstance().removeFromCalendar(getContext(), mScheduleData);
 
                 ClickHandler mAddSchedule = () -> {
                     getItem(position).setSessionFav(true);

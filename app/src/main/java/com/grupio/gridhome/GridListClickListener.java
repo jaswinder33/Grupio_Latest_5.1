@@ -226,7 +226,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                 case "my_notes":
                     if (!loginRequired(context.getString(R.string.my_notes))) {
                         mBundle = new Bundle();
-                        mBundle.putString("from", context.getString(R.string.my_notes));
+                        mBundle.putString("from", NotesListActivity.My_NOTES);
                         performClick(mBundle, myNotesClick);
                     }
                     break;
@@ -234,7 +234,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                 case "things_to_do":
                     if (!loginRequired(context.getString(R.string.things_to_do))) {
                         mBundle = new Bundle();
-                        mBundle.putString("from", context.getString(R.string.things_to_do));
+                        mBundle.putString("from", NotesListActivity.THINGS_TO_DO);
                         performClick(mBundle, myNotesClick);
                     }
                     break;

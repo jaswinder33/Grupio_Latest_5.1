@@ -154,12 +154,12 @@ public class NoteListFragment extends BaseFragment<NotesPresenter> implements No
 
     @Override
     public void showDeleteBtn() {
-
+//detail screen function
     }
 
     @Override
     public void setHeaderText(String text) {
-
+//detail screen function
     }
 
     @Override
@@ -198,7 +198,14 @@ public class NoteListFragment extends BaseFragment<NotesPresenter> implements No
     }
 
     public void goToNoteDetail(String id) {
-        Intent mIntent = new Intent(getActivity(), NotesDetailsActivity.class);
+
+        Intent mIntent;
+        if (type.equals(NotesListActivity.THINGS_TO_DO)) {
+            mIntent = new Intent(getActivity(), ToDoDetailsActivity.class);
+        } else {
+            mIntent = new Intent(getActivity(), NotesDetailsActivity.class);
+        }
+
         mIntent.putExtra("type", type);
         mIntent.putExtra("id", id);
         startActivity(mIntent);

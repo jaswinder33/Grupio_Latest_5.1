@@ -8,6 +8,7 @@ import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.DeleteNotesAPI;
 import com.grupio.apis.SaveNoteAPI;
 import com.grupio.apis.SessionNote;
+import com.grupio.backend.DateTime;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.NotesDAO;
 import com.grupio.data.EmailData;
@@ -48,6 +49,32 @@ public class NotesInteractor implements NotesContract.Interactor {
             mListener.onNoteFetch(mNote);
             if (type.equals(NotesListActivity.THINGS_TO_DO) || type.equals(NotesListActivity.My_NOTES)) {
                 mListener.onDeleteBtnShow();
+            }
+        } else {
+            if (type.equals(NotesListActivity.THINGS_TO_DO)) {
+
+                String timezone = EventDAO.getInstance(mContext).getValue(EventTable.GET_TIMEZONE);
+
+                timezone = timezone.replace("UTC", "GMT");
+                timezone = timezone.replace(" ", "");
+                timezone = timezone.replace("hours", "");
+                timezone = timezone.replace("hour", "");
+                timezone = timezone.replace("hrs", "");
+                timezone = timezone.replace("hr", "");
+
+                String time = DateTime.getInstance().currentTimeInTimeZone(timezone);
+
+                time = DateTime.getInstance().formatDate("dd-MMM-yyyy hh:mma", time);
+
+
+                mNote = new NotesData();
+                mNote.setId(id);
+                mNote.setNoteDate(time);
+                mNote.setTimeZone(timezone);
+                mNote.setNoteId("0");
+                mNote.setNoteType(type);
+
+                mListener.onNoteFetch(mNote);
             }
         }
     }

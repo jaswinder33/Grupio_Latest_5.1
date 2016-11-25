@@ -27,6 +27,7 @@ import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.message.SendMessageActivity;
+import com.grupio.backend.DateTime;
 import com.grupio.backend.Permissions;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.EmailData;
@@ -656,7 +657,6 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
         }
 
 
-
         websiteBtn.setVisibility(View.VISIBLE);
         websiteBtn.setText(locale);
     }
@@ -792,12 +792,11 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
                     if (!ScheduleHelper.isLoginRequiredToLike(this, ScheduleTrackListActivity.class)) {
 
                         ClickHandler mAddScheduleToCalendar = () -> {
-                            mScheduleData.setCalenderAddId(ScheduleHelper.saveToCalendar(this, mScheduleData));
+                            mScheduleData.setCalenderAddId(DateTime.getInstance().saveToCalendar(this, mScheduleData));
                         };
 
-                        ClickHandler mRemoveScheduleFromCalendar = () -> {
-                            ScheduleHelper.removeFromCalendar(this, mScheduleData);
-                        };
+                        ClickHandler mRemoveScheduleFromCalendar = () ->
+                                DateTime.getInstance().removeFromCalendar(this, mScheduleData);
 
                         ClickHandler mAddSchedule = () -> {
                             mScheduleData.setSessionFav(true);

@@ -10,6 +10,7 @@ public class NotesData {
     private String noteReminder = "";
     private String lastOperation = "";
     private String noteSync = "";
+    private String timeZone = "";
 
     private boolean isSelected = false;
 
@@ -88,4 +89,11 @@ public class NotesData {
         this.noteId = noteId;
     }
 
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 }

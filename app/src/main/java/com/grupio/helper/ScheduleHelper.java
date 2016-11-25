@@ -1,19 +1,12 @@
 package com.grupio.helper;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.provider.CalendarContract;
-import android.text.TextUtils;
 
 import com.grupio.animation.SlideOut;
 import com.grupio.apis.LikeUnlikeSessionAPI;
 import com.grupio.dao.EventDAO;
-import com.grupio.dao.SessionDAO;
 import com.grupio.dao.VersionDao;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.ScheduleData;
@@ -31,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by JSN on 24/8/16.
@@ -52,46 +44,6 @@ public class ScheduleHelper {
         return false;
     }
 
-    public static String saveToCalendar(Context mContext, ScheduleData mScheduleData) {
-
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar starttime = Calendar.getInstance();
-        Calendar endtime = Calendar.getInstance();
-
-        try {
-            starttime.setTime(sdf1.parse(mScheduleData.getStart_time()));
-            endtime.setTime(sdf1.parse(mScheduleData.getEnd_time()));
-        } catch (ParseException e1) {
-            e1.printStackTrace();
-        }
-
-        ContentResolver cr = mContext.getContentResolver();
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.DTSTART, starttime.getTimeInMillis());
-        values.put(CalendarContract.Events.DTEND, endtime.getTimeInMillis());
-        values.put(CalendarContract.Events.TITLE, mScheduleData.getName());
-        values.put(CalendarContract.Events.DESCRIPTION, mScheduleData.getSummary());
-        values.put(CalendarContract.Events.CALENDAR_ID, 1);
-        values.put(CalendarContract.Events.HAS_ALARM, 1);
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
-
-        SessionDAO.getInstance(mContext).persistCalendarId(uri.getLastPathSegment(), mScheduleData.getSession_id());
-
-//        ListWatcher.getInstance().notifyList();
-
-        return uri.getLastPathSegment();
-    }
-
-    public static void removeFromCalendar(Context mContext, ScheduleData mScheduleData) {
-        String eventID = mScheduleData.getCalenderAddId();
-        if (eventID != null && !TextUtils.isEmpty(eventID)) {
-            ContentResolver cr = mContext.getContentResolver();
-            ContentValues values = new ContentValues();
-            Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Long.valueOf(eventID));
-            int rows = cr.delete(deleteUri, null, null);
-        }
-    }
 
     public static void addRemoveSession(String operation, String sessionId, Context mContext) {
         new LikeUnlikeSessionAPI(mContext).doCall(operation, sessionId);
@@ -220,70 +172,12 @@ public class ScheduleHelper {
 
                         JSONArray speakerList = jsonArray.getJSONObject(i).getJSONArray("speaker_id");
                         sd.setSpeakerListAsString(speakerList.toString());
-
-//                        //compatibility with old code
-//                        try {
-//                            JSONArray jarray = speakerList;
-//
-//                            if (jarray != null && jarray.length() != 0) {
-//                                String[] speakersArray = new String[jarray.length()];
-//
-//                                for (int j = 0; j < jarray.length(); j++) {
-//                                    speakersArray[j] = jarray.getString(j);
-//                                }
-//                                sd.setSpeakes(speakersArray);
-//                            }
-//                        } catch (Exception e) {
-//
-//                        }
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-
                         JSONArray sessionlinks = jsonArray.getJSONObject(i).getJSONArray("sessionlinks");
-
                         sd.setResourceListAsString(sessionlinks.toString());
-
-                        // compatible with old code
-
-//                        List<mapList> mapList = null;
-//
-//                        try {
-//
-//                            JSONArray jarray = sessionlinks;
-//
-//                            if (jarray != null && jarray.length() != 0) {
-//                                mapList = new ArrayList<mapList>();
-//
-//                                for (int j = 0; j < jarray.length(); j++) {
-//
-//                                    JSONObject sessionMapObject = jarray.getJSONObject(j);
-//
-//                                    mapList mapdata = new mapList();
-//                                    mapdata.setMapId(sd.getSession_id());
-//                                    mapdata.setMapName(sessionMapObject.getString("name").trim());
-//                                    mapdata.setMapUrl(sessionMapObject.getString("url").trim());
-//                                    mapdata.setMapType(sessionMapObject.getString("type").trim());
-//                                    try {
-//                                        mapdata.setLoginRequired(sessionMapObject.getString("login_required"));
-//                                    } catch (Exception e) {
-//
-//                                    }
-//
-//                                    mapList.add(mapdata);
-//                                }
-//                            }
-//
-//                            sd.setMapListOfSche(mapList);
-//
-//                        } catch (Exception e) {
-//
-//                        }
-
-
                     } catch (JSONException e) {
 //                        e.printStackTrace();
                     }

@@ -178,12 +178,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
         startActivity(mIntent);
         finish();
+        SlideOut.getInstance().startAnimation(this);
     }
 
     @Override
     public void goToMyNotesScreen() {
         Bundle mBundle = new Bundle();
-        mBundle.putString("from", getString(R.string.my_notes));
+        mBundle.putString("from", menuFrom);
         navigateScreen(mBundle, NotesListActivity.class);
     }
 

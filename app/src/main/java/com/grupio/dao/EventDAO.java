@@ -13,7 +13,7 @@ import com.grupio.helper.EventDataProcessor;
 /**
  * Created by JSN on 22/8/16.
  */
-public class EventDAO extends BaseDAO{
+public class EventDAO extends BaseDAO {
 
     private EventDAO(Context mContext) {
         super(mContext);
@@ -42,7 +42,7 @@ public class EventDAO extends BaseDAO{
 
         try {
             stmt = db.compileStatement("INSERT INTO " + EventTable.EVENT_TABLE
-                            + " ( "
+                    + " ( "
                     + EventTable.EVENT_ID + ","
                     + EventTable.EVENT_NAME + ","
                     + EventTable.START_DATE + ","
@@ -109,7 +109,9 @@ public class EventDAO extends BaseDAO{
                     + EventTable.SHOWTRACKS + ","
                     + EventTable.APP_VERSION + ","
                     + EventTable.FORCE_DELETE + ","
-                    + EventTable.FORCE_UPGRADE + ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+
+                    + EventTable.FORCE_UPGRADE + ","
+                    + EventTable.GET_TIMEZONE + ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
             );
 
@@ -183,6 +185,7 @@ public class EventDAO extends BaseDAO{
                 stmt.bindString(51, eData.getAppVersion());
                 stmt.bindString(52, eData.getForce_delete());
                 stmt.bindString(53, eData.getForce_upgrade());
+                stmt.bindString(54, eData.getGettimezone());
 
                 stmt.execute();
                 stmt.clearBindings();
@@ -196,11 +199,11 @@ public class EventDAO extends BaseDAO{
         db.endTransaction();
 
         if (db != null) {
-           closeDb();
+            closeDb();
         }
     }
 
-    public String getValue(String columnName){
+    public String getValue(String columnName) {
 
         openDB(0);
 
@@ -209,14 +212,14 @@ public class EventDAO extends BaseDAO{
 
         Cursor mCursor = null;
         try {
-             mCursor = db.rawQuery(query, null);
-            if(mCursor != null && mCursor.moveToFirst()){
-                value =    mCursor.getString(0);
+            mCursor = db.rawQuery(query, null);
+            if (mCursor != null && mCursor.moveToFirst()) {
+                value = mCursor.getString(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(mCursor != null && !mCursor.isClosed()){
+            if (mCursor != null && !mCursor.isClosed()) {
                 mCursor.close();
             }
             closeDb();

@@ -288,6 +288,15 @@ public class EventDataProcessor {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    try {
+                        data.setGettimezone(jObject.getString("gettimezone").trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                 }
             }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.grupio.attendee.ListConstant;
+import com.grupio.notes.NotesListActivity;
 
 /**
  * Created by JSN on 13/10/16.
@@ -135,12 +136,11 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
                 mListener.goToDiscussionBoard();
                 break;
 
-            case "my_notes":
+            case NotesListActivity.My_NOTES:
+            case NotesListActivity.THINGS_TO_DO:
                 mListener.goToMyNotesScreen();
                 break;
 
-            case "things_to_do":
-                break;
             case "photo_gallery":
                 break;
             case "i2i":

@@ -77,6 +77,8 @@ public class EventTable {
     public static final String FORCE_DELETE = "force_delete";
     public static final String FORCE_UPGRADE = "force_upgrade";
 
+    public static final String GET_TIMEZONE = "get_timezone";
+
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE IF NOT EXISTS " + EVENT_TABLE +
             " ( "
             + EVENT_ID + " TEXT, "
@@ -131,7 +133,8 @@ public class EventTable {
             + SHOWTRACKS + " TEXT, "
             + APP_VERSION + " TEXT, "
             + FORCE_DELETE + " TEXT, "
-            + FORCE_UPGRADE + " TEXT"
+            + FORCE_UPGRADE + " TEXT, "
+            + GET_TIMEZONE + " TEXT"
             + ");";
 
 
