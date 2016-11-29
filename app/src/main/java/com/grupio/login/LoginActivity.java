@@ -12,6 +12,7 @@ import com.grupio.activities.BaseActivity;
 import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideIn;
 import com.grupio.animation.SlideOut;
+import com.grupio.attendee.ListActivity;
 import com.grupio.attendee.message.SendMessageActivity;
 import com.grupio.data.LogisticsData;
 import com.grupio.message.MessageActivity;
@@ -186,6 +187,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         Bundle mBundle = new Bundle();
         mBundle.putString("from", menuFrom);
         navigateScreen(mBundle, NotesListActivity.class);
+    }
+
+    @Override
+    public void goToListActivity(String type) {
+        Bundle mBundle = new Bundle();
+        mBundle.putString("type", type);
+        navigateScreen(mBundle, ListActivity.class);
     }
 
     @Override

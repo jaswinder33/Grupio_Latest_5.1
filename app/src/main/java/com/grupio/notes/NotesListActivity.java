@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
+import com.grupio.backend.Permissions;
 
 public class NotesListActivity extends BaseActivity<Void> {
 
@@ -54,6 +55,7 @@ public class NotesListActivity extends BaseActivity<Void> {
         handleRightBtn(true, ADD);
         NoteListFragment mFrag = new NoteListFragment(type);
         Utility.addFragment(this, mFrag, false);
+        Permissions.getInstance().hasCalendarPermission(this).askForPermissions(this, 102);
     }
 
     @Override

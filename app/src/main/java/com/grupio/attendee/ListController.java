@@ -5,7 +5,9 @@ import android.content.Context;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
+import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.AttendeeAPI;
+import com.grupio.apis.BestMatchAPI;
 import com.grupio.apis.SpeakerAPI;
 import com.grupio.dao.AttendeeDAO;
 import com.grupio.dao.EventDAO;
@@ -13,10 +15,12 @@ import com.grupio.dao.ExhibitorDAO;
 import com.grupio.dao.SpeakerDAO;
 import com.grupio.dao.SponsorDAO;
 import com.grupio.data.AttendeesData;
+import com.grupio.data.BestMatch;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
 import com.grupio.data.SponsorData;
 import com.grupio.db.EventTable;
+import com.grupio.helper.AttendeeProcessor;
 import com.grupio.helper.ExhibitorProcessor;
 import com.grupio.interfaces.Person;
 import com.grupio.session.Preferences;
@@ -39,7 +43,8 @@ public class ListController<T extends Person> implements ControllerInter {
 
     /**
      * Constructor
-     * @param type one of type Attendee, Sponsor, Speaker, Exhibitor
+     *
+     * @param type     one of type Attendee, Sponsor, Speaker, Exhibitor
      * @param mContext
      */
     public ListController(T type, Context mContext) {
@@ -71,6 +76,8 @@ public class ListController<T extends Person> implements ControllerInter {
             fetchSpeakerListFromServer(mListener);
         } else if (type instanceof ExhibitorData) {
             fetchExhibitorListFromServer(mListener);
+        } else if (type instanceof BestMatch) {
+            fetchBestMatch(null, mListener);
         }
     }
 
@@ -90,6 +97,8 @@ public class ListController<T extends Person> implements ControllerInter {
             fetchExhibitorListFromDb(queryStr, cateogory, false, mListener);
         } else if (type instanceof SponsorData) {
             fetchSponsorListFromDb(queryStr, mListener);
+        } else if (type instanceof BestMatch) {
+            fetchBestMatch(queryStr, mListener);
         }
 
     }
@@ -280,6 +289,37 @@ public class ListController<T extends Person> implements ControllerInter {
 
         mlist = mlist != null ? mlist : new ArrayList<>();
         mListener.onListFetch(mlist);
+
+    }
+
+    public void fetchBestMatch(String query, onTaskComplete mListener) {
+
+        new BestMatchAPI(mContext, new APICallBackWithResponse() {
+            @Override
+            public void onSuccess(String response) {
+
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Preferences.getInstances(mContext).saveBestMatch(response);
+                        List<AttendeesData> mList = new ArrayList<>();
+                        AttendeeProcessor attendeeProcessor = new AttendeeProcessor();
+                        mList.addAll(attendeeProcessor.getAttendeesListFromJSON(mContext, response, false));
+
+                        mListener.onListFetch(mList);
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                mListener.onFailure(msg);
+            }
+        }).doCall();
 
     }
 

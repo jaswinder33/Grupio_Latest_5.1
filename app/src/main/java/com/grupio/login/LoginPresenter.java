@@ -143,7 +143,8 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
 
             case "photo_gallery":
                 break;
-            case "i2i":
+            case ListConstant.BEST_Match:
+                mListener.goToListActivity(ListConstant.BEST_Match);
                 break;
 
             case "chat":

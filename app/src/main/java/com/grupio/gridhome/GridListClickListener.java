@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.grupio.R;
+import com.grupio.Utils.Utility;
 import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
@@ -51,6 +52,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick socialClick = mBundle -> sendIntent(SocialActivity.class, mBundle);
     MenuClick myNotesClick = mBundle -> sendIntent(NotesListActivity.class, mBundle);
     MenuClick sponsorClick = mBundle -> sendIntent(ListActivity.class, mBundle);
+    MenuClick bestMatchClick = mBundle -> sendIntent(ListActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -241,6 +243,12 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                 case "photo_gallery":
                     break;
                 case "i2i":
+                    if (!loginRequired(ListConstant.BEST_Match)) {
+                        Utility.printLog("GridClick", "i2i called");
+                        mBundle = new Bundle();
+                        mBundle.putString("type", ListConstant.BEST_Match);
+                        performClick(mBundle, bestMatchClick);
+                    }
                     break;
 
                 case "chat":

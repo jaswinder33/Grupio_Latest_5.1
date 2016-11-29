@@ -4,8 +4,10 @@ import android.app.Fragment;
 import android.os.Bundle;
 
 import com.grupio.R;
+import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
 import com.grupio.data.AttendeesData;
+import com.grupio.data.BestMatch;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
 import com.grupio.data.SponsorData;
@@ -46,6 +48,8 @@ public class ListActivity extends BaseActivity {
     @Override
     public void setUp() {
 
+        Utility.printLog("ListActivity", "setup method called");
+
         handleRightBtn(true, "refresh");
         Bundle mBundle = getIntent().getExtras();
 
@@ -71,6 +75,8 @@ public class ListActivity extends BaseActivity {
                         bFrag = new ListFragment<>(new SponsorData(), null);
                         handleRightBtn(false, null);
                         break;
+                    case ListConstant.BEST_Match:
+                        bFrag = new ListFragment<>(new BestMatch(), null);
                 }
                 getFragmentManager().beginTransaction().add(R.id.container, bFrag, bFrag.getClass().getName()).commit();
             }
@@ -79,8 +85,6 @@ public class ListActivity extends BaseActivity {
 
     @Override
     public void handleRightBtnClick() {
-
-
         Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
 
         if (mFrag != null && mFrag instanceof ListFragment) {

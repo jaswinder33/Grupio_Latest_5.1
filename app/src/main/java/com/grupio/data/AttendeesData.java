@@ -2,11 +2,10 @@ package com.grupio.data;
 
 import com.grupio.interfaces.Person;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttendeesData implements Serializable, Person {
+public class AttendeesData implements Person {
 
     public String mapListOfAttendeeAsString = "";
     public String sessionsAsString = "";
@@ -282,4 +281,6 @@ public class AttendeesData implements Serializable, Person {
     public void setAttendeeSelected(boolean attendeeSelected) {
         isAttendeeSelected = attendeeSelected;
     }
+
+
 }

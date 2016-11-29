@@ -49,6 +49,7 @@ public class LogisticsAdapter<T> extends SimpleBaseListAdapter<LogisticsData, Lo
 
         String type = android.webkit.MimeTypeMap.getFileExtensionFromUrl(getItem(position).getUrl());
 
+//        String type = getItem(position).getType();
         if (type.equalsIgnoreCase("pdf")) {
             mHolder.resourceImage.setBackgroundResource(R.drawable.pdf_icon);
         } else if (type.equalsIgnoreCase("ppt")) {

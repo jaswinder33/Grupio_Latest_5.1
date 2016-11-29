@@ -63,6 +63,8 @@ public abstract class BaseAsyncTask<Request, Response> extends AsyncTask<Request
             } else {
                 mListener.onFailure(mContext.getString(R.string.erroor_occured));
             }
+        } else if (mResponse instanceof String && mListener != null) {
+            ((APICallBackWithResponse) mListener).onSuccess((String) mResponse);
         }
     }
 }

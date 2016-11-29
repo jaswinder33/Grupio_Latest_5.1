@@ -28,8 +28,21 @@ public class AttendeeProcessor {
             return object1.compareTo(object2);
         }
     };
+    private boolean isFirstName = false;
+    Comparator<AttendeesData> attendeeNameSort = new Comparator<AttendeesData>() {
+        @Override
+        public int compare(AttendeesData object1, AttendeesData object2) {
 
-    public List<AttendeesData> getAttendeesListFromJSON(Context mContext, String response) {
+            if (isFirstName) {
+                return object1.getFirst_name().toLowerCase().compareTo(object2.getFirst_name().toLowerCase());
+            } else {
+                return object1.getLast_name().toLowerCase().compareTo(object2.getLast_name().toLowerCase());
+            }
+
+        }
+    };
+
+    public List<AttendeesData> getAttendeesListFromJSON(Context mContext, String response, boolean saveVersion) {
 
         List<AttendeesData> mList = new ArrayList<>();
 
@@ -46,16 +59,18 @@ public class AttendeeProcessor {
              /*
             Store version in db
              */
-            try {
-                String version = jObj.getString("version");
-                VersionData vData = new VersionData();
-                vData.name = VersionDao.ATTENDEE_VERSION;
-                vData.oldVersion = version;
-                VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
+            if (saveVersion) {
+                try {
+                    String version = jObj.getString("version");
+                    VersionData vData = new VersionData();
+                    vData.name = VersionDao.ATTENDEE_VERSION;
+                    vData.oldVersion = version;
+                    VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
             JSONArray jArray = null;
             try {
@@ -63,7 +78,6 @@ public class AttendeeProcessor {
             } catch (Exception e) {
                 return null;
             }
-
 
             if (jArray != null && jArray.length() > 0) {
 
@@ -333,6 +347,12 @@ public class AttendeeProcessor {
         return mapList;
 
     }
+
+    public void sortAttendee(boolean isFirstName, List<AttendeesData> mList) {
+        this.isFirstName = isFirstName;
+        Collections.sort(mList, attendeeNameSort);
+    }
+
 
 
 }

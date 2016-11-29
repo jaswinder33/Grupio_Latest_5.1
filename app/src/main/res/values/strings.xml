@@ -58,6 +58,11 @@
     <string name="session_note_api">/sessionNotes.php?format=json</string>
     <string name="notelist_api">/mynote_todo.php?format=json</string>
 
+    <!--Best Match API-->
+    <string name="best_match_api">/getbestmatches.php?format=json</string>
+
+    <!--Download APIs-->
+    <string name="all_resources_api">/getsessiondownloads.php?format=json</string>
 
     <!-- ################################################################### -->
     <!-- ################################################################### -->
@@ -219,5 +224,7 @@
     <string name="set_date">Set Date</string>
     <string name="set_time">Set Time</string>
 
-
+    <!--Best Match-->
+    <string name="best_match_loading">Please wait. Loading best match for you.</string>
+    <string name="title_activity_download">DownloadActivity</string>
 </resources>

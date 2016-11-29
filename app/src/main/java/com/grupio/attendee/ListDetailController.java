@@ -238,8 +238,10 @@ public class ListDetailController<T extends Person> implements ListDetailControl
     private void castObj(Person data, OnValidationComplete mListener) {
         if (type instanceof AttendeesData) {
             mAttendeeData = (AttendeesData) data;
+            mAttendeeData = AttendeeDAO.getInstance(mContext).getAttendeeDetal(mAttendeeData.getAttendee_id());
         } else if (type instanceof SpeakerData) {
             mSpeakerData = (SpeakerData) data;
+            mSpeakerData = SpeakerDAO.getInstance(mContext).getSpeakerDetail(mSpeakerData.getAttendee_id());
         } else if (type instanceof ExhibitorData) {
             mExhibitorData = (ExhibitorData) data;
             mExhibitorData = ExhibitorDAO.getInstance(mContext).getExhibitorDetal(mExhibitorData.getExhibitorId());

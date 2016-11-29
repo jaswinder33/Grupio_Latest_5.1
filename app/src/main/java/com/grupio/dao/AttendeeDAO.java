@@ -48,7 +48,7 @@ public class AttendeeDAO extends BaseDAO {
 
         List<AttendeesData> mDatalist = new ArrayList<>();
         AttendeeProcessor ap = new AttendeeProcessor();
-        mDatalist.addAll(ap.getAttendeesListFromJSON(mContext, responseFromAPI));
+        mDatalist.addAll(ap.getAttendeesListFromJSON(mContext, responseFromAPI, true));
 
         openDB(1);
 

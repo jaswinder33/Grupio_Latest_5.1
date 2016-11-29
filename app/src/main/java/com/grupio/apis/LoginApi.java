@@ -47,7 +47,7 @@ public class LoginApi extends BaseAsyncTask<String, Boolean> {
 
         if (response != null && !TextUtils.isEmpty(response)) {
             AttendeeProcessor attendeeProcessor = new AttendeeProcessor();
-            List<AttendeesData> attendeesData = attendeeProcessor.getAttendeesListFromJSON(mContext, response);
+            List<AttendeesData> attendeesData = attendeeProcessor.getAttendeesListFromJSON(mContext, response, false);
             Preferences.getInstances(mContext).saveUserInfo(response);
             Preferences.getInstances(mContext).setAttendeeId(attendeesData.get(0).getAttendee_id());
             return true;

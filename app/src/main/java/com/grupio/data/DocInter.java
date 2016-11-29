@@ -5,7 +5,7 @@ package com.grupio.data;
  */
 
 /**
- * Marker Interface for documents in logistics and maplist
+ * Marker Interface for documents in logistics, DownloadedResource and maplist
  */
 public interface DocInter {
 }

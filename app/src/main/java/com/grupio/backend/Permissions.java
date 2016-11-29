@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Permissions {
 
-    List<String> permissions;
+    public List<String> permissions;
 
     private Permissions(){
         permissions = new ArrayList<>();

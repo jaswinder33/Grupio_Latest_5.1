@@ -19,15 +19,22 @@ import android.widget.Toast;
 
 import com.grupio.ExhibitorAdapter;
 import com.grupio.R;
+import com.grupio.Utils.Utility;
 import com.grupio.animation.SlideOut;
+import com.grupio.dao.EventDAO;
 import com.grupio.data.AttendeesData;
+import com.grupio.data.BestMatch;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.SpeakerData;
 import com.grupio.data.SponsorData;
+import com.grupio.db.EventTable;
 import com.grupio.fragments.BaseFragment;
+import com.grupio.helper.AttendeeProcessor;
 import com.grupio.interfaces.Person;
+import com.grupio.session.Preferences;
 import com.grupio.speakers.SpeakerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
@@ -61,9 +68,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
 
             Intent mIntent = new Intent(getActivity(), ListDetailActivity.class);
 
-            Person personData = null;
-            personData = (Person) parent.getAdapter().getItem(position);
-            if (type instanceof AttendeesData) {
+            Person personData = (Person) parent.getAdapter().getItem(position);
+            if (type instanceof AttendeesData || type instanceof BestMatch) {
                 mIntent.putExtra("id", ((AttendeesData) personData).getAttendee_id());
                 mIntent.setType("attendee");
             } else if (type instanceof SpeakerData) {
@@ -107,16 +113,40 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
     TextWatcher mWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String category = mSpinner.isShown() ? mSpinner.getSelectedItem().toString() : null;
-            if (s.length() > 0) {
-                getPresenter().fetchList(s.toString(), category);
+
+
+            if (type instanceof BestMatch) {
+                List<AttendeesData> mBestMatchList = new ArrayList<>();
+                List<AttendeesData> mFilteredList = new ArrayList<>();
+
+                String response = Preferences.getInstances(getActivity()).getBestMatch();
+                AttendeeProcessor attendeeProcessor = new AttendeeProcessor();
+                mBestMatchList.addAll(attendeeProcessor.getAttendeesListFromJSON(getActivity(), response, false));
+
+
+                if (s.length() > 0) {
+                    for (int i = 0; i < mBestMatchList.size(); i++) {
+                        if (mBestMatchList.get(i).getFirst_name().toLowerCase().startsWith(s.toString().toLowerCase()) || mBestMatchList.get(i).getLast_name().toLowerCase().startsWith(s.toString().toLowerCase())) {
+                            mFilteredList.add(mBestMatchList.get(i));
+                        }
+                    }
+
+                    showList(mFilteredList);
+                } else {
+                    showList(mBestMatchList);
+                }
+
             } else {
-                getPresenter().fetchList(null, category);
+                String category = mSpinner.isShown() ? mSpinner.getSelectedItem().toString() : null;
+                if (s.length() > 0) {
+                    getPresenter().fetchList(s.toString(), category);
+                } else {
+                    getPresenter().fetchList(null, category);
+                }
             }
         }
 
@@ -135,11 +165,13 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
         if (mBundle != null) {
             mListFragment.setArguments(mBundle);
         }
+
+        Utility.printLog("ListFragment", "constructor");
     }
 
     @Override
     public String getScreenName() {
-        if (type instanceof AttendeesData) {
+        if (type instanceof AttendeesData || type instanceof BestMatch) {
             return "ATTENDEE_LIST_VIEW";
         } else if (type instanceof SpeakerData) {
             return "SPEAKER_LIST_VIEW";
@@ -153,7 +185,6 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
 
     @Override
     public String getBannerName() {
-
         if (type instanceof AttendeesData) {
             return "attendees";
         } else if (type instanceof SpeakerData) {
@@ -162,10 +193,10 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             return "exhibitors";
         } else if (type instanceof SponsorData) {
             return "sponsors";
+        } else if (type instanceof BestMatch) {
+            return "i2i";
         }
-
         return "";
-
     }
 
     @Override
@@ -206,6 +237,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             locale = "Exhibitor";
         } else if (type instanceof SponsorData) {
             locale = "Sponsor";
+        } else if (type instanceof BestMatch) {
+            locale = "Best Match";
         }
 
         setupSearchBar(true, "Loading " + locale);
@@ -241,6 +274,8 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
             locale = "Exhibitors";
         } else if (type instanceof SponsorData) {
             locale = "Sponsor";
+        } else if (type instanceof BestMatch) {
+            locale = getString(R.string.best_match_loading);
         }
 
         showProgressDialog(locale);
@@ -259,6 +294,9 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
      */
     @Override
     public void showList(List<? extends Person> mList) {
+
+        Utility.printLog("ListFragment", "showList " + mList.size());
+
 
         if (type instanceof AttendeesData) {
             mAttendeeadapter = new AttendeeListAdapter(getActivity());
@@ -287,6 +325,17 @@ public class ListFragment<T extends Person> extends BaseFragment<ListPresenter> 
 
             List<SponsorData> mSponsorList = (List<SponsorData>) mList;
             mSponsorAdapter.addAll(mSponsorList);
+        } else if (type instanceof BestMatch) {
+
+            mAttendeeadapter = new AttendeeListAdapter(getActivity());
+            mListView.setAdapter(mAttendeeadapter);
+
+            List<AttendeesData> attendeesDataList = (List<AttendeesData>) mList;
+
+            AttendeeProcessor attendeeProcessor = new AttendeeProcessor();
+            attendeeProcessor.sortAttendee(EventDAO.getInstance(getActivity()).getValue(EventTable.NAME_ORDER).equals("y"), attendeesDataList);
+
+            mAttendeeadapter.addAll(attendeesDataList);
         }
         notifyAdapter();
 

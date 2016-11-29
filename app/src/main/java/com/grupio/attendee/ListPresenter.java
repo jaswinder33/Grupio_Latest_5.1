@@ -20,12 +20,10 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
         this.type = type;
         mController = new ListController(type, mContext);
         fetchCategoryList();
-
     }
 
     @Override
     public void fetchList(String queryStr, String cateogory) {
-
         if (mController != null) {
             mController.fetchListFromDB(queryStr, cateogory, this);
         }
@@ -45,6 +43,9 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
 
     @Override
     public void fetchCategoryList() {
+
+        mListener.showProgress();
+
         if (mController != null) {
             mController.fetchCategoryList(this);
         }
@@ -58,6 +59,7 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
 
     @Override
     public void onListFetch(List<? extends Person> mlist) {
+        mListener.hideProgress();
         if (mListener != null) {
             mListener.hideProgress();
             mListener.showList(mlist);
@@ -68,6 +70,7 @@ public class ListPresenter<T extends Person> implements ListPresenterInter, Cont
     public void onCategoryFetch(List<String> mList) {
         if (mListener != null) {
             if (mList != null) {
+
                 mListener.showCategory(mList);
             } else {
                 mListener.hideCategory();

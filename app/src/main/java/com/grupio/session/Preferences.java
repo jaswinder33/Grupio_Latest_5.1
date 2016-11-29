@@ -158,4 +158,12 @@ public class Preferences {
         return pref.getString("linkedin", null);
     }
 
+    public void saveBestMatch(String response) {
+        editor.putString("best_match", response).commit();
+    }
+
+    public String getBestMatch() {
+        return pref.getString("best_match", "");
+    }
+
 }

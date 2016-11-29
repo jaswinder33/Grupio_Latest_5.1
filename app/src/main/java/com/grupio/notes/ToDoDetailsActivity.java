@@ -42,6 +42,45 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
     private TimePicker timePicker;
 
     private NotesData mNotesData = new NotesData();
+    DatePicker.OnDateChangedListener datePickerListener = (datePicker1, i, i1, i2) -> {
+
+        String year = String.valueOf(i);
+        String month = String.format("%02d", i1);
+        String day = String.format("%02d", i2);
+
+        String date = year + "-" + (month) + "-" + day;
+        String updatedDate = DateTime.getInstance().updateDate(date, mNotesData.getNoteDate(), mNotesData.getTimeZone(), true);
+        dateTime.setText(updatedDate);
+    };
+    TimePicker.OnTimeChangedListener timeChangeListener = (timePicker1, i, i1) -> {
+
+        String hr = String.valueOf(i);
+        String min = String.valueOf(i1);
+        String time = hr + ":" + min;
+
+        String updatedDate = DateTime.getInstance().updateDate(time, mNotesData.getNoteDate(), mNotesData.getTimeZone(), false);
+        dateTime.setText(updatedDate);
+    };
+    ToggleButton.OnCheckedChangeListener mToggleListener = (compoundButton, b) -> {
+        if (b) {
+            dateTimelay.setVisibility(View.VISIBLE);
+//            mNotesData.setNoteReminder("1");
+
+            String time = DateTime.getInstance().currentTimeInTimeZone(mNotesData.getTimeZone());
+            time = DateTime.getInstance().formatDate("dd-MMM-yyyy hh:mma", time);
+            mNotesData.setNoteDate(time);
+            dateTime.setText(time);
+
+            setDatePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
+            setTimePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
+
+        } else {
+            DateTime.getInstance().removeFromCalendar(this, mNotesData);
+            mNotesData.setNoteReminder("0");
+            mNotesData.setNoteDate("");
+            dateTimelay.setVisibility(View.GONE);
+        }
+    };
 
     @Override
     public int getLayout() {
@@ -62,8 +101,6 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
         timeBtn = (Button) findViewById(R.id.timeBtn);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
-
-
     }
 
     @Override
@@ -134,41 +171,18 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
 
     @Override
     public void showNote(NotesData note) {
-        note.setNoteId(mNotesData.getNoteId());
-        mNotesData = note;
-        toDoTextField.setText(note.getNoteText());
-        dateTime.setText(note.getNoteDate());
+        note.setId(note.getId().equals("0") ? mNotesData.getId() : note.getId());
 
-        if (!TextUtils.isEmpty(note.getNoteReminder())) {
-            reminderToggle.setChecked(true);
+        mNotesData = new NotesData(note);
+        Log.i(TAG, "showNote: Note obj" + note.toString());
+        Log.i(TAG, "showNote: mNotesData obj" + mNotesData.toString());
+        toDoTextField.setText(mNotesData.getNoteText());
+        dateTime.setText(mNotesData.getNoteDate());
+
+        if (TextUtils.isEmpty(mNotesData.getNoteReminder()) || mNotesData.getNoteReminder().equals("0")) {
+            reminderToggle.setChecked(false);
+            mNotesData.setNoteDate("");
         }
-
-        if (note.getNoteId().equals("0")) {
-            reminderToggle.setChecked(true);
-        }
-        setDatePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
-        setTimePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
-
-    }
-
-
-    @Override
-    public void showNote(NotesData note) {
-        note.setNoteId(mNotesData.getNoteId());
-        mNotesData = note;
-        toDoTextField.setText(note.getNoteText());
-        dateTime.setText(note.getNoteDate());
-
-        if (!TextUtils.isEmpty(note.getNoteReminder())) {
-            reminderToggle.setChecked(true);
-        }
-
-        if (note.getNoteId().equals("0")) {
-            reminderToggle.setChecked(true);
-        }
-        setDatePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
-        setTimePicker(mNotesData.getNoteDate(), mNotesData.getTimeZone());
-
     }
 
     @Override
@@ -217,16 +231,6 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
         }
     }
 
-    ToggleButton.OnCheckedChangeListener mToggleListener = (compoundButton, b) -> {
-        if (b) {
-            dateTimelay.setVisibility(View.VISIBLE);
-            mNotesData.setNoteReminder("1");
-        } else {
-            mNotesData.setNoteReminder("0");
-            dateTimelay.setVisibility(View.GONE);
-        }
-    };
-
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -259,7 +263,16 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
                     mNote.setNoteId(mNotesData.getNoteId());
                 }
 
-                mNote.setNoteReminder(DateTime.getInstance().saveToCalendar(this, mNote));
+                if (reminderToggle.isChecked() && !mNotesData.getNoteReminder().equals("0")) {
+                    DateTime.getInstance().removeFromCalendar(this, mNote);
+                }
+
+
+                if (reminderToggle.isChecked() && mNotesData.getNoteReminder().equals("0") || !mNotesData.getNoteDate().equals(dateTime.getText().toString())) {
+                    mNote.setNoteReminder(DateTime.getInstance().saveToCalendar(this, mNote));
+                } else {
+                    mNote.setNoteReminder("0");
+                }
 
                 getPresenter().saveNote(mNote, this);
                 break;
@@ -284,6 +297,7 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
                 timePicker.setVisibility(View.VISIBLE);
                 setButton(true);
                 break;
+
         }
     }
 
@@ -299,19 +313,6 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
         }
     }
 
-    DatePicker.OnDateChangedListener datePickerListener = (datePicker1, i, i1, i2) -> {
-
-        String year = String.valueOf(i);
-        String month = String.format("%02d", i1);
-        String day = String.format("%02d", i2);
-
-        String date = year + "-" + (month) + "-" + day;
-        String updatedDate = DateTime.getInstance().updateDate(date, mNotesData.getNoteDate(), mNotesData.getTimeZone(), true);
-
-        mNotesData.setNoteDate(updatedDate);
-        dateTime.setText(mNotesData.getNoteDate());
-    };
-
     public void setDatePicker(String date, String timeZone) {
         int day = DateTime.getInstance().getDateVarialbe(Calendar.DATE, date, timeZone);
         int month = DateTime.getInstance().getDateVarialbe(Calendar.MONTH, date, timeZone);
@@ -319,18 +320,6 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
 
         datePicker.init(year, month, day, datePickerListener);
     }
-
-    TimePicker.OnTimeChangedListener timeChangeListener = (timePicker1, i, i1) -> {
-
-        String hr = String.valueOf(i);
-        String min = String.valueOf(i1);
-        String time = hr + ":" + min;
-
-        String updatedDate = DateTime.getInstance().updateDate(time, mNotesData.getNoteDate(), mNotesData.getTimeZone(), false);
-        mNotesData.setNoteDate(updatedDate);
-
-        dateTime.setText(mNotesData.getNoteDate());
-    };
 
     public void setTimePicker(String date, String timeZone) {
         int hr = DateTime.getInstance().getDateVarialbe(Calendar.HOUR, date, timeZone);

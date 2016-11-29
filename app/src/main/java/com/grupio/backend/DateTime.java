@@ -1,5 +1,6 @@
 package com.grupio.backend;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -270,12 +271,18 @@ public class DateTime {
         values.put(CalendarContract.Events.CALENDAR_ID, 1);
         values.put(CalendarContract.Events.HAS_ALARM, 1);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
 
-        SessionDAO.getInstance(mContext).persistCalendarId(uri.getLastPathSegment(), id);
+        Uri uri = null;
+        if (Permissions.getInstance().hasCalendarPermission((Activity) mContext).permissions.size() == 0) {
+            uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        }
 
-//        setReminder(mContext, uri.getLastPathSegment());
-        return uri.getLastPathSegment();
+        String eventId = uri != null ? uri.getLastPathSegment() : "0";
+
+        SessionDAO.getInstance(mContext).persistCalendarId(eventId, id);
+
+        setReminder(mContext, eventId);
+        return eventId;
     }
 
     public <T> void removeFromCalendar(Context mContext, T data) {
@@ -298,13 +305,22 @@ public class DateTime {
     }
 
     public String setReminder(Context mContext, String eventId) {
+
+        if (eventId.equals("0")) {
+            return "";
+        }
+
         ContentResolver cr = mContext.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Reminders.MINUTES, 15);
         values.put(CalendarContract.Reminders.EVENT_ID, eventId);
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-        Uri uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
-        return uri.getLastPathSegment();
+        if (Permissions.getInstance().hasCalendarPermission((Activity) mContext).permissions.size() == 0) {
+            Uri uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
+        }
+
+
+        return "";
     }
 
 }

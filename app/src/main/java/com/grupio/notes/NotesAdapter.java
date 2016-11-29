@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.base.SimpleBaseListAdapter;
+import com.grupio.dao.EventDAO;
+import com.grupio.db.EventTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,11 @@ import java.util.List;
 
 public class NotesAdapter extends SimpleBaseListAdapter<NotesData, NotesAdapter.Holder> {
 
+    String timeZone = "";
+
     public NotesAdapter(Context context) {
         super(context);
+        timeZone = EventDAO.getInstance(context).getValue(EventTable.TIMEZONE);
     }
 
     @Override
@@ -37,8 +42,9 @@ public class NotesAdapter extends SimpleBaseListAdapter<NotesData, NotesAdapter.
     public void getView(int position, Holder holder) {
         NotesData mNoteData = getItem(position);
         holder.mNoteText.setText(mNoteData.getNoteText());
-        if (mNoteData.getNoteType().equalsIgnoreCase(NotesListActivity.THINGS_TO_DO)) {
+        if (mNoteData.getNoteType().equalsIgnoreCase(NotesListActivity.THINGS_TO_DO) && !mNoteData.getNoteReminder().equals("0")) {
             mHolder.mAlarmLayout.setVisibility(View.VISIBLE);
+            mHolder.mAlarmText.setText(getItem(position).getNoteDate() + " (" + timeZone + ") ");
         } else {
             mHolder.mAlarmLayout.setVisibility(View.GONE);
         }

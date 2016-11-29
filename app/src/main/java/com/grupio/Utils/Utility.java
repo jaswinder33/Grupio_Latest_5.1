@@ -13,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -373,6 +374,10 @@ public class Utility {
         mTranscation.commit();
     }
 
+    public static void printLog(String tag, String value) {
+        Log.i(tag, value);
+    }
+
     /**
      * Check if color is dark or light
      *
@@ -383,5 +388,4 @@ public class Utility {
         double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return darkness >= 0.5;
     }
-
 }

@@ -37,6 +37,14 @@ public class NotesInteractor implements NotesContract.Interactor {
     @Override
     public void fetchNote(String type, String id, Context mContext, NotesContract.OnInteraction mListener) {
 
+        String timezone = EventDAO.getInstance(mContext).getValue(EventTable.GET_TIMEZONE);
+        timezone = timezone.replace("UTC", "GMT");
+        timezone = timezone.replace(" ", "");
+        timezone = timezone.replace("hours", "");
+        timezone = timezone.replace("hour", "");
+        timezone = timezone.replace("hrs", "");
+        timezone = timezone.replace("hr", "");
+
         if (type.equals(NotesListActivity.THINGS_TO_DO)) {
             mListener.onHeaderText(mContext.getString(R.string.things_todo_heading));
         } else if (type.equals(NotesListActivity.My_NOTES)) {
@@ -46,26 +54,15 @@ public class NotesInteractor implements NotesContract.Interactor {
         mListener.onColorFetch(EventDAO.getInstance(mContext).getValue(EventTable.COLOR_THEME));
         NotesData mNote = NotesDAO.getInstance(mContext).getNote(id, type);
         if (mNote != null) {
+            mNote.setTimeZone(timezone);
             mListener.onNoteFetch(mNote);
             if (type.equals(NotesListActivity.THINGS_TO_DO) || type.equals(NotesListActivity.My_NOTES)) {
                 mListener.onDeleteBtnShow();
             }
         } else {
             if (type.equals(NotesListActivity.THINGS_TO_DO)) {
-
-                String timezone = EventDAO.getInstance(mContext).getValue(EventTable.GET_TIMEZONE);
-
-                timezone = timezone.replace("UTC", "GMT");
-                timezone = timezone.replace(" ", "");
-                timezone = timezone.replace("hours", "");
-                timezone = timezone.replace("hour", "");
-                timezone = timezone.replace("hrs", "");
-                timezone = timezone.replace("hr", "");
-
                 String time = DateTime.getInstance().currentTimeInTimeZone(timezone);
-
                 time = DateTime.getInstance().formatDate("dd-MMM-yyyy hh:mma", time);
-
 
                 mNote = new NotesData();
                 mNote.setId(id);

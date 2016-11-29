@@ -117,6 +117,8 @@ public class NotesDAO extends BaseDAO {
         cv.put(NotesTable.NOTE_ID, mNotesData.getNoteId());
         cv.put(NotesTable.NOTE_TYPE, mNotesData.getNoteType());
         cv.put(NotesTable.NOTE_TEXT, mNotesData.getNoteText());
+        cv.put(NotesTable.NOTE_DATE, mNotesData.getNoteDate());
+        cv.put(NotesTable.REMINDER, mNotesData.getNoteReminder());
         cv.put(NotesTable.LAST_OPERATION, mNotesData.getLastOperation());
         cv.put(NotesTable.NOTE_SYNC, mNotesData.getNoteSync());
 

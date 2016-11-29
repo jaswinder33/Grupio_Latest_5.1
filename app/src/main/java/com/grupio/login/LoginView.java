@@ -35,4 +35,6 @@ public interface LoginView {
     void navigateScreen(Bundle mbundle, Class<?> className);
 
     void goToMyNotesScreen();
+
+    void goToListActivity(String type);
 }

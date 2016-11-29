@@ -17,6 +17,18 @@ public class NotesData {
     public NotesData() {
     }
 
+    public NotesData(NotesData mNote) {
+        id = mNote.getId();
+        noteId = mNote.getNoteId();
+        noteType = mNote.getNoteType();
+        noteText = mNote.getNoteText();
+        noteDate = mNote.getNoteDate();
+        noteReminder = mNote.getNoteReminder();
+        lastOperation = mNote.getLastOperation();
+        noteSync = mNote.getNoteSync();
+        timeZone = mNote.getTimeZone();
+    }
+
     public String getId() {
         return id;
     }
@@ -96,4 +108,18 @@ public class NotesData {
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
+
+    public String toString() {
+        return "[ ID=" + id
+                + ", NoteId= " + noteId
+                + ", NoteType= " + noteType
+                + ", NoteText= " + noteText
+                + ", NoteDate= " + noteDate
+                + ", NoteReminder= " + noteReminder
+                + ", LastOperation= " + lastOperation
+                + ", NoteSync= " + noteSync
+                + ", TimeZone= " + timeZone
+                + " ]";
+    }
+
 }

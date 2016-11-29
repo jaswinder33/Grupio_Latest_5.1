@@ -10,4 +10,5 @@ public class ListConstant {
     public static final String EXHIBITOR = "exhibitor";
     public static final String SPONSOR = "sponsor";
     public static final String SPEAKER = "speaker";
+    public static final String BEST_Match = "best_match";
 }
