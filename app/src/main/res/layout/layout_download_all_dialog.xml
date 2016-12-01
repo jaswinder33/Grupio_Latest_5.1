@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+
+    <TextView
+        android:id="@+id/sectionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="Attendee"
+        android:textSize="@dimen/text_16" />
+
+    <ProgressBar
+        android:id="@+id/sectionProgress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sectionName"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:id="@+id/sectionPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sectionProgress"
+        android:layout_marginTop="2dp"
+        android:text="0%" />
+
+    <TextView
+        android:id="@+id/sectionCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sectionProgress"
+        android:layout_marginTop="2dp"
+        android:text="0/4" />
+
+
+    <TextView
+        android:id="@+id/fileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sectionPercentage"
+        android:layout_marginTop="20dp"
+        android:text="PDF"
+        android:textSize="@dimen/text_16" />
+
+    <ProgressBar
+        android:id="@+id/fileProgress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fileName"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:id="@+id/filePercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fileProgress"
+        android:layout_marginTop="2dp"
+        android:text="0%" />
+
+
+</RelativeLayout>

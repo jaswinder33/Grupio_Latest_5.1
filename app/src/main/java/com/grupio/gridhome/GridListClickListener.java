@@ -17,8 +17,10 @@ import com.grupio.attendee.ListActivity;
 import com.grupio.attendee.ListConstant;
 import com.grupio.dao.SessionTracksDAO;
 import com.grupio.data.MenuData;
+import com.grupio.download.DownloadActivity;
 import com.grupio.home.HomeActivity;
 import com.grupio.login.LoginActivity;
+import com.grupio.login.MyAccountActivity;
 import com.grupio.logistics.LogisticsActivity;
 import com.grupio.message.MessageActivity;
 import com.grupio.notes.NotesListActivity;
@@ -53,6 +55,8 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick myNotesClick = mBundle -> sendIntent(NotesListActivity.class, mBundle);
     MenuClick sponsorClick = mBundle -> sendIntent(ListActivity.class, mBundle);
     MenuClick bestMatchClick = mBundle -> sendIntent(ListActivity.class, mBundle);
+    MenuClick downloadClick = mBundle -> sendIntent(DownloadActivity.class, mBundle);
+    MenuClick myAccountClick = mBundle -> sendIntent(MyAccountActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -166,7 +170,9 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     performClick(mBundle, logisticsClick);
                     break;
                 case "my account":
-                    performClick(mBundle, loginClick);
+                    if (!loginRequired(context.getString(R.string.my_account))) {
+                        performClick(mBundle, myAccountClick);
+                    }
                     break;
 
                 case "survey":
@@ -202,6 +208,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "downloads":
+                    performClick(mBundle, downloadClick);
                     break;
 
                 case "qrcode":

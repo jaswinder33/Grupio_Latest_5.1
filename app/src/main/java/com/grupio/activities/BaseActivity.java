@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import com.grupio.interfaces.ClickHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by JSN on 5/7/16.
@@ -48,9 +50,13 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     public static final int DOWNLODA_DOC = 104;
     public static final int URL_DOC = 105;
 
+    //right button variables
     public static final String REFRESH = "refresh";
     public static final String ADD = "add";
     public static final String EMAIL = "email";
+    public static final String VIEW_ALL = "view_all";
+    public static final String DOWNLOAD_ALL = "download_all";
+    public static final String LOGOUT = "logout";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -154,6 +160,20 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
                 case EMAIL:
                     rightBtn.setBackgroundResource(R.drawable.ic_envelope);
                     break;
+
+                case VIEW_ALL:
+                    rightBtn.setBackgroundResource(R.drawable.book_btn);
+                    rightBtn.setText("View All");
+                    break;
+                case DOWNLOAD_ALL:
+                    rightBtn.setBackgroundResource(R.drawable.book_btn);
+                    rightBtn.setText("Download All");
+                    break;
+
+                case LOGOUT:
+                    rightBtn.setBackgroundResource(R.drawable.logout);
+                    break;
+
             }
             rightBtn.setOnClickListener(this);
         } else {
@@ -353,9 +373,14 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         private ClickHandler mClick;
         private boolean isSingleBtn = false;
         private Context mContext;
+        private AlertDialog dialog;
+
+        private CustomDialog(Context mContext) {
+            this.mContext = mContext;
+        }
 
         private CustomDialog(Context mContext, ClickHandler mClick) {
-            this.mContext = mContext;
+            this(mContext);
             this.mClick = mClick;
         }
 
@@ -367,6 +392,10 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         private CustomDialog(String Ok, String cancel, Context mContext, ClickHandler mClick) {
             this(Ok, mContext, mClick);
             this.cancelStr = cancel;
+        }
+
+        public static CustomDialog getDialog(Context mContext) {
+            return new CustomDialog(mContext);
         }
 
         public static CustomDialog getDialog(Context mContext, ClickHandler mClick) {
@@ -400,8 +429,23 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
             dialog.create().show();
         }
 
-//        public void showCustom(String message, View view){
-//        }
+        public Object[] showWithCustomView(int view, Class<?> holder) {
+            View dialogView = LayoutInflater.from(mContext).inflate(view, null);
+            dialog = new AlertDialog.Builder(mContext).setView(dialogView).create();
+            dialog.show();
+            try {
+                return new Object[]{holder.getConstructor(holder.getConstructors()[0].getParameterTypes()).newInstance(null, dialogView), dialog};
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
     }
 }

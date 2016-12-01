@@ -36,5 +36,7 @@ public interface LoginView {
 
     void goToMyNotesScreen();
 
+    void goToMyAccountScreen();
+
     void goToListActivity(String type);
 }

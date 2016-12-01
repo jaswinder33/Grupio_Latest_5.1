@@ -1,11 +1,14 @@
 package com.grupio.download;
 
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.grupio.R;
-import com.grupio.data.LogisticsData;
+import com.grupio.data.DownloadedResource;
 import com.grupio.fragments.BaseFragment;
+import com.grupio.logistics.DocumentController;
+import com.grupio.notes.DownloadListAdapter;
 
 import java.util.List;
 
@@ -14,6 +17,11 @@ import java.util.List;
  */
 
 public class DownloadFragment extends BaseFragment<DownloadPresenter> implements DownloadContract.View {
+    AdapterView.OnItemClickListener mItemClickListener = (adapterView, view1, i, l) -> {
+        DownloadedResource mResource = (DownloadedResource) adapterView.getItemAtPosition(i);
+        DocumentController<DownloadedResource, DownloadedResource> mDownloader = new DocumentController<>(new DownloadedResource(), new DownloadedResource(), getActivity());
+        mDownloader.viewDoc(mResource);
+    };
     private ListView mListview;
     private TextView noDataAvailable;
 
@@ -31,6 +39,7 @@ public class DownloadFragment extends BaseFragment<DownloadPresenter> implements
 
     @Override
     public void setListeners() {
+        mListview.setOnItemClickListener(mItemClickListener);
     }
 
     @Override
@@ -64,8 +73,21 @@ public class DownloadFragment extends BaseFragment<DownloadPresenter> implements
     }
 
     @Override
-    public void showList(List<LogisticsData> mData) {
+    public void showCustomProgress() {
 
+    }
+
+    @Override
+    public void hideCustomProgress() {
+
+    }
+
+    @Override
+    public void showList(List<DownloadedResource> mData) {
+
+        DownloadListAdapter mAdapter = new DownloadListAdapter(getActivity());
+        mAdapter.addAll(mData);
+        mListview.setAdapter(mAdapter);
     }
 
     @Override
@@ -77,4 +99,10 @@ public class DownloadFragment extends BaseFragment<DownloadPresenter> implements
     public void showDownlaodProgress(int[] progress, String[] name) {
 
     }
+
+    @Override
+    public void allDownloadComplete() {
+
+    }
+
 }

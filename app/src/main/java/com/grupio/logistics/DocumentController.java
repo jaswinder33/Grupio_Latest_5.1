@@ -15,6 +15,7 @@ import com.grupio.animation.SlideOut;
 import com.grupio.apis.DownloadFile;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.DocInter;
+import com.grupio.data.DownloadedResource;
 import com.grupio.data.ExhibitorData;
 import com.grupio.data.LogisticsData;
 import com.grupio.data.MapsData;
@@ -81,6 +82,9 @@ public class DocumentController<K, V extends DocInter> {
 
     //File name stored on device
     private String fName;
+
+    // Only available for DownloadResource type
+    private String section;
 
     /**
      * Constructor
@@ -206,6 +210,12 @@ public class DocumentController<K, V extends DocInter> {
             name = mData.getName();
             url = mData.getUrl();
             id = mData.getMapId();
+        } else if (typeV instanceof DownloadedResource) {
+            DownloadedResource mData = (DownloadedResource) objV;
+            name = mData.name;
+            url = mData.url;
+            id = mData.id;
+            section = mData.section;
         }
 
         try {
@@ -297,6 +307,8 @@ public class DocumentController<K, V extends DocInter> {
             folderName = mContext.getString(R.string.session_resources);
         } else if (typeK instanceof SponsorData) {
             folderName = mContext.getString(R.string.sponsor_resources);
+        } else if (typeK instanceof DownloadedResource) {
+            folderName = section;
         } else {
             folderName = mContext.getString(R.string.logistics_resources);
         }

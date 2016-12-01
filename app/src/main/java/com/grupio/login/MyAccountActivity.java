@@ -1,15 +1,16 @@
-package com.grupio.download;
-
-import android.content.Intent;
+package com.grupio.login;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
-import com.grupio.animation.SlideOut;
+import com.grupio.interfaces.ClickHandler;
+import com.grupio.session.Preferences;
 
-public class DownloadActivity extends BaseActivity<Void> {
+/**
+ * Created by JSN on 30/11/16.
+ */
 
-
+public class MyAccountActivity extends BaseActivity<Void> {
     @Override
     public int getLayout() {
         return R.layout.layout_container;
@@ -17,7 +18,6 @@ public class DownloadActivity extends BaseActivity<Void> {
 
     @Override
     public void initIds() {
-
     }
 
     @Override
@@ -46,14 +46,20 @@ public class DownloadActivity extends BaseActivity<Void> {
 
     @Override
     public void setUp() {
-        handleRightBtn(true, VIEW_ALL);
-        Utility.replaceFragment(this, new DownloadFragment(), false);
+        handleRightBtn(true, LOGOUT);
+        Utility.replaceFragment(this, new MyAccountFragment(), false);
     }
 
     @Override
     public void handleRightBtnClick() {
-        Intent mIntent = new Intent(this, ViewAllActivity.class);
-        startActivity(mIntent);
-        SlideOut.getInstance().startAnimation(this);
+
+        ClickHandler logoutClick = () -> {
+            Preferences.getInstances(this).setAttendeeId(null);
+            Preferences.getInstances(this).saveUserInfo(null);
+            onBackPressed();
+        };
+        CustomDialog.getDialog(this, logoutClick).show(getString(R.string.logout_permission));
+
+
     }
 }

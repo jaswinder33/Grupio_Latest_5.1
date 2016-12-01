@@ -158,7 +158,21 @@
         <activity
             android:name=".download.DownloadActivity"
             android:label="@string/title_activity_download"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".download.ViewAllActivity"
+            android:label="@string/title_activity_view_all_activity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".login.MyAccountActivity"
+            android:label="@string/title_activity_my_account_activity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".login.EditMyAccountActivity"
+            android:label="@string/title_activity_my_account_activity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -216,6 +216,11 @@ public class AttendeeProcessor {
 
                         }
 
+                        try {
+                            data.setHideMe(jObject.getString("hide_attendee"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         try {
 
@@ -352,7 +357,6 @@ public class AttendeeProcessor {
         this.isFirstName = isFirstName;
         Collections.sort(mList, attendeeNameSort);
     }
-
 
 
 }

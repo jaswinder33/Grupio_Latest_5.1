@@ -46,6 +46,7 @@ public class AttendeesData implements Person {
     //for enable the Contacts button in Attendee Details page...
     String enable_contacts = "";
     String hide_contact_info = "";
+    String hideMe = "";
     String datatype = "";
     String sessionId[];
     List<mapList> mapListOfAttendee;
@@ -282,5 +283,11 @@ public class AttendeesData implements Person {
         isAttendeeSelected = attendeeSelected;
     }
 
+    public String getHideMe() {
+        return hideMe;
+    }
 
+    public void setHideMe(String hideMe) {
+        this.hideMe = hideMe;
+    }
 }

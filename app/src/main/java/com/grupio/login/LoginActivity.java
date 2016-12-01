@@ -190,6 +190,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
+    public void goToMyAccountScreen() {
+        navigateScreen(null, MyAccountActivity.class);
+    }
+
+    @Override
     public void goToListActivity(String type) {
         Bundle mBundle = new Bundle();
         mBundle.putString("type", type);

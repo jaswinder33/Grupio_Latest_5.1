@@ -37,6 +37,8 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:background="@drawable/refresh"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:visibility="gone" />
 
 

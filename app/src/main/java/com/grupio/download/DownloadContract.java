@@ -2,7 +2,7 @@ package com.grupio.download;
 
 import android.content.Context;
 
-import com.grupio.data.LogisticsData;
+import com.grupio.data.DownloadedResource;
 
 import java.util.List;
 
@@ -17,11 +17,17 @@ public interface DownloadContract {
 
         void hideProgress();
 
-        void showList(List<LogisticsData> mData);
+        void showCustomProgress();
+
+        void hideCustomProgress();
+
+        void showList(List<DownloadedResource> mData);
 
         void onFailure(String msg);
 
         void showDownlaodProgress(int[] progress, String[] name);
+
+        void allDownloadComplete();
     }
 
     interface Presenter {
@@ -30,7 +36,7 @@ public interface DownloadContract {
 
         void fetchAllResourceFromServer(Context mContext);
 
-        void downloadAllResources(Context mContext);
+        void downloadAllResources(Context mContext, List<DownloadedResource> mData);
     }
 
     interface Interactor {
@@ -39,15 +45,17 @@ public interface DownloadContract {
 
         void fetchAllResourceFromServer(Context mContext, OnInteration mListener);
 
-        void downloadAllResources(Context mContext, OnInteration mListener);
+        void downloadAllResources(Context mContext, List<DownloadedResource> mData, OnInteration mListener);
     }
 
     interface OnInteration {
-        void onListFetch(List<LogisticsData> mData);
+        void onListFetch(List<DownloadedResource> mData);
 
         void onFailure(String msg);
 
         void onDownload(int[] progress, String[] name);
+
+        void onDownloadComplete();
     }
 
 }

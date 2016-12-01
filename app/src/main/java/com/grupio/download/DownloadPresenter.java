@@ -2,7 +2,7 @@ package com.grupio.download;
 
 import android.content.Context;
 
-import com.grupio.data.LogisticsData;
+import com.grupio.data.DownloadedResource;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class DownloadPresenter implements DownloadContract.Presenter, DownloadCo
     }
 
     @Override
-    public void onListFetch(List<LogisticsData> mData) {
+    public void onListFetch(List<DownloadedResource> mData) {
         mListener.hideProgress();
         mListener.showList(mData);
     }
@@ -38,6 +38,11 @@ public class DownloadPresenter implements DownloadContract.Presenter, DownloadCo
     }
 
     @Override
+    public void onDownloadComplete() {
+        mListener.allDownloadComplete();
+    }
+
+    @Override
     public void fetchResourceList(Context mContext) {
         mListener.showProgress("Loading list...");
         mInteractor.fetchResourceList(mContext, this);
@@ -50,7 +55,8 @@ public class DownloadPresenter implements DownloadContract.Presenter, DownloadCo
     }
 
     @Override
-    public void downloadAllResources(Context mContext) {
-        mInteractor.downloadAllResources(mContext, this);
+    public void downloadAllResources(Context mContext, List<DownloadedResource> mData) {
+        mListener.showCustomProgress();
+        mInteractor.downloadAllResources(mContext, mData, this);
     }
 }

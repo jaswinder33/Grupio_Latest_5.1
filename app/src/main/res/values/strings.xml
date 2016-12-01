@@ -64,6 +64,8 @@
     <!--Download APIs-->
     <string name="all_resources_api">/getsessiondownloads.php?format=json</string>
 
+    <!--Upload Image API-->
+    <string name="upload_image_api">/uploadimage_android.php</string>
     <!-- ################################################################### -->
     <!-- ################################################################### -->
     <!-- ################################################################### -->
@@ -227,4 +229,25 @@
     <!--Best Match-->
     <string name="best_match_loading">Please wait. Loading best match for you.</string>
     <string name="title_activity_download">DownloadActivity</string>
+    <string name="title_activity_view_all_activity">ViewAllActivity</string>
+
+    <!--download menu-->
+    <string name="download_all_msg">Do you want to save data of this event?</string>
+
+    <!--My Account-->
+    <string name="str_title">Title:</string>
+    <string name="str_name">Name:</string>
+    <string name="str_company">Company:</string>
+    <string name="str_email">Email:</string>
+    <string name="str_phone">Primary Phone:</string>
+    <string name="str_interest">Interests:</string>
+    <string name="str_keyword">Keyword:</string>
+    <string name="str_privacy">Privacy:</string>
+    <string name="str_bio">Bio:</string>
+    <string name="allow_msg">Do you want to allow other attendees to send message to you?</string>
+    <string name="hide_profile">Do you want to hide your profile from others?</string>
+    <string name="hide_contact_info">Do you want to hide your contact information from others?</string>
+    <string name="logout_permission">Are you sure want to logout?</string>
+    <string name="title_activity_my_account_activity">MyAccountActivity</string>
+
 </resources>

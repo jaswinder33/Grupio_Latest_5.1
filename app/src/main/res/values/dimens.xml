@@ -66,4 +66,5 @@
     <dimen name="no_image_width">200dp</dimen>
     <dimen name="sponsor_list_child_height">130dp</dimen>
 
+
 </resources>

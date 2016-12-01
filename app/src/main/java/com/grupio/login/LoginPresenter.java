@@ -105,6 +105,7 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
             case "logistics3":
                 break;
             case "my account":
+                mListener.goToMyAccountScreen();
                 break;
 
             case "survey":
