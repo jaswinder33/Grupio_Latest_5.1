@@ -14,6 +14,8 @@ import com.grupio.data.AttendeesData;
 import com.grupio.fragments.BaseFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.List;
+
 /**
  * Created by JSN on 30/11/16.
  */
@@ -137,5 +139,20 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
     @Override
     public void enableHideContact() {
         hideContactInfoSwitch.setChecked(true);
+    }
+
+    @Override
+    public void onProfileUpdate() {
+
+    }
+
+    @Override
+    public void onFailure(String msg) {
+
+    }
+
+    @Override
+    public void showInterest(List<String> mFullInterestList, List<String> mAttendeeInterest) {
+
     }
 }

@@ -56,6 +56,50 @@ public class AttendeesData implements Person {
     Boolean alreadyAdded = false;
     String enable_match = "";
 
+    public AttendeesData() {
+    }
+
+    public AttendeesData(AttendeesData mData) {
+        mapListOfAttendeeAsString = mData.mapListOfAttendeeAsString;
+        sessionsAsString = mData.sessionsAsString;
+        isFriend = mData.isFriend;
+        requestText = mData.requestText;
+        presence_status = mData.presence_status;
+        channelId = mData.channelId;
+        isExistInFriendTable = mData.isExistInFriendTable;
+        request = mData.request;
+        attendee_id = mData.attendee_id;
+        first_name = mData.first_name;
+        last_name = mData.last_name;
+        title = mData.title;
+        company = mData.company;
+        email = mData.email;
+        type = mData.type;
+        primary_phone = mData.primary_phone;
+        secondary_phone = mData.secondary_phone;
+        image = mData.image;
+        large_image = mData.large_image;
+        bio = mData.bio;
+        linkedin = mData.linkedin;
+        twitter_id = mData.twitter_id;
+        website = mData.website;
+        keywords = mData.keywords;
+        category = mData.category;
+        intrests = mData.intrests;
+        enable_messaging = mData.enable_messaging;
+        enable_contacts = mData.enable_contacts;
+        hide_contact_info = mData.hide_contact_info;
+        hideMe = mData.hideMe;
+        datatype = mData.datatype;
+        sessionId = mData.sessionId;
+        mapListOfAttendee = mData.mapListOfAttendee;
+        isAttendeeSelected = mData.isAttendeeSelected;
+        sessionData = mData.sessionData;
+        meetingData = mData.meetingData;
+        alreadyAdded = mData.alreadyAdded;
+        enable_match = mData.enable_match;
+    }
+
     public String getIntrests() {
         return intrests;
     }

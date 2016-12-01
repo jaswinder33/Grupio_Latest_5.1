@@ -66,6 +66,12 @@
 
     <!--Upload Image API-->
     <string name="upload_image_api">/uploadimage_android.php</string>
+
+    <!--EditProfile-->
+    <string name="update_profile_api">/editprofile.php?format=json&amp;event_id=</string>
+    <string name="interest_api">/getintrests.php?format=json</string>
+
+
     <!-- ################################################################### -->
     <!-- ################################################################### -->
     <!-- ################################################################### -->

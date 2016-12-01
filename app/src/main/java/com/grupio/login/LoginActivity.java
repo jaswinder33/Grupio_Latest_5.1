@@ -217,7 +217,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
-    public void getData() {
+    private void getData() {
         Bundle mBundle = getIntent().getExtras();
 
         if (mBundle != null) {

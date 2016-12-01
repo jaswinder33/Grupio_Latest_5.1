@@ -166,4 +166,12 @@ public class Preferences {
         return pref.getString("best_match", "");
     }
 
+    public void setInterest(String interest) {
+        editor.putString("interest", interest).commit();
+    }
+
+    public String getInterests() {
+        return pref.getString("interest", null);
+    }
+
 }

@@ -164,10 +164,13 @@
                 android:text="Interest:"
                 android:textColor="@android:color/black" />
 
-            <Spinner
+            <com.grupio.login.MultiSelectSpinner
                 android:id="@+id/interest_spinner"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:spinnerMode="dialog"
 
                 />
@@ -201,6 +204,7 @@
                     android:id="@+id/yesMessageRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
                     android:text="Yes"
                     android:textColor="@android:color/black" />
 
@@ -208,6 +212,7 @@
                     android:id="@+id/noMessageRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="No"
                     android:textColor="@android:color/black" />
             </RadioGroup>
@@ -233,6 +238,7 @@
                     android:id="@+id/yesHideProfileRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
                     android:text="Yes"
                     android:textColor="@android:color/black" />
 
@@ -240,6 +246,7 @@
                     android:id="@+id/noHideProfileRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="No"
                     android:textColor="@android:color/black" />
             </RadioGroup>
@@ -265,6 +272,7 @@
                     android:id="@+id/yesHideConactRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
                     android:text="Yes"
                     android:textColor="@android:color/black" />
 
@@ -272,6 +280,7 @@
                     android:id="@+id/noHideConactRadioButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="No"
                     android:textColor="@android:color/black" />
             </RadioGroup>
@@ -280,10 +289,10 @@
                 android:id="@+id/updateProfileButtonId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="10dp"
-                android:background="@android:color/holo_blue_dark"
+                android:backgroundTint="@color/blue_alert_icon"
                 android:text="Save"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />

@@ -12,8 +12,8 @@ import com.grupio.notes.NotesListActivity;
 
 public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnLoginComplete {
 
-    LoginView mListener;
-    LoginInteractor mInteractor;
+    private LoginView mListener;
+    private LoginInteractor mInteractor;
 
     public LoginPresenter(LoginView mListener) {
         this.mListener = mListener;
@@ -37,6 +37,7 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
         if (TextUtils.isEmpty(userName)) {
             mListener.hideProgress();
             mListener.userNameError("Username required");
+            return false;
         }
         return true;
     }
@@ -45,6 +46,7 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
         if (TextUtils.isEmpty(password)) {
             mListener.hideProgress();
             mListener.passwordError("password required");
+            return false;
         }
 
         return true;
