@@ -373,7 +373,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         private ClickHandler mClick;
         private boolean isSingleBtn = false;
         private Context mContext;
-        private AlertDialog dialog;
+
 
         private CustomDialog(Context mContext) {
             this.mContext = mContext;
@@ -431,7 +431,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
         public Object[] showWithCustomView(int view, Class<?> holder) {
             View dialogView = LayoutInflater.from(mContext).inflate(view, null);
-            dialog = new AlertDialog.Builder(mContext).setView(dialogView).create();
+            AlertDialog dialog = new AlertDialog.Builder(mContext).setView(dialogView).create();
             dialog.show();
             try {
                 return new Object[]{holder.getConstructor(holder.getConstructors()[0].getParameterTypes()).newInstance(null, dialogView), dialog};

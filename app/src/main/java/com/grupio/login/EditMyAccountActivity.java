@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.gson.Gson;
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 import com.grupio.data.AttendeesData;
@@ -131,8 +132,8 @@ public class EditMyAccountActivity extends BaseActivity<MyAccountPresenter> impl
     }
 
     @Override
-    public void showImage(String url) {
-//only for my account activity
+    public void showImage(String url, boolean isUpdated) {
+        //only for my account activity
     }
 
     @Override
@@ -199,6 +200,10 @@ public class EditMyAccountActivity extends BaseActivity<MyAccountPresenter> impl
                 mAttendeeData.setKeywords(keyword.getText().toString());
                 mAttendeeData.setBio(bio.getText().toString());
                 mAttendeeData.setIntrests(mIntersetSpinner.getItemAtPosition(0).toString());
+
+                new Gson().toJson(mAttendeeData);
+
+                Log.i(TAG, "onClick: [ " + new Gson().toJson(mAttendeeData) + " ]");
 
                 getPresenter().updateUserInfo(mAttendeeData, this);
                 break;

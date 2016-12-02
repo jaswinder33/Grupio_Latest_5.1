@@ -3,8 +3,10 @@ package com.grupio.login;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.InterestAPI;
 import com.grupio.apis.UpdateProfileAPI;
+import com.grupio.apis.UploadImage;
 import com.grupio.dao.EventDAO;
 import com.grupio.data.AttendeesData;
 import com.grupio.db.EventTable;
@@ -36,6 +38,23 @@ public class MyAccountInteractor implements MyAccountContract.Interactor {
 
     @Override
     public void updateImage(String url, Context mContext, MyAccountContract.OnInteraction mOnInteraction) {
+
+        new UploadImage(mContext, new APICallBackWithResponse() {
+            @Override
+            public void onSuccess(String response) {
+                mOnInteraction.onImageUpdated(response);
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String msg) {
+
+            }
+        }).doCall(url);
 
     }
 

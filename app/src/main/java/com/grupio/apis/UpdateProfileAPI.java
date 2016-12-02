@@ -1,7 +1,7 @@
 package com.grupio.apis;
 
 import android.content.Context;
-import android.os.Build;
+import android.util.Log;
 
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
@@ -14,6 +14,7 @@ import com.grupio.session.Preferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.JSONValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class UpdateProfileAPI extends BaseAsyncTask<AttendeesData, Boolean> {
         mParamList.put("hideAttendee", mAttendee.getHideMe());
         mParamList.put("hideContactAttendee", mAttendee.getHide_contact_info());
 
+        Log.i("UpdateProfile ", "handleBackground: " + JSONValue.toJSONString(mParamList));
         APIRequest mRequest = new CookieRequest(mContext);
         String response = mRequest.requestResponse(url, mParamList, mContext);
 //{"status_code":0,"description":"Profile updated successfully"}
@@ -205,11 +207,22 @@ public class UpdateProfileAPI extends BaseAsyncTask<AttendeesData, Boolean> {
                         e.printStackTrace();
                     }
 
+                    JSONArray mJsonArray = new JSONArray();
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        jArray.remove(0);
-                        jArray.put(jObj);
+                    try {
+                        jObj.put("data", jObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
+                  /*  JSONArray mJsonArray = new JSONArray();
+                    mJsonArray.put("data", jObj);*/
+
+
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                        jArray.remove(0);
+//                        jArray.put(jObj);
+//                    }
                 }
             }
         }

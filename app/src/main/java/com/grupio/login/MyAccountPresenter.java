@@ -27,6 +27,7 @@ public class MyAccountPresenter implements MyAccountContract.Presenter, MyAccoun
 
     @Override
     public void updateImage(String url, Context mContext) {
+        mListener.showProgress("Uploading image...");
         mInteractor.updateImage(url, mContext, this);
     }
 
@@ -44,7 +45,8 @@ public class MyAccountPresenter implements MyAccountContract.Presenter, MyAccoun
 
     @Override
     public void onImageUpdated(String url) {
-        mListener.showImage(url);
+        mListener.hideProgress();
+        mListener.showImage(url, true);
     }
 
     @Override

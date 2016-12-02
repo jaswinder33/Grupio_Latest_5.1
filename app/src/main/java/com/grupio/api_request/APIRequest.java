@@ -95,9 +95,12 @@ public abstract class APIRequest {
             if (mListener != null) {
                 mListener.ResponseCode(responseCode);
             }
+
+            conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         System.out.println(response.toString());
         return response.toString();

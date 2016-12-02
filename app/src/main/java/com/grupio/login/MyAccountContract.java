@@ -16,7 +16,7 @@ public interface MyAccountContract {
 
         void hideProgress();
 
-        void showImage(String url);
+        void showImage(String url, boolean isUpdated);
 
         void showDetails(AttendeesData mData, boolean isFirstName);
 

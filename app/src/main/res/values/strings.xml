@@ -132,6 +132,7 @@
     <string name="Resources">Resources</string>
     <string name="Maps">Maps</string>
     <string name="menus">Menus</string>
+    <string name="image">Images</string>
 
 
     <string name="no_internet">You are offline</string>
@@ -255,5 +256,10 @@
     <string name="hide_contact_info">Do you want to hide your contact information from others?</string>
     <string name="logout_permission">Are you sure want to logout?</string>
     <string name="title_activity_my_account_activity">MyAccountActivity</string>
+    <string name="image_upload_dialog_heading">Make a Selection</string>
+    <string name="cancel">Cancel</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Photo Library</string>
+    <string name="image_upload_success">Image uploaded successfully.</string>
 
 </resources>

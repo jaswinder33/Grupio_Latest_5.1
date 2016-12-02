@@ -52,14 +52,11 @@ public class MyAccountActivity extends BaseActivity<Void> {
 
     @Override
     public void handleRightBtnClick() {
-
         ClickHandler logoutClick = () -> {
             Preferences.getInstances(this).setAttendeeId(null);
             Preferences.getInstances(this).saveUserInfo(null);
             onBackPressed();
         };
         CustomDialog.getDialog(this, logoutClick).show(getString(R.string.logout_permission));
-
-
     }
 }
