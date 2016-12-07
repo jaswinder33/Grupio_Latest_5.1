@@ -2,6 +2,7 @@ package com.grupio.attendee;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
@@ -84,7 +85,7 @@ public class ListActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
 
         if (mFrag != null && mFrag instanceof ListFragment) {

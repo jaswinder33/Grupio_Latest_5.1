@@ -117,7 +117,7 @@ public class EditMyAccountActivity extends BaseActivity<MyAccountPresenter> impl
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         getPresenter().fetchInterest(this);
     }
 
@@ -180,7 +180,9 @@ public class EditMyAccountActivity extends BaseActivity<MyAccountPresenter> impl
             mIntersetSpinner.setEnabled(true);
             mIntersetSpinner.setItems(mFullInterestList);
             mIntersetSpinner.setSelection(mAttendeeInterest);
-//            mIntersetSpinner.setSelection(0);
+            mIntersetSpinner._proxyAdapter.clear();
+            mIntersetSpinner._proxyAdapter.add(mIntersetSpinner.buildSelectedItemString());
+            mIntersetSpinner.setSelection(0);
         }
     }
 

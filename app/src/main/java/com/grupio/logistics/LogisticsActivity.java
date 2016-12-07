@@ -1,6 +1,7 @@
 package com.grupio.logistics;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
@@ -13,7 +14,7 @@ public class LogisticsActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
     }
 

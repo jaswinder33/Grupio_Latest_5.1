@@ -2,6 +2,7 @@ package com.grupio.schedule;
 
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
@@ -59,7 +60,7 @@ public class ScheduleListActivity extends BaseActivity<Void> {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
     public void getData() {

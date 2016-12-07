@@ -48,7 +48,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
     }
 
     @Override
-    public int getLayout() {
+    public int getLayout(int position) {
         return R.layout.layout_session_list_child;
     }
 
@@ -206,7 +206,7 @@ public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapt
 
 
     @Override
-    public ViewHolder setViewHolder(View convertView) {
+    public ViewHolder setViewHolder(View convertView, int position) {
         return new ViewHolder(convertView);
     }
 

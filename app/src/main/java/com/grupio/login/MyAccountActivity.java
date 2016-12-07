@@ -1,5 +1,7 @@
 package com.grupio.login;
 
+import android.view.View;
+
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
@@ -51,7 +53,7 @@ public class MyAccountActivity extends BaseActivity<Void> {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         ClickHandler logoutClick = () -> {
             Preferences.getInstances(this).setAttendeeId(null);
             Preferences.getInstances(this).saveUserInfo(null);

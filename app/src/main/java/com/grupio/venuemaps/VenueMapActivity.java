@@ -2,6 +2,7 @@ package com.grupio.venuemaps;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
@@ -31,7 +32,7 @@ public class VenueMapActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
         Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
 

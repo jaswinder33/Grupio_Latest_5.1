@@ -43,7 +43,7 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
     }
 
     @Override
-    public int getLayout() {
+    public int getLayout(int position) {
         return R.layout.layout_attendee_list_child;
     }
 
@@ -132,7 +132,7 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
     }
 
     @Override
-    public ViewHolder setViewHolder(View convertView) {
+    public ViewHolder setViewHolder(View convertView, int position) {
         return new ViewHolder(convertView);
     }
 
@@ -147,7 +147,6 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
             title = (TextView) convertView.findViewById(R.id.attendee_company_title);
             image = (ImageView) convertView.findViewById(R.id.attendee_image);
             presenceTextView = (TextView) convertView.findViewById(R.id.presenceTextView);
-
             mButton = (ImageButton) convertView.findViewById(R.id.addItem);
         }
     }

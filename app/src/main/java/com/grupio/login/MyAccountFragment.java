@@ -76,6 +76,11 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
 
     @Override
     public void setUp() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getPresenter().fetchUserInfo(getActivity());
     }
 
@@ -126,6 +131,12 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
                 imagePath = file.getAbsolutePath();
                 mIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 mIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                mIntent.putExtra("outputX", 200);
+                mIntent.putExtra("outputY", 200);
+                mIntent.putExtra("aspectX", 1);
+                mIntent.putExtra("aspectY", 1);
+                mIntent.putExtra("scale", true);
+                mIntent.putExtra("return-data", true);
                 startActivityForResult(mIntent, ACTION_TAKE_PHOTO);
                 break;
 
@@ -135,6 +146,12 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
                 mIntent.putExtra("circleCrop", true);
                 startActivityForResult(mIntent, PHOTO_PICKED);
                 break;
+        }
+    }
+
+    public void hideImageDialog() {
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
         }
     }
 
@@ -205,7 +222,6 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
 
     @Override
     public void showInterest(List<String> mFullInterestList, List<String> mAttendeeInterest) {
-
     }
 
     @Override
@@ -226,15 +242,13 @@ public class MyAccountFragment extends BaseFragment<MyAccountPresenter> implemen
         Matrix matrix = null;
         try {
             ExifInterface exif = new ExifInterface(imagePath);
-
             int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
             int rotationInDegrees = Utility.exifToDegrees(rotation);
             matrix = new Matrix();
             if (rotation != 0f) {
                 matrix.preRotate(rotationInDegrees);
             }
-
+            hideImageDialog();
             getPresenter().updateImage(imagePath, getActivity());
         } catch (IOException e) {
             e.printStackTrace();

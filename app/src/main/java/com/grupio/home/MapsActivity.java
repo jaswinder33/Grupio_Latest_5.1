@@ -1,5 +1,7 @@
 package com.grupio.home;
 
+import android.view.View;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,7 +51,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
     }
 

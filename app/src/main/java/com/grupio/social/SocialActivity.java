@@ -3,6 +3,7 @@ package com.grupio.social;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -72,7 +73,7 @@ public class SocialActivity extends BaseActivity<Void> {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
     public String getData() {

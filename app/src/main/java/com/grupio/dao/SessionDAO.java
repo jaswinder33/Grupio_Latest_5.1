@@ -461,5 +461,65 @@ public class SessionDAO extends BaseDAO {
 
     }
 
+    public List<ScheduleData> searchSessions(String queryStr, boolean isFirstName) {
+
+        List<ScheduleData> mScheduleDataList = new ArrayList<>();
+
+        String query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.name = " + queryStr + " order by sessions.name COLLATE NOCASE;";// where sessions.start_time like " + date + "%'";
+
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.moveToFirst()) {
+
+                ScheduleData sd;
+                do {
+                    sd = new ScheduleData();
+
+                    sd.setSession_id(mCursor.getString(0));
+                    sd.setName(mCursor.getString(1));
+                    sd.setStart_time(mCursor.getString(2));
+                    sd.setEnd_time(mCursor.getString(3));
+                    sd.setTrack(mCursor.getString(4));
+                    sd.setSummary(mCursor.getString(5));
+                    sd.setLocation(mCursor.getString(6));
+
+                    sd.setParent_session_id(mCursor.getString(7));
+                    if (!sd.getParent_session_id().equals("0")) {
+                        continue;
+                    }
+
+                    sd.setHas_child(mCursor.getString(8));
+                    sd.setMaxSeatsAvailable(mCursor.getString(9));
+
+                    sd.setSpeakerListAsString(mCursor.getString(10));
+                    sd.setResourceListAsString(mCursor.getString(11));
+                    sd.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
+                    sd.setCalenderAddId(mCursor.getString(13));
+
+                    sd.setColor(mCursor.getString(14) != null ? mCursor.getString(14) : "#");
+
+                    sd.setSpeakerNameAsString(SpeakerDAO.getInstance(mContext).getSpeakerNames(mCursor.getString(10), db, isFirstName));
+
+
+                    mScheduleDataList.add(sd);
+                } while (mCursor.moveToNext());
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+
+        return mScheduleDataList;
+
+    }
 
 }

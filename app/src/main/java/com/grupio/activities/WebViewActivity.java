@@ -43,7 +43,7 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
     @Override

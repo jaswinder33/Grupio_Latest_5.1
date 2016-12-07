@@ -864,7 +864,7 @@ public class ListDetailActivity extends BaseActivity<ListDetailPresenter> implem
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
     @Override

@@ -159,7 +159,7 @@ public class GridHome extends BaseActivity<GridHomePresenter> implements GridVie
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
     }
 

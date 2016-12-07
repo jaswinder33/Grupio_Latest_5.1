@@ -177,7 +177,7 @@ public class MessageDetail extends BaseActivity<MsgDetailPresenter> implements M
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
     }
 

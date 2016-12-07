@@ -188,8 +188,8 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(getLayout(), parent, false);
-            mHolder = setViewHolder(convertView);
+            convertView = LayoutInflater.from(getContext()).inflate(getLayout(position), parent, false);
+            mHolder = setViewHolder(convertView, position);
             convertView.setTag(mHolder);
         } else {
             mHolder = (Holder) convertView.getTag();
@@ -208,11 +208,11 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
     public abstract String getLastName(int position);
 
-    public abstract int getLayout();
+    public abstract int getLayout(int position);
 
     public abstract void handleGetView(int position, Holder mHolder);
 
-    public abstract Holder setViewHolder(View convertView);
+    public abstract Holder setViewHolder(View convertView, int position);
 
     public void findPersonType() {
         Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();

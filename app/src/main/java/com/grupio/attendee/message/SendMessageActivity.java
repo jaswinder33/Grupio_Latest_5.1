@@ -32,7 +32,7 @@ public class SendMessageActivity extends BaseActivity<MessagePresenter> implemen
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         Intent mIntent = new Intent(this, ChooseAttendeeActivity.class);
         mIntent.putExtra("attendeeList", mAttendeeList);
         mIntent.putExtra("attendee_id", attendeeId);

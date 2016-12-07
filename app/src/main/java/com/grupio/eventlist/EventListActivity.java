@@ -163,7 +163,7 @@ public class EventListActivity extends BaseActivity<EventListPresenter> implemen
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         getPresenter().fetchEventListFromServer("");
     }
 

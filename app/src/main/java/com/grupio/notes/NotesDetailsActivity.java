@@ -78,7 +78,7 @@ public class NotesDetailsActivity extends BaseActivity<NotesPresenter> implement
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
 
         String text = mRuledView.getText().toString();
 

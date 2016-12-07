@@ -1,6 +1,7 @@
 package com.grupio.download;
 
 import android.content.Intent;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
@@ -51,7 +52,7 @@ public class DownloadActivity extends BaseActivity<Void> {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         Intent mIntent = new Intent(this, ViewAllActivity.class);
         startActivity(mIntent);
         SlideOut.getInstance().startAnimation(this);

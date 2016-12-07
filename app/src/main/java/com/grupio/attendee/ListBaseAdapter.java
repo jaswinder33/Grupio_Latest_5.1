@@ -21,12 +21,12 @@ public abstract class ListBaseAdapter<Person> extends BaseListAdapter<Person, Li
     }
 
     @Override
-    public int getLayout() {
+    public int getLayout(int position) {
         return R.layout.layout_attendee_list_child;
     }
 
     @Override
-    public ListBaseAdapter.ViewHolder setViewHolder(View convertView) {
+    public ListBaseAdapter.ViewHolder setViewHolder(View convertView, int position) {
         return new ListBaseAdapter.ViewHolder(convertView);
     }
 

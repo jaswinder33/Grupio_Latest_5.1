@@ -9,6 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.zxing.client.android.CaptureActivity;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.activities.WebViewActivity;
@@ -24,6 +25,7 @@ import com.grupio.login.MyAccountActivity;
 import com.grupio.logistics.LogisticsActivity;
 import com.grupio.message.MessageActivity;
 import com.grupio.notes.NotesListActivity;
+import com.grupio.photogallery.PhotoGalleryActivity;
 import com.grupio.schedule.ScheduleListActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
 import com.grupio.session.ConstantData;
@@ -57,6 +59,9 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick bestMatchClick = mBundle -> sendIntent(ListActivity.class, mBundle);
     MenuClick downloadClick = mBundle -> sendIntent(DownloadActivity.class, mBundle);
     MenuClick myAccountClick = mBundle -> sendIntent(MyAccountActivity.class, mBundle);
+    MenuClick qrCodeClick = mBundle -> sendIntent(CaptureActivity.class, mBundle);
+    MenuClick photoGalleryClick = mBundle -> sendIntent(PhotoGalleryActivity.class, mBundle);
+
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -212,6 +217,12 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "qrcode":
+                    if (!loginRequired(context.getString(R.string.qrcode))) {
+//                        Intent intent = new Intent(context.getApplicationContext(),CaptureActivity.class);
+//                        intent.setAction("com.google.zxing.client.android.SCAN");
+//                        intent.putExtra("SAVE_HISTORY", false);
+//                        startActivityForResult(intent, 0);
+                    }
                     break;
 
                 case "search":
@@ -248,6 +259,9 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     }
                     break;
                 case "photo_gallery":
+                    if (!loginRequired(context.getString(R.string.photo_gallery))) {
+                        performClick(mBundle, photoGalleryClick);
+                    }
                     break;
                 case "i2i":
                     if (!loginRequired(ListConstant.BEST_Match)) {

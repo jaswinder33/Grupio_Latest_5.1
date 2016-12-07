@@ -173,6 +173,17 @@
             android:name=".login.EditMyAccountActivity"
             android:label="@string/title_activity_my_account_activity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".photogallery.PhotoGalleryActivity"
+            android:label="@string/title_activity_photo_gallery_activity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".photogallery.PhotoGalleryDetail"
+            android:label="@string/title_activity_photo_gallery_detail_activity"
+            android:theme="@style/AppTheme" />
+
     </application>
 
 </manifest>

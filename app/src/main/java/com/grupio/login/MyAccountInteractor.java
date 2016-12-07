@@ -3,6 +3,7 @@ package com.grupio.login;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.grupio.R;
 import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.InterestAPI;
 import com.grupio.apis.UpdateProfileAPI;
@@ -42,7 +43,7 @@ public class MyAccountInteractor implements MyAccountContract.Interactor {
         new UploadImage(mContext, new APICallBackWithResponse() {
             @Override
             public void onSuccess(String response) {
-                mOnInteraction.onImageUpdated(response);
+                mOnInteraction.onImageUpdated(mContext.getString(R.string.base_url) + response);
             }
 
             @Override

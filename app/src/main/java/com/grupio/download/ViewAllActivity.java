@@ -76,7 +76,7 @@ public class ViewAllActivity extends BaseActivity<DownloadPresenter> implements 
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         ClickHandler okclick = () ->
                 getPresenter().downloadAllResources(this, mResourceList);
         CustomDialog.getDialog(this, okclick).show(getString(R.string.download_all_msg));

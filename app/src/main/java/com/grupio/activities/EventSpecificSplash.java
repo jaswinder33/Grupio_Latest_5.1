@@ -80,7 +80,7 @@ public class EventSpecificSplash extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
 }

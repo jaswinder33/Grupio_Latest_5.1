@@ -174,4 +174,11 @@ public class Preferences {
         return pref.getString("interest", null);
     }
 
+    public void savePhotogalleryData(String response) {
+        editor.putString("photo_gallery", response).commit();
+    }
+
+    public String getPhotoGalleryData() {
+        return pref.getString("photo_gallery", "");
+    }
 }

@@ -32,7 +32,7 @@ public class SponsorAdapter extends BaseListAdapter<SponsorData, SponsorAdapter.
     }
 
     @Override
-    public int getLayout() {
+    public int getLayout(int position) {
         return R.layout.layout_sponsor;
     }
 
@@ -44,13 +44,14 @@ public class SponsorAdapter extends BaseListAdapter<SponsorData, SponsorAdapter.
     }
 
     @Override
-    public Holder setViewHolder(View convertView) {
+    public Holder setViewHolder(View convertView, int position) {
         return new Holder(convertView);
     }
 
     class Holder {
         public TextView name;
         public ImageView imageView;
+
 
         public Holder(View convertView) {
             name = (TextView) convertView.findViewById(R.id.nameSponsor);

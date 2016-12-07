@@ -152,6 +152,18 @@ public class Utility {
                 .build();
     }
 
+    public static DisplayImageOptions getDisplayOptionsPhotoGallery() {
+        return new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.ic_gallery)
+//                .showImageForEmptyUri(R.drawable.ic_gallery)
+//                .showImageOnFail(R.drawable.ic_gallery)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.ARGB_4444).considerExifParams(true)
+                .build();
+    }
+
 
     public static void readFileFromSd(String fileName) {
     }

@@ -1,6 +1,7 @@
 package com.grupio.message;
 
 import android.app.Fragment;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
@@ -41,7 +42,7 @@ public class MessageActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
         if (mFrag != null && mFrag instanceof MessageListFragment) {
             ((MessageListFragment) mFrag).fetchDataFromServer();

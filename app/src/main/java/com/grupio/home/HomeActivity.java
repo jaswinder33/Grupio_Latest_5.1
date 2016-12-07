@@ -1,5 +1,7 @@
 package com.grupio.home;
 
+import android.view.View;
+
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 
@@ -11,7 +13,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
     }
 
     @Override

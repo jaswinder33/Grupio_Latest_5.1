@@ -2,6 +2,7 @@ package com.grupio.notes;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.View;
 
 import com.grupio.R;
 import com.grupio.Utils.Utility;
@@ -59,7 +60,7 @@ public class NotesListActivity extends BaseActivity<Void> {
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         Fragment mFrag = getFragmentManager().findFragmentById(R.id.container);
         if (mFrag != null) {
             ((NoteListFragment) mFrag).goToNoteDetail("0");

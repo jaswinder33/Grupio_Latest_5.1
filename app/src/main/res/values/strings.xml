@@ -71,6 +71,10 @@
     <string name="update_profile_api">/editprofile.php?format=json&amp;event_id=</string>
     <string name="interest_api">/getintrests.php?format=json</string>
 
+    <!--PhotoGallery-->
+    <string name="photogallery_list">/photo_gallery_images.php?format=json</string>
+    <string name="image_base_url">http://d1izx6szmu30ih.cloudfront.net/main/</string>
+    <string name="photogallery_upload_image">/photo_gallery_images_android.php</string>
 
     <!-- ################################################################### -->
     <!-- ################################################################### -->
@@ -261,5 +265,14 @@
     <string name="camera">Camera</string>
     <string name="gallery">Photo Library</string>
     <string name="image_upload_success">Image uploaded successfully.</string>
+
+    <!--PhotoGallery-->
+    <string name="title_activity_photo_gallery_activity">PhotoGalleryActivity</string>
+    <string name="title_activity_photo_gallery_detail_activity">PhotoGalleryDetail</string>
+    <string name="upload">Upload</string>
+    <string name="upload_dialog_txt">Please add your comment about this picture</string>
+    <string name="moderator_msg">Thank you for uploading the photo. It will be live after it&amp;s approved by admin.</string>
+    <string name="image_uploaded_success_msg">Thank you for uploading the photo.</string>
+    <string name="image_download_dialog">Do you want to save this image?</string>
 
 </resources>

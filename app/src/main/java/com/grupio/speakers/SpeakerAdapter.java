@@ -38,7 +38,7 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
     }
 
     @Override
-    public int getLayout() {
+    public int getLayout(int position) {
         return R.layout.layout_attendee_list_child;
     }
 
@@ -83,7 +83,7 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
     }
 
     @Override
-    public ViewHolder setViewHolder(View convertView) {
+    public ViewHolder setViewHolder(View convertView, int position) {
         return new ViewHolder(convertView);
     }
 

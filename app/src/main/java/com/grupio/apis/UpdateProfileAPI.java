@@ -207,22 +207,19 @@ public class UpdateProfileAPI extends BaseAsyncTask<AttendeesData, Boolean> {
                         e.printStackTrace();
                     }
 
+                    JSONObject jParentObj = new JSONObject();
+
                     JSONArray mJsonArray = new JSONArray();
+                    mJsonArray.put(jObj);
 
                     try {
-                        jObj.put("data", jObj);
+                        jParentObj.put("data", mJsonArray);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                  /*  JSONArray mJsonArray = new JSONArray();
-                    mJsonArray.put("data", jObj);*/
+                    Preferences.getInstances(mContext).saveUserInfo(jParentObj.toString());
 
-
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                        jArray.remove(0);
-//                        jArray.put(jObj);
-//                    }
                 }
             }
         }

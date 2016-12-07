@@ -141,7 +141,7 @@ public class ToDoDetailsActivity extends BaseActivity<NotesPresenter> implements
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         String text = toDoTextField.getText().toString();
 
         if (TextUtils.isEmpty(text)) {

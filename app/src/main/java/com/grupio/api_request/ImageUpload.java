@@ -48,10 +48,6 @@ public class ImageUpload extends APIRequest {
             url = new URL(endPoint);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setInstanceFollowRedirects(true);
-            conn.setReadTimeout(30000);
-            conn.setConnectTimeout(30000);
-            conn.setRequestMethod(getRequestType());
 
             if (getCustomHeaders() != null && !getCustomHeaders().isEmpty()) {
                 Map<String, String> mheaderlist = getCustomHeaders();
@@ -61,6 +57,10 @@ public class ImageUpload extends APIRequest {
                     conn.setRequestProperty(mObj.getKey(), mObj.getValue());
                 }
             }
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -89,7 +89,16 @@ public class ImageUpload extends APIRequest {
             outputStream.writeBytes(lineEnd);
             outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-            InputStream is = conn.getInputStream();
+            InputStream is;
+            int status = conn.getResponseCode();
+
+            if (status >= 400)
+                is = conn.getErrorStream();
+            else
+                is = conn.getInputStream();
+
+
+//            InputStream is = conn.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             String line;
             StringBuffer response = new StringBuffer();
@@ -97,8 +106,8 @@ public class ImageUpload extends APIRequest {
                 response.append(line);
                 response.append('\r');
             }
-            rd.close();
             responseStr = response.toString();
+            rd.close();
             fileInputStream.close();
             outputStream.flush();
             outputStream.close();

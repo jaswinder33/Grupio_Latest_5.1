@@ -54,7 +54,7 @@ public class ChooseAttendeeActivity extends BaseActivity<ChooseAttendeePresenter
     }
 
     @Override
-    public void handleRightBtnClick() {
+    public void handleRightBtnClick(View view) {
         searchEditTxt.setText("");
         getPresenter().refreshAttendeeList(this);
     }

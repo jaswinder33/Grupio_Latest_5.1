@@ -1,13 +1,19 @@
 package com.grupio.activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -16,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,13 +33,16 @@ import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.animation.SlideIn;
 import com.grupio.attendee.ListDetailPresenter;
+import com.grupio.backend.Get_Image_Path;
 import com.grupio.dao.EventDAO;
 import com.grupio.db.EventTable;
 import com.grupio.interfaces.BaseFunctionality;
 import com.grupio.interfaces.ClickHandler;
+import com.grupio.session.Preferences;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -41,6 +51,8 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class BaseActivity<Presenter> extends AppCompatActivity implements BaseFunctionality, View.OnClickListener {
 
     public static final String TAG = "Baseactivity";
+
+    //onActivity Results constants
     public static final int SD_READ_WRITE_PERMISSION = 100;
     public static final int CALL_PERMISSION = 101;
     public static final int CALENDAR_PERMISSION = 102;
@@ -57,6 +69,9 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     public static final String VIEW_ALL = "view_all";
     public static final String DOWNLOAD_ALL = "download_all";
     public static final String LOGOUT = "logout";
+    public static final String OVERFLOW = "overflow";
+    private static final int ACTION_TAKE_PHOTO = 1;
+    private static final int PHOTO_PICKED = 2;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -68,6 +83,9 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     protected RelativeLayout background;
     private Presenter mPresenter;
     private ProgressDialog mProgressDialog;
+    //Image Upload dialog variabes
+    private String imagePath = "";
+    private Object[] imageUploadDialogParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +192,10 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
                     rightBtn.setBackgroundResource(R.drawable.logout);
                     break;
 
+                case OVERFLOW:
+                    rightBtn.setBackgroundResource(R.drawable.ic_dots_vertical);
+                    break;
+
             }
             rightBtn.setOnClickListener(this);
         } else {
@@ -226,13 +248,41 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
      */
     @Override
     public void onClick(View v) {
+        Intent mIntent;
+
         switch (v.getId()) {
 
             case R.id.leftBtn:
                 onBackPressed();
                 break;
             case R.id.rightBtn:
-                handleRightBtnClick();
+                handleRightBtnClick(v);
+                break;
+
+            case R.id.cameraBtn:
+                File folder = Utility.getBaseFolder(this, getString(R.string.image));
+                File file = new File(folder, Preferences.getInstances(this).getAttendeeId() + ".jpg");
+                imagePath = file.getAbsolutePath();
+                mIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                mIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                mIntent.putExtra("outputX", 200);
+                mIntent.putExtra("outputY", 200);
+                mIntent.putExtra("aspectX", 1);
+                mIntent.putExtra("aspectY", 1);
+                mIntent.putExtra("scale", true);
+                mIntent.putExtra("return-data", true);
+                startActivityForResult(mIntent, ACTION_TAKE_PHOTO);
+                break;
+
+            case R.id.galleryBtn:
+                mIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                mIntent.setType("image/*");
+                mIntent.putExtra("circleCrop", true);
+                startActivityForResult(mIntent, PHOTO_PICKED);
+                break;
+
+            case R.id.cancelBtn:
+                getUploadImageDialog().dismiss();
                 break;
         }
     }
@@ -364,7 +414,60 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
     public abstract void setUp();
 
-    public abstract void handleRightBtnClick();
+    public abstract void handleRightBtnClick(View view);
+
+    public void uploadImageDialog() {
+        imageUploadDialogParams = BaseActivity.CustomDialog.getDialog(this).showWithCustomView(R.layout.dialog_image_upload, ImageHolder.class, R.style.DialogSlideAnim);
+        ImageHolder mHolder = getImageHolder();
+        mHolder.mCancelBtn.setOnClickListener(this);
+        mHolder.mCameraBtn.setOnClickListener(this);
+        mHolder.mGalleryBtn.setOnClickListener(this);
+    }
+
+    public AlertDialog getUploadImageDialog() {
+        return (AlertDialog) imageUploadDialogParams[1];
+    }
+
+    public ImageHolder getImageHolder() {
+        return (ImageHolder) imageUploadDialogParams[0];
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == PHOTO_PICKED) {
+            Uri selectedImage = data.getData();
+            imagePath = Get_Image_Path.getPath(this, selectedImage);
+            showImage();
+        } else if (resultCode == Activity.RESULT_OK && requestCode == ACTION_TAKE_PHOTO) {
+            showImage();
+        }
+    }
+
+    /**
+     * Override this method to complete image upload action.
+     */
+    public void showImage() {
+        Matrix matrix = null;
+        try {
+            ExifInterface exif = new ExifInterface(imagePath);
+            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int rotationInDegrees = Utility.exifToDegrees(rotation);
+            matrix = new Matrix();
+            if (rotation != 0f) {
+                matrix.preRotate(rotationInDegrees);
+            }
+
+            getUploadImageDialog().dismiss();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static class CustomDialog {
 
@@ -416,23 +519,49 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         }
 
         public void show(String message) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+            show(message, 0);
+        }
+
+        public void show(String message, int theme) {
+            AlertDialog.Builder dialog;
+            if (theme == 0) {
+                dialog = new AlertDialog.Builder(mContext);
+            } else {
+                dialog = new AlertDialog.Builder(mContext, theme);
+            }
+
             dialog.setMessage(message);
             dialog.setPositiveButton(okStr, (dialogInterface, i) -> {
-                mClick.handleClick();
+
+                if (mClick != null) {
+                    mClick.handleClick();
+                } else {
+                    dialogInterface.dismiss();
+                }
+
             });
             if (!isSingleBtn) {
                 dialog.setNegativeButton(cancelStr, (dialogInterface, i) -> {
-
                 });
             }
             dialog.create().show();
         }
 
         public Object[] showWithCustomView(int view, Class<?> holder) {
+            return showWithCustomView(view, holder, 0);
+        }
+
+        public Object[] showWithCustomView(int view, Class<?> holder, int theme) {
             View dialogView = LayoutInflater.from(mContext).inflate(view, null);
-            AlertDialog dialog = new AlertDialog.Builder(mContext).setView(dialogView).create();
+            AlertDialog dialog;
+            if (theme == 0) {
+                dialog = new AlertDialog.Builder(mContext).setView(dialogView).create();
+            } else {
+                dialog = new AlertDialog.Builder(mContext, theme).setView(dialogView).create();
+            }
+
             dialog.show();
+
             try {
                 return new Object[]{holder.getConstructor(holder.getConstructors()[0].getParameterTypes()).newInstance(null, dialogView), dialog};
             } catch (InstantiationException e) {
@@ -446,6 +575,16 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
             }
             return null;
         }
-
     }
+
+    private class ImageHolder {
+        Button mCancelBtn, mCameraBtn, mGalleryBtn;
+
+        public ImageHolder(View view) {
+            mCancelBtn = (Button) view.findViewById(R.id.cancelBtn);
+            mCameraBtn = (Button) view.findViewById(R.id.cameraBtn);
+            mGalleryBtn = (Button) view.findViewById(R.id.galleryBtn);
+        }
+    }
+
 }

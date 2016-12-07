@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:weightSum="1">
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.65"
-        android:background="@android:color/transparent" />-->
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="#5d626c"
         android:orientation="vertical"
         android:paddingLeft="20dp"
@@ -26,7 +19,6 @@
             android:padding="10dp"
             android:text="@string/image_upload_dialog_heading"
             android:textColor="@color/white" />
-
 
         <Button
             android:id="@+id/cancelBtn"
@@ -53,7 +45,6 @@
             android:text="@string/gallery"
             android:textAllCaps="false" />
 
-
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

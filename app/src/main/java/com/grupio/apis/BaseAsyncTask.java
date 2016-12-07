@@ -57,6 +57,11 @@ public abstract class BaseAsyncTask<Request, Response> extends AsyncTask<Request
     @Override
     protected void onPostExecute(Response mResponse) {
         super.onPostExecute(mResponse);
+
+        if (mResponse == null && mListener != null) {
+            mListener.onFailure(mContext.getString(R.string.erroor_occured));
+        }
+
         if (mResponse instanceof Boolean && mListener != null) {
             if ((Boolean) mResponse) {
                 mListener.onSuccess();
