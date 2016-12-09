@@ -463,9 +463,11 @@ public class SessionDAO extends BaseDAO {
 
     public List<ScheduleData> searchSessions(String queryStr, boolean isFirstName) {
 
+        openDB(0);
+
         List<ScheduleData> mScheduleDataList = new ArrayList<>();
 
-        String query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.name = " + queryStr + " order by sessions.name COLLATE NOCASE;";// where sessions.start_time like " + date + "%'";
+        String query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track where sessions.name like '" + queryStr + "%' order by sessions.name COLLATE NOCASE;";// where sessions.start_time like " + date + "%'";
 
         Cursor mCursor = null;
 

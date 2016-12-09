@@ -27,11 +27,11 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 /**
  * Created by JSN on 19/10/16.
  */
-public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Person> implements SectionIndexer, StickyListHeadersAdapter {
+public abstract class BaseListAdapter<T, Holder> extends ArrayAdapter<T> implements SectionIndexer, StickyListHeadersAdapter {
 
-    public boolean isFirstName = false;
-    Holder mHolder;
-    Person mPerson;
+    protected boolean isFirstName = false;
+
+    private T mT;
     private String eventColor;
     private boolean showHeaders = true;
 
@@ -46,11 +46,11 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
 
         findPersonType();
 
-        if (mPerson instanceof ScheduleData) {
+        if (mT instanceof ScheduleData) {
             isSession = true;
         }
 
-        if (mPerson instanceof SponsorData) {
+        if (mT instanceof SponsorData) {
             isHeaderFullName = true;
         }
 
@@ -186,7 +186,7 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        Holder mHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(getLayout(position), parent, false);
             mHolder = setViewHolder(convertView, position);
@@ -204,6 +204,10 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
         showHeaders = flag;
     }
 
+    public void setFullHeader(boolean flag) {
+        isHeaderFullName = flag;
+    }
+
     public abstract String getFirstName(int position);
 
     public abstract String getLastName(int position);
@@ -215,17 +219,44 @@ public abstract class BaseListAdapter<Person, Holder> extends ArrayAdapter<Perso
     public abstract Holder setViewHolder(View convertView, int position);
 
     public void findPersonType() {
+
+//        Class<?> subClass = getClass();
+//        while (subClass != subClass.getSuperclass()) {
+//            if(subClass.getSuperclass() != null)
+//                subClass = subClass.getSuperclass();
+//        }
+//        Type[] typeArguments = ((ParameterizedType) subClass.getGenericSuperclass()).getActualTypeArguments();
+
+//        Class<?> subClass = getClass();
+//
+//        while (subClass == subClass.getSuperclass()) {
+//            subClass = subClass.getSuperclass();
+//
+//            if (subClass == null) {
+//                break;
+//            }
+//        }
+//
+//        if(subClass == null){
+//            return;
+//        }
+//
+
         Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
         for (Type type : typeArguments) {
 
             try {
-                mPerson = ((Class<Person>) type).newInstance();
+                mT = ((Class<T>) type).newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    protected T getAdapterType() {
+        return mT;
     }
 
     class HeaderViewHolder {

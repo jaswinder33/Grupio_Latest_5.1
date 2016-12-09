@@ -281,7 +281,7 @@ public class DateTime {
 
         SessionDAO.getInstance(mContext).persistCalendarId(eventId, id);
 
-        setReminder(mContext, eventId);
+//        setReminder(mContext, eventId);
         return eventId;
     }
 

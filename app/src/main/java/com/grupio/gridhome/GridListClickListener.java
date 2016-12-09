@@ -28,6 +28,7 @@ import com.grupio.notes.NotesListActivity;
 import com.grupio.photogallery.PhotoGalleryActivity;
 import com.grupio.schedule.ScheduleListActivity;
 import com.grupio.schedule.ScheduleTrackListActivity;
+import com.grupio.search.SearchActivity;
 import com.grupio.session.ConstantData;
 import com.grupio.session.Preferences;
 import com.grupio.social.SocialActivity;
@@ -61,6 +62,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick myAccountClick = mBundle -> sendIntent(MyAccountActivity.class, mBundle);
     MenuClick qrCodeClick = mBundle -> sendIntent(CaptureActivity.class, mBundle);
     MenuClick photoGalleryClick = mBundle -> sendIntent(PhotoGalleryActivity.class, mBundle);
+    MenuClick searchClick = mBundle -> sendIntent(SearchActivity.class, mBundle);
 
 
     public GridListClickListener(Context context) {
@@ -226,6 +228,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "search":
+                    performClick(mBundle, searchClick);
                     break;
 
                 case "discussion_board":

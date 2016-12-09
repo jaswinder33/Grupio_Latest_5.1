@@ -1,27 +1,38 @@
 package com.grupio.attendee;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.grupio.R;
-import com.grupio.Utils.Utility;
-import com.grupio.base.BaseListAdapter;
-import com.grupio.dao.AttendeeDAO;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.MenuDAO;
 import com.grupio.data.AttendeesData;
-import com.grupio.db.AttendeeTable;
 import com.grupio.db.EventTable;
-import com.grupio.session.Preferences;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by JSN on 25/7/16.
  */
-public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, AttendeeListAdapter.ViewHolder> {
+public class AttendeeListAdapter extends ListBaseAdapter<AttendeesData> {
+
+    boolean showImage = false;
+    boolean isChatAvailable = false;
+
+    public AttendeeListAdapter(Context context) {
+        super(context);
+        showImage = EventDAO.getInstance(getContext()).getValue(EventTable.HIDE_ATTENDEE_IMAGES).equalsIgnoreCase("n");
+        isChatAvailable = MenuDAO.getInstance(getContext()).checkIfMenuExists("chat");
+    }
+
+    @Override
+    public void handleGetView(int position, ViewHolder mHolder) {
+        SetAttendeeData<AttendeeListAdapter> mSetAttendeeData = new SetAttendeeData(getContext());
+        mSetAttendeeData.setAdapter(this);
+        mSetAttendeeData.setShowAttendeeImage(showImage)
+                .enableChat(isChatAvailable)
+                .setData(getItem(position), mHolder);
+    }
+}
+
+
+/*public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, AttendeeListAdapter.ViewHolder> {
 
     boolean showImage = false;
     boolean isChatAvailable = false;
@@ -89,7 +100,6 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
 
         }
 
-
         if (Preferences.getInstances(getContext()).getUserInfo() == null ||
                 getItem(position).getAttendee_id().equalsIgnoreCase(Preferences.getInstances(getContext()).getAttendeeId())) {
             mHolder.presenceTextView.setVisibility(View.GONE);
@@ -136,7 +146,7 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
         return new ViewHolder(convertView);
     }
 
-    public class ViewHolder {
+    public static class ViewHolder implements BaseHolder {
         public TextView name, title;
         public ImageView image;
         public TextView presenceTextView;
@@ -150,4 +160,4 @@ public class AttendeeListAdapter extends BaseListAdapter<AttendeesData, Attendee
             mButton = (ImageButton) convertView.findViewById(R.id.addItem);
         }
     }
-}
+}*/

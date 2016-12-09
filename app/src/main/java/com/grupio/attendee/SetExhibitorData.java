@@ -1,50 +1,38 @@
-package com.grupio;
+package com.grupio.attendee;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
 
-import com.grupio.attendee.ListBaseAdapter;
-import com.grupio.attendee.SetExhibitorData;
-import com.grupio.dao.EventDAO;
+import com.grupio.R;
+import com.grupio.Utils.Utility;
+import com.grupio.base.BaseSetData;
+import com.grupio.dao.ExhibitorDAO;
 import com.grupio.data.ExhibitorData;
-import com.grupio.db.EventTable;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * Created by JSN on 21/10/16.
+ * Created by JSN on 8/12/16.
  */
 
-public class ExhibitorAdapter extends ListBaseAdapter<ExhibitorData> {
+public class SetExhibitorData<T> extends BaseSetData<ExhibitorData, AttendeeListAdapter.ViewHolder, T> {
 
     boolean showExhibitorImage = true;
 
-    public ExhibitorAdapter(Context context) {
-        super(context);
-        showExhibitorImage = EventDAO.getInstance(context).getValue(EventTable.HIDE_EXHIBITOR_IMAGES).equals("n");
+    public SetExhibitorData(Context mContext) {
+        super(mContext);
     }
 
     @Override
-    public String getFirstName(int position) {
-        return getItem(position).getName();
-    }
+    public void setData(ExhibitorData data, ListBaseAdapter.ViewHolder mHolder) {
 
-    @Override
-    public String getLastName(int position) {
-        return getItem(position).getName();
-    }
+        int position = getPosition(data);
 
-    @Override
-    public void handleGetView(int position, ListBaseAdapter.ViewHolder mHolder) {
+        mHolder.name.setText(getItem(position).getName());
 
-
-        SetExhibitorData<ExhibitorAdapter> mSetExhibitorData = new SetExhibitorData<>(getContext());
-        mSetExhibitorData.setAdapter(this);
-        mSetExhibitorData.setShowExhibitorImage(showExhibitorImage).setData(getItem(position), mHolder);
-
-
-       /* mHolder.name.setText(getItem(position).getName());
-
-        *//**
+        /**
          * Implement this after localizaton implementation
-         *//*
+         */
 //        if(! getItem(position).getLocation().equals("")){
 //            if(!LocalisationDataProcessor.BOOTH.equals(""))
 //                mHolder.title.setText(LocalisationDataProcessor.BOOTH + ":" + getItem(position).getLocation());
@@ -84,8 +72,13 @@ public class ExhibitorAdapter extends ListBaseAdapter<ExhibitorData> {
                 }
                 notifyDataSetChanged();
             }
-        });*/
-
-
+        });
     }
+
+    public SetExhibitorData setShowExhibitorImage(boolean showExhibitorImage) {
+        this.showExhibitorImage = showExhibitorImage;
+        return this;
+    }
+
+
 }

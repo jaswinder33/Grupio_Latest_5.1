@@ -7,14 +7,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grupio.R;
+import com.grupio.base.BaseHolder;
 import com.grupio.base.BaseListAdapter;
+import com.grupio.data.AttendeesData;
+import com.grupio.data.ExhibitorData;
+import com.grupio.data.SpeakerData;
 
 /**
  * Created by JSN on 21/10/16.
  */
 
-public abstract class ListBaseAdapter<Person> extends BaseListAdapter<Person, ListBaseAdapter.ViewHolder> {
 
+/**
+ * Base class of adapter for Attendee, Sponsor and Exhibitor adapters
+ *
+ * @param <T>
+ */
+public abstract class ListBaseAdapter<T> extends BaseListAdapter<T, ListBaseAdapter.ViewHolder> {
 
     public ListBaseAdapter(Context context) {
         super(context);
@@ -26,11 +35,36 @@ public abstract class ListBaseAdapter<Person> extends BaseListAdapter<Person, Li
     }
 
     @Override
+    public String getFirstName(int position) {
+        if (getAdapterType() instanceof AttendeesData) {
+            return ((AttendeesData) getItem(position)).getFirst_name();
+        } else if (getAdapterType() instanceof SpeakerData) {
+            return ((SpeakerData) getItem(position)).getFirst_name();
+        } else if (getAdapterType() instanceof ExhibitorData) {
+            return ((ExhibitorData) getItem(position)).getName();
+        }
+        return "";
+    }
+
+    @Override
+    public String getLastName(int position) {
+        if (getAdapterType() instanceof AttendeesData) {
+            return ((AttendeesData) getItem(position)).getLast_name();
+        } else if (getAdapterType() instanceof SpeakerData) {
+            return ((SpeakerData) getItem(position)).getLast_name();
+        } else if (getAdapterType() instanceof ExhibitorData) {
+            return ((ExhibitorData) getItem(position)).getName();
+        }
+        return "";
+    }
+
+
+    @Override
     public ListBaseAdapter.ViewHolder setViewHolder(View convertView, int position) {
         return new ListBaseAdapter.ViewHolder(convertView);
     }
 
-    public class ViewHolder {
+    public static class ViewHolder implements BaseHolder {
         public TextView name, title;
         public ImageView image;
         public TextView presenceTextView;

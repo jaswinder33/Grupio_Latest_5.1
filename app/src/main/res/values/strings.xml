@@ -275,4 +275,6 @@
     <string name="image_uploaded_success_msg">Thank you for uploading the photo.</string>
     <string name="image_download_dialog">Do you want to save this image?</string>
 
+    <!--Search Activity-->
+    <string name="title_activity_search_activity">SearchActivity</string>
 </resources>

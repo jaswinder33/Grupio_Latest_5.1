@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -690,7 +691,6 @@ public class ListDetailController<T extends Person> implements ListDetailControl
 
             List<SpeakerData> mSpeakerList = new ArrayList<>();
 
-
             String speakers = mScheduleData.getSpeakerListAsString();
             ScheduleHelper mHelper = new ScheduleHelper();
             mSpeakerIdList.addAll(mHelper.getSpeakerList(speakers));
@@ -699,6 +699,7 @@ public class ListDetailController<T extends Person> implements ListDetailControl
                 mSpeakerList.add(SpeakerDAO.getInstance(mContext).getSpeakerDetail(mSpeakerIdList.get(i)));
             }
 
+            mSpeakerList.removeAll(Collections.singleton(null));
             if (!mSpeakerList.isEmpty()) {
                 mListener.onSpeakerListValidation(mSpeakerList, "Speakers");
             }

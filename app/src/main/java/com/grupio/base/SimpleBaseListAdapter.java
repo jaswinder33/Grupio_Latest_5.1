@@ -22,7 +22,6 @@ public abstract class SimpleBaseListAdapter<T, ViewHolder> extends ArrayAdapter<
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(getLayout(), parent, false);
             mHolder = setViewHolder(convertView);

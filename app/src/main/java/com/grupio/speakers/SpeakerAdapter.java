@@ -2,23 +2,36 @@ package com.grupio.speakers;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.grupio.R;
-import com.grupio.Utils.Utility;
-import com.grupio.base.BaseListAdapter;
+import com.grupio.attendee.ListBaseAdapter;
+import com.grupio.attendee.SetSpeakerData;
 import com.grupio.dao.EventDAO;
 import com.grupio.data.SpeakerData;
 import com.grupio.db.EventTable;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by JSN on 21/10/16.
  */
 
-public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.ViewHolder> {
+
+public class SpeakerAdapter extends ListBaseAdapter<SpeakerData> {
+
+    boolean hideSpeakerImage = false;
+
+    public SpeakerAdapter(Context context) {
+        super(context);
+        hideSpeakerImage = EventDAO.getInstance(context).getValue(EventTable.HIDE_SPEAKER_IMAGES).equals("n");
+    }
+
+    @Override
+    public void handleGetView(int position, ViewHolder mHolder) {
+        mHolder.mButton.setVisibility(View.GONE);
+        SetSpeakerData<SpeakerAdapter> mSetSpeakerData = new SetSpeakerData(getContext());
+        mSetSpeakerData.setAdapter(this);
+        mSetSpeakerData.setHideSpeakerImage(hideSpeakerImage).setData(getItem(position), mHolder);
+    }
+}
+/*public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.ViewHolder> {
 
     boolean hideSpeakerImage = false;
 
@@ -78,8 +91,6 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
         } else {
             mHolder.image.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
@@ -87,7 +98,7 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
         return new ViewHolder(convertView);
     }
 
-    public class ViewHolder {
+    public static class ViewHolder implements BaseHolder {
         public TextView name, title;
         public ImageView image;
         public TextView presenceTextView;
@@ -98,8 +109,7 @@ public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.
             title = (TextView) convertView.findViewById(R.id.attendee_company_title);
             image = (ImageView) convertView.findViewById(R.id.attendee_image);
             presenceTextView = (TextView) convertView.findViewById(R.id.presenceTextView);
-
             mButton = (ImageButton) convertView.findViewById(R.id.addItem);
         }
     }
-}
+}*/

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grupio.R;
+import com.grupio.base.BaseHolder;
 import com.grupio.base.BaseListAdapter;
 import com.grupio.data.SponsorData;
 import com.grupio.helper.SponsorHelper;
@@ -48,10 +49,9 @@ public class SponsorAdapter extends BaseListAdapter<SponsorData, SponsorAdapter.
         return new Holder(convertView);
     }
 
-    class Holder {
+    public static class Holder implements BaseHolder {
         public TextView name;
         public ImageView imageView;
-
 
         public Holder(View convertView) {
             name = (TextView) convertView.findViewById(R.id.nameSponsor);
