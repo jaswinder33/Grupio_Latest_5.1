@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * Created by JSN on 8/12/16.
  */
 
-public class SetExhibitorData<T> extends BaseSetData<ExhibitorData, AttendeeListAdapter.ViewHolder, T> {
+public class SetExhibitorData<T> extends BaseSetData<ExhibitorData, ListBaseAdapter.ViewHolder, T> {
 
     boolean showExhibitorImage = true;
 

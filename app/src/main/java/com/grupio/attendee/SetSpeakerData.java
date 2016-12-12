@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * Created by JSN on 8/12/16.
  */
 
-public class SetSpeakerData<T> extends BaseSetData<SpeakerData, AttendeeListAdapter.ViewHolder, T> {
+public class SetSpeakerData<T> extends BaseSetData<SpeakerData, ListBaseAdapter.ViewHolder, T> {
 
     boolean hideSpeakerImage = false;
 
@@ -22,7 +22,6 @@ public class SetSpeakerData<T> extends BaseSetData<SpeakerData, AttendeeListAdap
 
     @Override
     public void setData(SpeakerData data, ListBaseAdapter.ViewHolder mHolder) {
-
 
         if (isFirstName) {
             mHolder.name.setText(data.getFirst_name() + " " + data.getLast_name());

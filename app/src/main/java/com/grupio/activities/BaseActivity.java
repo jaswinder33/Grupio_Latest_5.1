@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.grupio.R;
 import com.grupio.Utils.Utility;
 import com.grupio.animation.SlideIn;
+import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListDetailPresenter;
 import com.grupio.backend.Get_Image_Path;
 import com.grupio.dao.EventDAO;
@@ -414,6 +415,22 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
     public abstract void setUp();
 
+    /**
+     * Navigate user to next screen
+     *
+     * @param bundle
+     * @param className
+     */
+    @Override
+    public void goToNextScreen(Bundle bundle, Class className) {
+        Intent mIntent = new Intent(this, className);
+        if (bundle != null) {
+            mIntent.putExtras(bundle);
+        }
+        startActivity(mIntent);
+        SlideOut.getInstance().startAnimation(this);
+    }
+
     public abstract void handleRightBtnClick(View view);
 
     public void uploadImageDialog() {
@@ -586,5 +603,4 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
             mGalleryBtn = (Button) view.findViewById(R.id.galleryBtn);
         }
     }
-
 }

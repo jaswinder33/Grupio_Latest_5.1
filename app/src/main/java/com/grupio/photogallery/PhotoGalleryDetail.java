@@ -32,7 +32,7 @@ import java.util.List;
  * Created by JSN on 5/12/16.
  */
 
-public class PhotoGalleryDetail extends BaseActivity<PhotoGalleryPresenter> implements IPhotoGalleryContract.IView {
+public class PhotoGalleryDetail extends BaseActivity<PhotoGalleryPresenterImp> implements IPhotoGalleryContract.IViewI {
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -64,8 +64,8 @@ public class PhotoGalleryDetail extends BaseActivity<PhotoGalleryPresenter> impl
     }
 
     @Override
-    public PhotoGalleryPresenter setPresenter() {
-        return new PhotoGalleryPresenter(this);
+    public PhotoGalleryPresenterImp setPresenter() {
+        return new PhotoGalleryPresenterImp(this);
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.grupio.search;
 
 import android.content.Context;
 
-import com.grupio.base.BaseInteractor;
 import com.grupio.base.BaseOnInteraction;
-import com.grupio.base.BasePresenter;
-import com.grupio.base.BaseView;
+import com.grupio.base.IBaseInteractor;
+import com.grupio.base.IBasePresenter;
+import com.grupio.base.IBaseView;
 import com.grupio.interfaces.Person;
 
 import java.util.List;
@@ -16,15 +16,15 @@ import java.util.List;
 
 public interface SearchContract {
 
-    interface IView extends BaseView {
+    interface IViewI extends IBaseView {
         void showList(List<Person> mPerson);
     }
 
-    interface IPresenter extends BasePresenter {
+    interface IPresenterI extends IBasePresenter {
         void fetchData(Context mContext, String queryStr);
     }
 
-    interface Interactor extends BaseInteractor {
+    interface InteractorI extends IBaseInteractor {
         void fetchData(Context mContext, String queryStr, OnInteraction mListener);
     }
 

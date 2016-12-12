@@ -10,14 +10,14 @@ import java.util.List;
  * Created by JSN on 5/12/16.
  */
 
-public class PhotoGalleryPresenter implements IPhotoGalleryContract.IPresenter, IPhotoGalleryContract.OnInteraction {
+public class PhotoGalleryPresenterImp implements IPhotoGalleryContract.IPresenterI, IPhotoGalleryContract.OnInteraction {
 
-    private IPhotoGalleryContract.IView mListener;
-    private PhotoGalleryInteractor mInteractor;
+    private IPhotoGalleryContract.IViewI mListener;
+    private PhotoGalleryInteractorI mInteractor;
 
-    public PhotoGalleryPresenter(IPhotoGalleryContract.IView mListener) {
+    public PhotoGalleryPresenterImp(IPhotoGalleryContract.IViewI mListener) {
         this.mListener = mListener;
-        mInteractor = new PhotoGalleryInteractor();
+        mInteractor = new PhotoGalleryInteractorI();
     }
 
     @Override
@@ -56,7 +56,6 @@ public class PhotoGalleryPresenter implements IPhotoGalleryContract.IPresenter, 
 
     @Override
     public void onPhotoUpload(PhotoGalleryData mData, Context mContext) {
-
         mListener.hideProgress();
         if (mInteractor.isModeratorOn(mContext)) {
             mListener.showModeratorDialog();
@@ -64,12 +63,10 @@ public class PhotoGalleryPresenter implements IPhotoGalleryContract.IPresenter, 
             mListener.showSuccessDialog();
             mListener.showPhoto(mData);
         }
-
     }
 
     @Override
     public void onPhotoDownload() {
-
     }
 
     @Override
@@ -77,6 +74,5 @@ public class PhotoGalleryPresenter implements IPhotoGalleryContract.IPresenter, 
         mListener.hideProgress();
         mListener.onFailure(msg);
     }
-
 
 }

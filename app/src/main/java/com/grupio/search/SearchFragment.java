@@ -27,7 +27,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
  * Created by mani on 7/12/16.
  */
 
-public class SearchFragment extends BaseFragment<SearchPresenter> implements SearchContract.IView, ListWatcher.Watcher {
+public class SearchFragment extends BaseFragment<SearchPresenterI> implements SearchContract.IViewI, ListWatcher.Watcher {
     AdapterView.OnItemClickListener mListner = (adapterView, view1, i, l) -> {
 
         Person mPerson = (Person) adapterView.getAdapter().getItem(i);
@@ -102,8 +102,8 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
     }
 
     @Override
-    public SearchPresenter setPresenter() {
-        return new SearchPresenter(this);
+    public SearchPresenterI setPresenter() {
+        return new SearchPresenterI(this);
     }
 
     @Override

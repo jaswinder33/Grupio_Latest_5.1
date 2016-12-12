@@ -18,7 +18,7 @@ import java.util.List;
  * Created by JSN on 7/12/16.
  */
 
-public class SearchInteractor implements SearchContract.Interactor {
+public class SearchInteractorI implements SearchContract.InteractorI {
     @Override
     public void fetchData(Context mContext, String queryStr, SearchContract.OnInteraction mListener) {
 

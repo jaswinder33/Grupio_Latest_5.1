@@ -123,12 +123,16 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
         rightBtn.setOnClickListener(view1 -> mRightClick.handleClick());
     }
 
-
     public abstract int getLayout();
 
     public abstract void initIds();
 
     public abstract void setUp();
+
+    @Override
+    public void goToNextScreen(Bundle bundle, Class<?> className) {
+        ((BaseActivity<Presenter>) getActivity()).goToNextScreen(bundle, className);
+    }
 
     public abstract Presenter setPresenter();
 

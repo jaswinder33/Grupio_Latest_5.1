@@ -1,9 +1,8 @@
 package com.grupio.base;
 
 /**
- * Created by mani on 5/12/16.
+ * Created by JSN on 12/12/16.
  */
 
-public interface BaseInteractor {
-
+public class BaseInteractor implements IBaseInteractor {
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
+import com.grupio.dao.AdsDAO;
 
 import java.util.HashMap;
 
@@ -29,7 +30,8 @@ public class Ads extends BaseApiCall {
         APIRequest request = new GetRequest();
         String result = request.requestResponse(url, new HashMap<>(), mContext);
 
-        if (result != null){
+        if (result != null) {
+            AdsDAO.getInstance(mContext).insert(result);
         }
 
         Log.i("API", "Ads API");

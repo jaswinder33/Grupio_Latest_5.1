@@ -1,5 +1,6 @@
 package com.grupio.interfaces;
 
+import android.os.Bundle;
 import android.text.TextWatcher;
 
 /**
@@ -46,4 +47,5 @@ public interface BaseFunctionality<Presenter> {
 
     void setUp();
 
+    void goToNextScreen(Bundle bundle, Class<?> className);
 }

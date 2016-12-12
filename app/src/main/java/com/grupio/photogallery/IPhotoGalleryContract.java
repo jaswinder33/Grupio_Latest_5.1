@@ -4,10 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v7.app.NotificationCompat;
 
-import com.grupio.base.BaseInteractor;
 import com.grupio.base.BaseOnInteraction;
-import com.grupio.base.BasePresenter;
-import com.grupio.base.BaseView;
+import com.grupio.base.IBaseInteractor;
+import com.grupio.base.IBasePresenter;
+import com.grupio.base.IBaseView;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface IPhotoGalleryContract {
 
-    interface IView extends BaseView {
+    interface IViewI extends IBaseView {
         void showList(List<PhotoGalleryData> mList);
 
         void showPhoto(PhotoGalleryData mData);
@@ -30,7 +30,7 @@ public interface IPhotoGalleryContract {
 
     }
 
-    interface IPresenter extends BasePresenter {
+    interface IPresenterI extends IBasePresenter {
         void fetchPhotosList(Context mContext, boolean fromPreference);
 
         void prepareList(Context mcontext);
@@ -40,7 +40,7 @@ public interface IPhotoGalleryContract {
         void downloadImage(Context mContext, PhotoGalleryData mData, NotificationManager notificationManager, NotificationCompat.Builder mBuilder);
     }
 
-    interface Interactor extends BaseInteractor {
+    interface InteractorI extends IBaseInteractor {
         void fetchPhotosList(Context mContext, boolean fromPreference, OnInteraction mListener);
 
         void prepareList(Context mcontext);

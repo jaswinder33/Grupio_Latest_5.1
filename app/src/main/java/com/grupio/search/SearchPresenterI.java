@@ -10,14 +10,14 @@ import java.util.List;
  * Created by mani on 7/12/16.
  */
 
-public class SearchPresenter implements SearchContract.IPresenter, SearchContract.OnInteraction {
+public class SearchPresenterI implements SearchContract.IPresenterI, SearchContract.OnInteraction {
 
-    private SearchContract.IView mListener;
-    private SearchInteractor mInteractor;
+    private SearchContract.IViewI mListener;
+    private SearchInteractorI mInteractor;
 
-    public SearchPresenter(SearchContract.IView mListener) {
+    public SearchPresenterI(SearchContract.IViewI mListener) {
         this.mListener = mListener;
-        mInteractor = new SearchInteractor();
+        mInteractor = new SearchInteractorI();
     }
 
     @Override

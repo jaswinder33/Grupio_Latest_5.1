@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JSN on 5/12/16.
  */
 
-public class PhotoGalleryFragment extends BaseFragment<PhotoGalleryPresenter> implements IPhotoGalleryContract.IView, BaseRecyclerView.OnClick<PhotoGalleryData> {
+public class PhotoGalleryFragment extends BaseFragment<PhotoGalleryPresenterImp> implements IPhotoGalleryContract.IViewI, BaseRecyclerView.OnClick<PhotoGalleryData> {
 
     RecyclerView mRecyclerView;
     PhotoGalleryAdapter mAdapter;
@@ -43,8 +43,8 @@ public class PhotoGalleryFragment extends BaseFragment<PhotoGalleryPresenter> im
     }
 
     @Override
-    public PhotoGalleryPresenter setPresenter() {
-        return new PhotoGalleryPresenter(this);
+    public PhotoGalleryPresenterImp setPresenter() {
+        return new PhotoGalleryPresenterImp(this);
     }
 
     @Override

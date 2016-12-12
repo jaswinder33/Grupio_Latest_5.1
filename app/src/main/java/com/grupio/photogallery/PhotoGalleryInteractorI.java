@@ -33,7 +33,7 @@ import java.util.List;
  * Created by JSN on 5/12/16.
  */
 
-public class PhotoGalleryInteractor implements IPhotoGalleryContract.Interactor {
+public class PhotoGalleryInteractorI implements IPhotoGalleryContract.InteractorI {
 
     private List<PhotoGalleryData> mPhotoGalleryList = new ArrayList<>();
 

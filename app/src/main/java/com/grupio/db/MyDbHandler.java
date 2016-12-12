@@ -68,6 +68,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.execSQL(LiveTable.CREATE_LIVE_TABLE);
         db.execSQL(SurveyTable.CREATE_SURVEY_TABLE);
         db.execSQL(SponsorTable.CREATE_SPONSOR_TABLE);
+        db.execSQL(AdsTable.CREATE_ADS_TABLE);
     }
 
     @Override
