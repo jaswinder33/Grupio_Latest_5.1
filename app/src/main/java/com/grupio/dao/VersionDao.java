@@ -103,7 +103,8 @@ public class VersionDao extends BaseDAO {
         try {
             mCursor = db.rawQuery(query, null);
             boolean exists = false;
-            if (mCursor != null && mCursor.moveToFirst()) {
+            if (mCursor != null && mCursor.getCount() > 0) {
+                mCursor.moveToFirst();
                 do {
                     exists = mCursor.getInt(0) == 1;
                 } while (mCursor.moveToNext());

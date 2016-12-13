@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.grupio.base.BasePresenter;
 
-import java.util.List;
-
 /**
  * Created by JSN on 12/12/16.
  */
@@ -23,10 +21,5 @@ public class CalendarListPresenter extends BasePresenter<CalendarListContract.IV
         getInteractor().fetchList(context, this);
     }
 
-    @Override
-    public <T> void showList(List<T> mList) {
-        getView().hideProgress();
-        getView().showList(mList);
 
-    }
 }

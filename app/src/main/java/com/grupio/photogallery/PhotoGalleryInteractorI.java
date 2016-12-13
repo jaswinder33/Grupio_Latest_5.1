@@ -13,6 +13,7 @@ import com.grupio.Utils.Utility;
 import com.grupio.apis.APICallBackWithResponse;
 import com.grupio.apis.PhotoGalleryAPI;
 import com.grupio.apis.PhotoGalleryImageUpload;
+import com.grupio.base.BaseInteractor;
 import com.grupio.dao.EventDAO;
 import com.grupio.db.EventTable;
 import com.grupio.helper.PhotoGalleryHelper;
@@ -33,7 +34,7 @@ import java.util.List;
  * Created by JSN on 5/12/16.
  */
 
-public class PhotoGalleryInteractorI implements IPhotoGalleryContract.InteractorI {
+public class PhotoGalleryInteractorI extends BaseInteractor implements IPhotoGalleryContract.InteractorI {
 
     private List<PhotoGalleryData> mPhotoGalleryList = new ArrayList<>();
 
@@ -190,5 +191,4 @@ public class PhotoGalleryInteractorI implements IPhotoGalleryContract.Interactor
     public boolean isModeratorOn(Context mContext) {
         return EventDAO.getInstance(mContext).getValue(EventTable.IS_MODERATORAVAILABLE).equals("y");
     }
-
 }

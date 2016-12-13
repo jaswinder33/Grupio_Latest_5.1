@@ -43,7 +43,6 @@ public class CalendarActivity extends BaseActivity<Void> {
 
     @Override
     public void setListeners() {
-
     }
 
     @Override

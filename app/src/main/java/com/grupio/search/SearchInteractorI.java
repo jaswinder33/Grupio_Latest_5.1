@@ -2,6 +2,7 @@ package com.grupio.search;
 
 import android.content.Context;
 
+import com.grupio.base.BaseInteractor;
 import com.grupio.dao.AttendeeDAO;
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.ExhibitorDAO;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by JSN on 7/12/16.
  */
 
-public class SearchInteractorI implements SearchContract.InteractorI {
+public class SearchInteractorI extends BaseInteractor implements SearchContract.InteractorI {
     @Override
     public void fetchData(Context mContext, String queryStr, SearchContract.OnInteraction mListener) {
 

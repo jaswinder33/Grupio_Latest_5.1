@@ -49,10 +49,9 @@ public class GraphicsProcessor {
             Store version in db
              */
             try {
-                String version = mJobj.getString("version");
                 VersionData vData = new VersionData();
                 vData.name = VersionDao.GRAPHICS_VERSION;
-                vData.oldVersion = version;
+                vData.oldVersion = mJobj.getString("version");
                 VersionDao.getInstance(mContext).insertDataInOldColumn(vData);
             } catch (JSONException e) {
                 e.printStackTrace();

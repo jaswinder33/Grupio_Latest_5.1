@@ -15,12 +15,12 @@ public class AdsTable {
     public static final String IMAGEURL = "imageUrl";
     public static final String GOTOURL = "goToUrl";
     public static final String ADSORDER = "adsOrder";
-    public static final String SECTION = "section";
+    public static final String SECTION = "sectionName";
     public static final String IMAGEURL480 = "imageUrl480";
     public static final String IMAGEURL800 = "imageUrl800";
     public static final String STATUS = "status";
 
-    public static final String CREATE_ADS_TABLE = "CREATE TABLE IF NOT EXISTS" + ADS_TABLE + "("
+    public static final String CREATE_ADS_TABLE = "CREATE TABLE IF NOT EXISTS " + ADS_TABLE + "("
             + ID + " TEXT, "
             + ADHTML + " TEXT, "
             + IMAGEURL + " TEXT, "
@@ -31,4 +31,16 @@ public class AdsTable {
             + IMAGEURL800 + " TEXT, "
             + STATUS +
             " TEXT );";
+
+    public static final String INSERT_DATA = "INSERT INTO " + ADS_TABLE + "(" +
+            ID + ","
+            + ADHTML + ","
+            + IMAGEURL + ","
+            + GOTOURL + ","
+            + ADSORDER + ","
+            + SECTION + ","
+            + IMAGEURL480 + ","
+            + IMAGEURL800 + ","
+            + STATUS
+            + ") values(?,?,?,?,?,?,?,?,?);";
 }

@@ -3,6 +3,10 @@ package com.grupio.interfaces;
 import android.os.Bundle;
 import android.text.TextWatcher;
 
+import com.grupio.data.AdsData;
+
+import java.util.List;
+
 /**
  * Created by JSN on 13/10/16.
  */
@@ -15,7 +19,9 @@ public interface BaseFunctionality<Presenter> {
 
     void showMessageDialog();
 
-    void startBanner(String BannerName);
+    void startBanner(String bannerName);
+
+    void showBanner(List<AdsData> adsData);
 
     void sendReport(String screenName);
 
@@ -26,8 +32,6 @@ public interface BaseFunctionality<Presenter> {
     Presenter getPresenter();
 
     Presenter setPresenter();
-
-//    void setupSearchBar(boolean showSearchBar);
 
     void setupSearchBar(boolean showSearchBar, String locale);
 

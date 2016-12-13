@@ -35,7 +35,9 @@ import com.grupio.animation.SlideIn;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListDetailPresenter;
 import com.grupio.backend.Get_Image_Path;
+import com.grupio.base.BasePresenter;
 import com.grupio.dao.EventDAO;
+import com.grupio.data.AdsData;
 import com.grupio.db.EventTable;
 import com.grupio.interfaces.BaseFunctionality;
 import com.grupio.interfaces.ClickHandler;
@@ -45,11 +47,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Created by JSN on 5/7/16.
  */
-public abstract class BaseActivity<Presenter> extends AppCompatActivity implements BaseFunctionality, View.OnClickListener {
+// extends BasePresenter<IBaseView, IBaseInteractor>
+public abstract class BaseActivity<Presenter> extends AppCompatActivity implements BaseFunctionality<Presenter>, View.OnClickListener {
 
     public static final String TAG = "Baseactivity";
 
@@ -88,6 +92,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     private String imagePath = "";
     private Object[] imageUploadDialogParams;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,9 +101,9 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         init();
         setUpHeader(isHeaderForGridPage());
         handleLeftBtn(isHeaderForGridPage());
-        sendReport(getScreenName());
         registerListeners();
         setUp();
+        sendReport(getScreenName());
     }
 
     /**
@@ -318,8 +323,12 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
     }
 
     @Override
-    public void startBanner(String BannerName) {
-        Log.i(TAG, "startBanner: " + BannerName);
+    public void startBanner(String bannerName) {
+        ((BasePresenter) getPresenter()).showBanner(bannerName, this);
+    }
+
+    @Override
+    public void showBanner(List<AdsData> adsData) {
     }
 
     /**
@@ -327,7 +336,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
      */
     @Override
     public void sendReport(String screenName) {
-        Log.i(TAG, "sendReport: " + screenName);
+        ((BasePresenter) getPresenter()).sendReport(screenName, this);
     }
 
     @Override

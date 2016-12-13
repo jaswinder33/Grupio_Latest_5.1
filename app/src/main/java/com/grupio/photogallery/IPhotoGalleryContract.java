@@ -48,6 +48,8 @@ public interface IPhotoGalleryContract {
         void uploadPhoto(Context mContext, String imagePath, String caption, OnInteraction mListener);
 
         void downloadImage(Context mContext, PhotoGalleryData mData, NotificationManager notificationManager, NotificationCompat.Builder mBuilder, OnInteraction mListener);
+
+        boolean isModeratorOn(Context mContext);
     }
 
     interface OnInteraction extends BaseOnInteraction {

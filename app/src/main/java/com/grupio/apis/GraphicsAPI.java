@@ -32,7 +32,6 @@ public class GraphicsAPI extends BaseApiCall {
 
     @Override
     public void callApi() {
-//        String graphicUrl =  ConstantData.GRAPHICS_API + ConstantData.EVENT_ID +  ConstantData.API_FORMAT;
 
         APIRequest request = new GetRequest();
         String response = request.requestResponse(url, new HashMap<String, String>(), mContext);

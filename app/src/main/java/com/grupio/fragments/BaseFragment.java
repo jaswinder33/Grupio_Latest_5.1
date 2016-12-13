@@ -16,9 +16,12 @@ import android.widget.TextView;
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
 import com.grupio.dao.EventDAO;
+import com.grupio.data.AdsData;
 import com.grupio.db.EventTable;
 import com.grupio.interfaces.BaseFunctionality;
 import com.grupio.interfaces.ClickHandler;
+
+import java.util.List;
 
 
 /**
@@ -38,9 +41,9 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         view = inflater.inflate(getLayout(), container, false);
         init();
-        sendReport(getScreenName());
         registerListeners();
         setUp();
+        sendReport(getScreenName());
         return view;
     }
 
@@ -60,9 +63,14 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
     }
 
     @Override
-    public void startBanner(String BannerName) {
-        ((BaseActivity) getActivity()).startBanner(BannerName);
+    public void startBanner(String bannerName) {
+        ((BaseActivity) getActivity()).startBanner(bannerName);
     }
+
+    @Override
+    public void showBanner(List<AdsData> adsData) {
+    }
+
 
     @Override
     public void sendReport(String screenName) {
@@ -131,7 +139,7 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
 
     @Override
     public void goToNextScreen(Bundle bundle, Class<?> className) {
-        ((BaseActivity<Presenter>) getActivity()).goToNextScreen(bundle, className);
+        ((BaseActivity) getActivity()).goToNextScreen(bundle, className);
     }
 
     public abstract Presenter setPresenter();

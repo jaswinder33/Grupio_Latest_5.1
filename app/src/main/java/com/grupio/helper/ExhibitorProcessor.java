@@ -33,7 +33,6 @@ public class ExhibitorProcessor {
             e.printStackTrace();
         }
 
-
         if (mJObj != null) {
 
             try {

@@ -7,6 +7,7 @@ import com.grupio.R;
 import com.grupio.api_request.APIRequest;
 import com.grupio.api_request.GetRequest;
 import com.grupio.dao.AdsDAO;
+import com.grupio.session.ConstantData;
 
 import java.util.HashMap;
 
@@ -21,7 +22,7 @@ public class Ads extends BaseApiCall {
 
     @Override
     public String getEndPoint() {
-        return mContext.getResources().getString(R.string.ads_api);
+        return mContext.getResources().getString(R.string.ads_api) + ConstantData.EVENT_ID;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class Ads extends BaseApiCall {
         String result = request.requestResponse(url, new HashMap<>(), mContext);
 
         if (result != null) {
-            AdsDAO.getInstance(mContext).insert(result);
+            AdsDAO.getInstance(mContext).insert(mContext, result);
         }
 
         Log.i("API", "Ads API");
