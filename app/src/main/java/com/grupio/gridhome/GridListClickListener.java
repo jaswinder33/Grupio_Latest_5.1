@@ -16,6 +16,7 @@ import com.grupio.activities.WebViewActivity;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
 import com.grupio.attendee.ListConstant;
+import com.grupio.calendar.CalendarActivity;
 import com.grupio.dao.SessionTracksDAO;
 import com.grupio.data.MenuData;
 import com.grupio.download.DownloadActivity;
@@ -63,7 +64,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
     MenuClick qrCodeClick = mBundle -> sendIntent(CaptureActivity.class, mBundle);
     MenuClick photoGalleryClick = mBundle -> sendIntent(PhotoGalleryActivity.class, mBundle);
     MenuClick searchClick = mBundle -> sendIntent(SearchActivity.class, mBundle);
-
+    MenuClick calendarClick = mBundle -> sendIntent(CalendarActivity.class, mBundle);
 
     public GridListClickListener(Context context) {
         this.context = context;
@@ -122,6 +123,7 @@ public class GridListClickListener implements RecyclerView.OnItemTouchListener {
                     break;
 
                 case "mycalendar":
+                    performClick(mBundle, calendarClick);
                     break;
 
                 case "speakers":

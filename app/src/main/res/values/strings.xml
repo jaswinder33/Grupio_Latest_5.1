@@ -76,6 +76,9 @@
     <string name="image_base_url">http://d1izx6szmu30ih.cloudfront.net/main/</string>
     <string name="photogallery_upload_image">/photo_gallery_images_android.php</string>
 
+    <!--Calendar APIs-->
+    <string name="meeting_api">/meeting.php?format=json</string>
+
     <!-- ################################################################### -->
     <!-- ################################################################### -->
     <!-- ################################################################### -->

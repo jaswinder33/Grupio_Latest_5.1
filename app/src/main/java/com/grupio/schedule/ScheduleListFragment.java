@@ -85,8 +85,6 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
             counter++;
         }
     };
-
-
     public static ScheduleListFragment getInstance(Bundle mBundle) {
         mScheduleListFragment = new ScheduleListFragment();
         if (mBundle != null) {
@@ -94,25 +92,21 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
         }
         return mScheduleListFragment;
     }
-
     @Override
     public int getLayout() {
         return R.layout.layout_list;
     }
-
     @Override
     public void initIds() {
         mListView = (StickyListHeadersListView) view.findViewById(R.id.attendeeListView);
-        noDataAvailableTxt = (TextView) view.findViewById(R.id.txtNoData);
+        noDataAvailableTxt = (TextView) view.findViewById(R.id.noDataAvailable);
         mListView.setEmptyView(noDataAvailableTxt);
     }
-
     @Override
     public void setListeners() {
         ListWatcher.getInstance().registerListener(this);
         mListView.setOnItemClickListener(mListClick);
     }
-
     @Override
     public void setUp() {
         setupSearchBar(true, "Search Sessions");

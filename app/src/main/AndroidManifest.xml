@@ -188,7 +188,9 @@
             android:name=".search.SearchActivity"
             android:label="@string/title_activity_search_activity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.BaseActivity" />
+
+        <activity android:name=".calendar.CalendarActivity" />
+
 
     </application>
 

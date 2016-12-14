@@ -52,7 +52,7 @@ public class AttendeesData implements Person {
     List<mapList> mapListOfAttendee;
     boolean isAttendeeSelected = false;
     ArrayList<ScheduleData> sessionData = new ArrayList<ScheduleData>();
-    ArrayList<MeetingData> meetingData = new ArrayList<MeetingData>();
+    ArrayList<MeetingData_Old> meetingData = new ArrayList<MeetingData_Old>();
     Boolean alreadyAdded = false;
     String enable_match = "";
 
@@ -133,11 +133,11 @@ public class AttendeesData implements Person {
         this.alreadyAdded = alreadyAdded;
     }
 
-    public ArrayList<MeetingData> getMeetingData() {
+    public ArrayList<MeetingData_Old> getMeetingData() {
         return meetingData;
     }
 
-    public void setMeetingData(ArrayList<MeetingData> meetingData) {
+    public void setMeetingData(ArrayList<MeetingData_Old> meetingData) {
         this.meetingData = meetingData;
     }
 

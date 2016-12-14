@@ -336,7 +336,7 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
      */
     @Override
     public void sendReport(String screenName) {
-        ((BasePresenter) getPresenter()).sendReport(screenName, this);
+//        ((BasePresenter) getPresenter()).sendReport(screenName, this);
     }
 
     @Override

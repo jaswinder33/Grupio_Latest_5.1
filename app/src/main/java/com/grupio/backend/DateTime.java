@@ -30,6 +30,10 @@ public class DateTime {
         return new DateTime();
     }
 
+    public static boolean timeStampExpired(int timeStamp) {
+        return (SystemClock.currentThreadTimeMillis() - timeStamp > 0);
+    }
+
     //    public String formatDate(Date date) {
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        return sdf.format(date);
@@ -40,13 +44,13 @@ public class DateTime {
 //        return sdf.format(timestamp);
 //    }
 //
-//    public Date getCurrentTime(){
-//
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        return sdf.parse(new Date());
-//    }
-    public static boolean timeStampExpired(int timeStamp) {
-        return (SystemClock.currentThreadTimeMillis() - timeStamp > 0);
+    public String getCurrentTime() {
+        return getCurrentTime("yyyy-MM-dd");
+    }
+
+    public String getCurrentTime(String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date());
     }
 
     /**

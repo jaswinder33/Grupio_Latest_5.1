@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.grupio.dao.MeetingTable;
 import com.grupio.session.ConstantData;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,6 +70,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.execSQL(SurveyTable.CREATE_SURVEY_TABLE);
         db.execSQL(SponsorTable.CREATE_SPONSOR_TABLE);
         db.execSQL(AdsTable.CREATE_ADS_TABLE);
+        db.execSQL(MeetingTable.CREATE_MEETING_TABLE);
+        db.execSQL(MeetingTable.InvitationStatus.CREATE_INVITATION_STATUS_TABLE);
+        db.execSQL(MeetingTable.InvitationStatus.INVITATION_TRIGGER);
+        db.execSQL(MeetingTable.InvitationStatus.INVITATION_DELETE_TRIGGER);
     }
 
     @Override

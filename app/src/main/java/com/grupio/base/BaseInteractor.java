@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by JSN on 12/12/16.
  */
-
 public class BaseInteractor implements IBaseInteractor {
     @Override
     public void showBanner(String bannerName, Context context, IBaseOnInteraction listener) {

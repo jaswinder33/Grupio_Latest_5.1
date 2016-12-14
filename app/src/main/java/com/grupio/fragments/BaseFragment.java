@@ -64,7 +64,7 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
 
     @Override
     public void startBanner(String bannerName) {
-        ((BaseActivity) getActivity()).startBanner(bannerName);
+//        ((BaseActivity) getActivity()).startBanner(bannerName);
     }
 
     @Override
