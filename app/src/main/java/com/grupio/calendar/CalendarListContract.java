@@ -21,14 +21,21 @@ public interface CalendarListContract {
     }
 
     interface IPresenter extends IBasePresenter {
+
+        void fetchListFromServer(Context context);
+
         void fetchList(Context context, String date);
 
         List<Person> getList(Context context, String date);
 
-        List<String> getDataList(Context context);
+        List<String> getDateList(Context context);
     }
 
     interface IInteractor extends IBaseInteractor {
+
+        void fetchListFromServer(Context context, IOnInteraction listener);
+
+
         void fetchList(Context context, String date, IOnInteraction listener);
 
         List<Person> getList(Context context, String date);

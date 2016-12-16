@@ -157,7 +157,6 @@ public class ScheduleListFragment extends BaseFragment<ScheduleListPresenter> im
 
         String[] months = {"Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-
         String[] dateArr = date.split("-");
 
         Calendar cal = Calendar.getInstance();

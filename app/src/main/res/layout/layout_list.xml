@@ -42,28 +42,15 @@
             android:text="Favorites"
             android:textAllCaps="false"
             android:textColor="@color/exhibitor_buttons_blue" />
-
-
     </LinearLayout>
 
 
-    <!--   <TextView
-           android:id="@+id/txtNoData"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:gravity="center"
-           android:text="No Data Available"
-           android:textColor="@color/black"
-           android:textSize="18sp"
-           android:visibility="gone" />-->
-
-
+    <include layout="@layout/layout_no_data" />
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/attendeeListView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none" />
 
-    <include layout="@layout/layout_no_data" />
 
 </LinearLayout>

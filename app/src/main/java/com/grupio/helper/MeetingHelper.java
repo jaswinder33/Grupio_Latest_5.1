@@ -1,5 +1,6 @@
 package com.grupio.helper;
 
+import com.grupio.data.AttendeesData;
 import com.grupio.data.MeetingData;
 
 import org.json.JSONArray;
@@ -122,10 +123,35 @@ public class MeetingHelper {
     }
 
 
-    public String parseInvitationData(String response) {
+    public List<AttendeesData> parseInvitations(String response) {
 
-        System.out.println("trigger triggered");
-        return "1,2";
+        List<AttendeesData> invitedAttendee = new ArrayList<>();
+
+        JSONArray jArray = null;
+        try {
+            jArray = new JSONArray(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (jArray != null && jArray.length() > 0) {
+            AttendeesData mAttendee;
+            for (int i = 0; i < jArray.length(); i++) {
+                mAttendee = new AttendeesData();
+                try {
+                    mAttendee.setAttendee_id(jArray.getJSONObject(i).getString("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mAttendee.setMeetingStatus(jArray.getJSONObject(i).getString("status"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return invitedAttendee;
     }
 
     /*meetingtime": [
@@ -136,8 +162,34 @@ public class MeetingHelper {
             }
           ]
           */
-    public void parseMeetingTime(String resonse) {
+    public String[] parseMeetingTime(String resonse) {
 
+        String startTime = "";
+        String endTime = "";
+
+        JSONArray timeArray = null;
+        try {
+            timeArray = new JSONArray(resonse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (timeArray != null && timeArray.length() > 0) {
+
+            try {
+                startTime = timeArray.getJSONObject(0).getString("start_time");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                endTime = timeArray.getJSONObject(0).getString("end_time");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new String[]{startTime, endTime};
 
     }
+
 }

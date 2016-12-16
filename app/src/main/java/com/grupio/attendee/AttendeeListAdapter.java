@@ -27,6 +27,7 @@ public class AttendeeListAdapter extends ListBaseAdapter<AttendeesData> {
         mSetAttendeeData.setAdapter(this);
         mSetAttendeeData.setShowAttendeeImage(showImage)
                 .enableChat(isChatAvailable)
+                .isFirstName(isFirstName)
                 .setData(getItem(position), mHolder);
     }
 }

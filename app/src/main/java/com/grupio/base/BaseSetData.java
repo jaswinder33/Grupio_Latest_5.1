@@ -8,9 +8,6 @@ package com.grupio.base;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.grupio.dao.EventDAO;
-import com.grupio.db.EventTable;
-
 import java.util.Collection;
 
 /**
@@ -18,13 +15,11 @@ import java.util.Collection;
  */
 public abstract class BaseSetData<T, VH, K> {
 
-    protected boolean isFirstName = false;
     private K mAdpater;
     private Context mContext;
 
     public BaseSetData(Context mContext) {
         this.mContext = mContext;
-        isFirstName = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER).equals("firstname_lastname");
     }
 
     public Context getContext() {
@@ -32,6 +27,10 @@ public abstract class BaseSetData<T, VH, K> {
     }
 
     public abstract void setData(T data, VH mHolder);
+
+    protected K getAdapter() {
+        return mAdpater;
+    }
 
     public void setAdapter(K adapter) {
         this.mAdpater = adapter;
@@ -60,4 +59,6 @@ public abstract class BaseSetData<T, VH, K> {
     protected void addAll(Collection<? extends T> collection) {
         ((ArrayAdapter<T>) mAdpater).addAll(collection);
     }
+
+
 }

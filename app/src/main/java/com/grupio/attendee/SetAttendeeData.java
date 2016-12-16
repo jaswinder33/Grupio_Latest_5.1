@@ -20,6 +20,7 @@ public class SetAttendeeData<T> extends BaseSetData<AttendeesData, ListBaseAdapt
 
     private boolean showAttendeeImage = false;
     private boolean enableChat = false;
+    private boolean isFirstName = false;
 
     public SetAttendeeData(Context mContext) {
         super(mContext);
@@ -116,6 +117,11 @@ public class SetAttendeeData<T> extends BaseSetData<AttendeesData, ListBaseAdapt
 
     public SetAttendeeData setShowAttendeeImage(boolean flag) {
         showAttendeeImage = flag;
+        return this;
+    }
+
+    public SetAttendeeData isFirstName(boolean flag) {
+        isFirstName = flag;
         return this;
     }
 }

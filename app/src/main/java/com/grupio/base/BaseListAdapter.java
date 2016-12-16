@@ -44,7 +44,7 @@ public abstract class BaseListAdapter<T, Holder> extends ArrayAdapter<T> impleme
         String name_order = EventDAO.getInstance(context).getValue(EventTable.NAME_ORDER);
         isFirstName = name_order.equals("firstname_lastname");
 
-        findPersonType();
+        findPersonType(getClass());
 
         if (mT instanceof ScheduleData) {
             isSession = true;
@@ -218,40 +218,30 @@ public abstract class BaseListAdapter<T, Holder> extends ArrayAdapter<T> impleme
 
     public abstract Holder setViewHolder(View convertView, int position);
 
-    public void findPersonType() {
 
-//        Class<?> subClass = getClass();
-//        while (subClass != subClass.getSuperclass()) {
-//            if(subClass.getSuperclass() != null)
-//                subClass = subClass.getSuperclass();
-//        }
-//        Type[] typeArguments = ((ParameterizedType) subClass.getGenericSuperclass()).getActualTypeArguments();
+    private void findPersonType(Class<?> classObject) {
 
-//        Class<?> subClass = getClass();
-//
-//        while (subClass == subClass.getSuperclass()) {
-//            subClass = subClass.getSuperclass();
-//
-//            if (subClass == null) {
-//                break;
-//            }
-//        }
-//
-//        if(subClass == null){
-//            return;
-//        }
-//
+        Class<?> classObj = classObject;
 
-        Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
-        for (Type type : typeArguments) {
+        Type typeParam = classObj.getGenericSuperclass();
 
+        while (!(typeParam instanceof ParameterizedType)) {
+            classObj = classObj.getSuperclass();
+            typeParam = classObj.getGenericSuperclass();
+
+        }
+
+        Type[] typeArray = ((ParameterizedType) typeParam).getActualTypeArguments();
+
+        for (Type type1 : typeArray) {
             try {
-                mT = ((Class<T>) type).newInstance();
+                mT = ((Class<T>) type1).newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

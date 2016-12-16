@@ -14,7 +14,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SetSpeakerData<T> extends BaseSetData<SpeakerData, ListBaseAdapter.ViewHolder, T> {
 
-    boolean hideSpeakerImage = false;
+    private boolean hideSpeakerImage = false;
+    private boolean isFirstName = false;
 
     public SetSpeakerData(Context mContext) {
         super(mContext);
@@ -60,6 +61,11 @@ public class SetSpeakerData<T> extends BaseSetData<SpeakerData, ListBaseAdapter.
 
     public SetSpeakerData setHideSpeakerImage(boolean hideSpeakerImage) {
         this.hideSpeakerImage = hideSpeakerImage;
+        return this;
+    }
+
+    public SetSpeakerData isFirstName(boolean flag) {
+        isFirstName = flag;
         return this;
     }
 }

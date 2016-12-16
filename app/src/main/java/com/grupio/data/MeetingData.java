@@ -21,6 +21,9 @@ public class MeetingData implements Person {
     public String location;
     public String description;
 
+    public String startTime;
+    public String endTime;
+
     public AttendeesData mCreatorData;
     public List<AttendeesData> invitiesList = new ArrayList<>();
 

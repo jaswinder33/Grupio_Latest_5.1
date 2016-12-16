@@ -114,12 +114,14 @@ public class SearchAdapter extends BaseListAdapter<Person, BaseHolder> {
         if (mData instanceof AttendeesData) {
             SetAttendeeData<SearchAdapter> mSetAttendeeData = new SetAttendeeData(getContext());
             mSetAttendeeData.setAdapter(this);
-            mSetAttendeeData.setShowAttendeeImage(showAttendeeImage).setData((AttendeesData) mData, (ListBaseAdapter.ViewHolder) mHolder);
+            mSetAttendeeData.setShowAttendeeImage(showAttendeeImage).isFirstName(isFirstName).setData((AttendeesData) mData, (ListBaseAdapter.ViewHolder) mHolder);
         } else if (mData instanceof SpeakerData) {
             System.out.println("SearchAdapter.handleGetView: " + mHolder.getClass().getName());
             SetSpeakerData<SearchAdapter> mSetSpeakerData = new SetSpeakerData(getContext());
             mSetSpeakerData.setAdapter(this);
-            mSetSpeakerData.setHideSpeakerImage(hideSpeakerImage).setData((SpeakerData) mData, (ListBaseAdapter.ViewHolder) mHolder);
+            mSetSpeakerData.setHideSpeakerImage(hideSpeakerImage)
+                    .isFirstName(isFirstName)
+                    .setData((SpeakerData) mData, (ListBaseAdapter.ViewHolder) mHolder);
         } else if (mData instanceof SponsorData) {
             SetSponsorData<SearchAdapter> mSetSponsorData = new SetSponsorData(getContext());
             mSetSponsorData.setAdapter(this);
@@ -128,7 +130,7 @@ public class SearchAdapter extends BaseListAdapter<Person, BaseHolder> {
             SetSessionData<SearchAdapter> mSetSessionData = new SetSessionData(getContext());
             mSetSessionData.setAdapter(this);
             mSetSessionData.setShowTrackColor(showTrackColor)
-                    .setData((ScheduleData) mData, (ScheduleAdapter.ViewHolder) mHolder);
+                    .setData(mData, (ScheduleAdapter.ViewHolder) mHolder);
         } else if (mData instanceof ExhibitorData) {
             SetExhibitorData<SearchAdapter> mSetExhibitorData = new SetExhibitorData<>(getContext());
             mSetExhibitorData.setAdapter(this);

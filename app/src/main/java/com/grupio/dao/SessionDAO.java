@@ -524,4 +524,80 @@ public class SessionDAO extends BaseDAO {
 
     }
 
+    /**
+     * This method provides liked session on a particula date
+     *
+     * @param date
+     */
+    public List<ScheduleData> getLikedSession(String date) {
+
+        boolean isFirstName = EventDAO.getInstance(mContext).getValue(EventTable.NAME_ORDER).equals("firstname_lastname");
+
+        List<ScheduleData> mList = new ArrayList<>();
+
+        String query;
+        query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track";// where sessions.start_time like " + date + "%'";
+        if (date == null) {
+            query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions)";
+        } else {
+            query += " where sessions.start_time like '" + date + "%'";
+        }
+
+        query += " and likes.isFav='1';";
+
+        openDB(1);
+        Cursor mCursor = null;
+
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.getCount() > 0) {
+
+                mCursor.moveToFirst();
+
+                ScheduleData mScheduleData;
+                do {
+                    mScheduleData = new ScheduleData();
+
+                    mScheduleData.setSession_id(mCursor.getString(0));
+                    mScheduleData.setName(mCursor.getString(1));
+                    mScheduleData.setStart_time(mCursor.getString(2));
+                    mScheduleData.setEnd_time(mCursor.getString(3));
+                    mScheduleData.setTrack(mCursor.getString(4));
+                    mScheduleData.setSummary(mCursor.getString(5));
+                    mScheduleData.setLocation(mCursor.getString(6));
+
+                    mScheduleData.setParent_session_id(mCursor.getString(7));
+                    if (!mScheduleData.getParent_session_id().equals("0")) {
+                        continue;
+                    }
+
+                    mScheduleData.setHas_child(mCursor.getString(8));
+                    mScheduleData.setMaxSeatsAvailable(mCursor.getString(9));
+
+                    mScheduleData.setSpeakerListAsString(mCursor.getString(10));
+                    mScheduleData.setResourceListAsString(mCursor.getString(11));
+                    mScheduleData.setSessionFav(mCursor.getString(12) != null && mCursor.getString(12).equals("1"));
+                    mScheduleData.setCalenderAddId(mCursor.getString(13));
+
+                    mScheduleData.setColor(mCursor.getString(14) != null ? mCursor.getString(14) : "#");
+
+                    mScheduleData.setSpeakerNameAsString(SpeakerDAO.getInstance(mContext).getSpeakerNames(mCursor.getString(10), db, isFirstName));
+
+                    mList.add(mScheduleData);
+
+                } while (mCursor.moveToNext());
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return mList;
+    }
 }

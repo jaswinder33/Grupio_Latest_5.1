@@ -51,9 +51,14 @@ public class ScheduleHelper {
 
     // 09:00AM - 10:10AM
     public static String formatSessionDate(String startDate, String endDate) {
+        return formatSessionDate(startDate, endDate, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    // 09:00AM - 10:10AM
+    public static String formatSessionDate(String startDate, String endDate, String format) {
         String date = "";
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
 
         Calendar mCalStart = Calendar.getInstance();
         Calendar mCalEnd = Calendar.getInstance();
@@ -76,6 +81,7 @@ public class ScheduleHelper {
 
         return date;
     }
+
 
     public List<ScheduleData> parseJSON(Context mContext, String response) {
 

@@ -28,7 +28,7 @@ public class SpeakerAdapter extends ListBaseAdapter<SpeakerData> {
         mHolder.mButton.setVisibility(View.GONE);
         SetSpeakerData<SpeakerAdapter> mSetSpeakerData = new SetSpeakerData(getContext());
         mSetSpeakerData.setAdapter(this);
-        mSetSpeakerData.setHideSpeakerImage(hideSpeakerImage).setData(getItem(position), mHolder);
+        mSetSpeakerData.setHideSpeakerImage(hideSpeakerImage).isFirstName(isFirstName).setData(getItem(position), mHolder);
     }
 }
 /*public class SpeakerAdapter extends BaseListAdapter<SpeakerData, SpeakerAdapter.ViewHolder> {

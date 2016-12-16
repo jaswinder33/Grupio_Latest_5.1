@@ -56,6 +56,9 @@ public class AttendeesData implements Person {
     Boolean alreadyAdded = false;
     String enable_match = "";
 
+    //used in calendar
+    String meetingStatus;
+
     public AttendeesData() {
     }
 
@@ -333,5 +336,13 @@ public class AttendeesData implements Person {
 
     public void setHideMe(String hideMe) {
         this.hideMe = hideMe;
+    }
+
+    public String getMeetingStatus() {
+        return meetingStatus;
+    }
+
+    public void setMeetingStatus(String meetingStatus) {
+        this.meetingStatus = meetingStatus;
     }
 }

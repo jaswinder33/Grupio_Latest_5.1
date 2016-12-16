@@ -50,7 +50,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
         }
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(NotesTable.CREATE_NOTES_TABLE);
@@ -71,9 +70,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.execSQL(SponsorTable.CREATE_SPONSOR_TABLE);
         db.execSQL(AdsTable.CREATE_ADS_TABLE);
         db.execSQL(MeetingTable.CREATE_MEETING_TABLE);
-        db.execSQL(MeetingTable.InvitationStatus.CREATE_INVITATION_STATUS_TABLE);
-        db.execSQL(MeetingTable.InvitationStatus.INVITATION_TRIGGER);
-        db.execSQL(MeetingTable.InvitationStatus.INVITATION_DELETE_TRIGGER);
+//        db.execSQL(MeetingTable.InvitationStatus.CREATE_INVITATION_STATUS_TABLE);
+//        db.execSQL(MeetingTable.InvitationStatus.INVITATION_TRIGGER);
+//        db.execSQL(MeetingTable.InvitationStatus.INVITATION_DELETE_TRIGGER);
+//        db.execSQL(MeetingTable.INVITATION_UPDATE_TRIGGER);
     }
 
     @Override

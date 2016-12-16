@@ -19,8 +19,13 @@ public class CalendarListPresenter extends BasePresenter<CalendarListContract.IV
     }
 
     @Override
+    public void fetchListFromServer(Context context) {
+        getView().showProgress("Loading...");
+        getInteractor().fetchListFromServer(context, this);
+    }
+
+    @Override
     public void fetchList(Context context, String date) {
-        getView().showProgress("");
         getInteractor().fetchList(context, date, this);
     }
 
@@ -30,12 +35,13 @@ public class CalendarListPresenter extends BasePresenter<CalendarListContract.IV
     }
 
     @Override
-    public List<String> getDataList(Context context) {
+    public List<String> getDateList(Context context) {
         return getInteractor().getDataList(context);
     }
 
     @Override
     public void onListFetch(List<Person> mList) {
-
+        getView().hideProgress();
+        getView().showList(mList);
     }
 }
