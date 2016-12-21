@@ -167,7 +167,6 @@ public class ChooseAttendeeActivity extends BaseActivity<ChooseAttendeePresenter
             attendeeId = mBundle.getString("attendee_id");
         }
         return mAttendeeList;
-
     }
 
     @Override

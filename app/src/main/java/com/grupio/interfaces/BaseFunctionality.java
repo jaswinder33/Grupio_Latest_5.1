@@ -52,4 +52,13 @@ public interface BaseFunctionality<Presenter> {
     void setUp();
 
     void goToNextScreen(Bundle bundle, Class<?> className);
+
+    boolean loginRequired(String screenName);
+
+    void showProgress(String msg);
+
+    void hideProgress();
+
+    void onFailure(String msg);
+
 }

@@ -14,11 +14,6 @@ import java.util.ArrayList;
  * Created by JSN on 20/10/16.
  */
 
-/**
- * https://www.javacodegeeks.com/2013/12/advanced-java-generics-retreiving-generic-type-arguments.html
- * read this article
- */
-
 public class ChooseAttendeeListAdapter extends AttendeeListAdapter {
     private ArrayList<AttendeesData> selectedAttendee = new ArrayList<>();
     private String attendeeId;
@@ -30,8 +25,8 @@ public class ChooseAttendeeListAdapter extends AttendeeListAdapter {
     }
 
     @Override
-    public void handleGetView(int position, ViewHolder mHolder) {
-        super.handleGetView(position, mHolder);
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
+        super.handleGetView(position, view, mHolder);
         mHolder.mButton.setVisibility(View.VISIBLE);
 
         if (getItem(position).isAttendeeSelected()) {

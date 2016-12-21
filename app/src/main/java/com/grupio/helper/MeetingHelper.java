@@ -1,5 +1,8 @@
 package com.grupio.helper;
 
+import android.content.Context;
+
+import com.grupio.dao.AttendeeDAO;
 import com.grupio.data.AttendeesData;
 import com.grupio.data.MeetingData;
 
@@ -122,11 +125,8 @@ public class MeetingHelper {
         return meetingDataList;
     }
 
-
-    public List<AttendeesData> parseInvitations(String response) {
-
+    public List<AttendeesData> parseInvitations(String response, Context context) {
         List<AttendeesData> invitedAttendee = new ArrayList<>();
-
         JSONArray jArray = null;
         try {
             jArray = new JSONArray(response);
@@ -143,11 +143,15 @@ public class MeetingHelper {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                mAttendee = new AttendeesData(AttendeeDAO.getInstance(context).getAttendeeDetal(mAttendee.getAttendee_id()));
+
                 try {
                     mAttendee.setMeetingStatus(jArray.getJSONObject(i).getString("status"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                invitedAttendee.add(mAttendee);
             }
         }
 
@@ -189,6 +193,57 @@ public class MeetingHelper {
         }
 
         return new String[]{startTime, endTime};
+
+    }
+
+    public String updateInvitiesStatus(int position, String status, String response) {
+
+
+        JSONArray jArray = null;
+        try {
+            jArray = new JSONArray(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //{"id":"73422936","status":"-1"}
+        if (jArray != null && jArray.length() > 0) {
+            JSONObject inivityObj = null;
+            try {
+                inivityObj = jArray.getJSONObject(position);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (inivityObj != null) {
+
+                try {
+                    String id = inivityObj.getString("id");
+
+                    JSONObject newObj = new JSONObject();
+                    newObj.put("id", id);
+                    newObj.put("status", status);
+
+                    JSONArray newArray = new JSONArray();
+                    for (int i = 0; i < jArray.length(); i++) {
+
+                        if (i == position) {
+                            newArray.put(i, newObj);
+                        } else {
+                            newArray.put(i, jArray.getJSONObject(i));
+                        }
+                    }
+
+                    return newArray.toString();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        return response;
 
     }
 

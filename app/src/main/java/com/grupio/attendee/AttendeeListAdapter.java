@@ -1,6 +1,7 @@
 package com.grupio.attendee;
 
 import android.content.Context;
+import android.view.View;
 
 import com.grupio.dao.EventDAO;
 import com.grupio.dao.MenuDAO;
@@ -22,7 +23,7 @@ public class AttendeeListAdapter extends ListBaseAdapter<AttendeesData> {
     }
 
     @Override
-    public void handleGetView(int position, ViewHolder mHolder) {
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
         SetAttendeeData<AttendeeListAdapter> mSetAttendeeData = new SetAttendeeData(getContext());
         mSetAttendeeData.setAdapter(this);
         mSetAttendeeData.setShowAttendeeImage(showImage)

@@ -373,7 +373,7 @@ public class AttendeeDAO extends BaseDAO {
 
         openDB(0);
 
-        AttendeesData aData = null;
+        AttendeesData aData = new AttendeesData();
 
         String query = " select * from " + AttendeeTable.ATTENDEE_TABLE + " where " + AttendeeTable.ID + "='" + id + "';";
 
@@ -382,7 +382,7 @@ public class AttendeeDAO extends BaseDAO {
         try {
             mCursor = db.rawQuery(query, null);
 
-            if (mCursor.moveToFirst()) {
+            if (mCursor.moveToFirst() && mCursor.getCount() > 0) {
 
                 do {
                     aData = new AttendeesData();

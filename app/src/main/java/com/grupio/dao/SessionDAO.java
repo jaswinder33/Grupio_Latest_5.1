@@ -538,7 +538,7 @@ public class SessionDAO extends BaseDAO {
         String query;
         query = "select sessions.*,likes.isFav,likes.calendarId, session_tracks.color from sessions left join likes on sessions.id=likes.id left join session_tracks on sessions.track = session_tracks.track";// where sessions.start_time like " + date + "%'";
         if (date == null) {
-            query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions)";
+            query += " where sessions.start_time like (select min(date(sessions.start_time)) || '%' from sessions left join likes on sessions.id=likes.id where  likes.isFav='1' )";
         } else {
             query += " where sessions.start_time like '" + date + "%'";
         }

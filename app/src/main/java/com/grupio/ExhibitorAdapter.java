@@ -1,6 +1,7 @@
 package com.grupio;
 
 import android.content.Context;
+import android.view.View;
 
 import com.grupio.attendee.ListBaseAdapter;
 import com.grupio.attendee.SetExhibitorData;
@@ -32,7 +33,7 @@ public class ExhibitorAdapter extends ListBaseAdapter<ExhibitorData> {
     }
 
     @Override
-    public void handleGetView(int position, ListBaseAdapter.ViewHolder mHolder) {
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
 
 
         SetExhibitorData<ExhibitorAdapter> mSetExhibitorData = new SetExhibitorData<>(getContext());

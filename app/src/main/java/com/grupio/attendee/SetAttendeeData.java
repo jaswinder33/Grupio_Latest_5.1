@@ -1,6 +1,7 @@
 package com.grupio.attendee;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.grupio.R;
@@ -28,6 +29,8 @@ public class SetAttendeeData<T> extends BaseSetData<AttendeesData, ListBaseAdapt
 
     @Override
     public void setData(AttendeesData data, ListBaseAdapter.ViewHolder mHolder) {
+
+        Log.i("SetAttendeeData", "setData: " + data.getAttendee_id());
 
         mHolder.mButton.setVisibility(View.GONE);
 

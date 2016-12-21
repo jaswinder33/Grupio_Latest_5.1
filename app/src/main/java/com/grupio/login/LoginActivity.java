@@ -14,6 +14,7 @@ import com.grupio.animation.SlideIn;
 import com.grupio.animation.SlideOut;
 import com.grupio.attendee.ListActivity;
 import com.grupio.attendee.message.SendMessageActivity;
+import com.grupio.calendar.NewMeetingActivity;
 import com.grupio.data.LogisticsData;
 import com.grupio.message.MessageActivity;
 import com.grupio.notes.NotesDetailsActivity;
@@ -199,6 +200,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         Bundle mBundle = new Bundle();
         mBundle.putString("type", type);
         navigateScreen(mBundle, ListActivity.class);
+    }
+
+    @Override
+    public void goToNewMeeting() {
+        navigateScreen(new Bundle(), NewMeetingActivity.class);
     }
 
     @Override

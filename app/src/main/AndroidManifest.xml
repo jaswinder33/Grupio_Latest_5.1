@@ -139,10 +139,10 @@
             android:name=".social.SocialActivity"
             android:label="@string/title_activity_social"
             android:theme="@style/AppTheme" />
-        <activity
+        <!--<activity
             android:name=".notes.NotesActivity"
             android:label="@string/title_activity_notes"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" />-->
         <activity
             android:name=".notes.NotesDetailsActivity"
             android:label="@string/title_activity_notes_details"
@@ -189,9 +189,25 @@
             android:label="@string/title_activity_search_activity"
             android:theme="@style/AppTheme" />
 
-        <activity android:name=".calendar.CalendarActivity" />
+        <activity
+            android:name=".calendar.CalendarActivity"
+            android:label="@string/title_activity_calendar_activity"
+            android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".calendar.ViewInvitationActivity"
+            android:label="@string/title_activity_view_invitation_activity"
+            android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".calendar.NewMeetingActivity"
+            android:label="@string/title_activity_new_meeting_activity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".calendar.MeetingDetailsActivity"
+            android:label="@string/title_activity_meeting_details_activity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

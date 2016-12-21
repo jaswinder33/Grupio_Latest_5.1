@@ -18,6 +18,8 @@ public interface CalendarListContract {
 
     interface IView extends IBaseView {
         void showList(List<Person> mList);
+
+        void showDate(String date);
     }
 
     interface IPresenter extends IBasePresenter {
@@ -29,6 +31,8 @@ public interface CalendarListContract {
         List<Person> getList(Context context, String date);
 
         List<String> getDateList(Context context);
+
+        void refreshList(int counter, Context context);
     }
 
     interface IInteractor extends IBaseInteractor {
@@ -41,9 +45,13 @@ public interface CalendarListContract {
         List<Person> getList(Context context, String date);
 
         List<String> getDataList(Context context);
+
+        void refreshList(int counter, Context context, IOnInteraction listener);
     }
 
     interface IOnInteraction extends IBaseOnInteraction {
         void onListFetch(List<Person> mList);
+
+        void showDate(String date);
     }
 }

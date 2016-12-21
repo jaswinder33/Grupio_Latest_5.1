@@ -27,6 +27,7 @@ public class CalendarListInteractor extends BaseInteractor implements CalendarLi
                 @Override
                 public void onSuccess(String response) {
                     fetchList(context, null, listener);
+                    fetchDateList(context, listener);
                 }
 
                 @Override
@@ -40,6 +41,7 @@ public class CalendarListInteractor extends BaseInteractor implements CalendarLi
             }).doCall();
         } else {
             fetchList(context, null, listener);
+            fetchDateList(context, listener);
         }
     }
 
@@ -67,5 +69,48 @@ public class CalendarListInteractor extends BaseInteractor implements CalendarLi
         return MeetingDAO.getInstance(context).getDateList();
     }
 
+    @Override
+    public void refreshList(int counter, Context context, CalendarListContract.IOnInteraction listener) {
+
+        List<String> dateList = new ArrayList<>();
+        dateList.addAll(getDataList(context));
+
+        List<Person> mScheduleList = getList(context, dateList.get(counter));
+
+        if (dateList.size() > 0) {
+            if (mScheduleList.isEmpty()) {
+                fetchList(context, dateList.get(counter == 0 ? ++counter : --counter), listener);
+            } else {
+                fetchList(context, dateList.get(counter), listener);
+            }
+        } else {
+            fetchList(context, null, listener);
+        }
+
+
+//        if (operation == ListWatcher.getInstance().getExtendedListener().ACCEPTED) {
+//            fetchList(context, dateList.get(counter), listener);
+//        } else if (operation == ListWatcher.getInstance().getExtendedListener().DELETE) {
+//
+//            if(dateList.size() > 0 ){
+//                if(mScheduleList.isEmpty()){
+//                    fetchList(context, dateList.get(counter - 1), listener);
+//                }else{
+//                    fetchList(context, dateList.get(counter), listener);
+//                }
+//            }else{
+//                fetchList(context, null, listener);
+//            }
+//        }
+    }
+
+    private void fetchDateList(Context context, CalendarListContract.IOnInteraction listener) {
+        List<String> dateList = new ArrayList<>();
+        dateList.addAll(getDataList(context));
+
+        if (dateList != null && !dateList.isEmpty()) {
+            listener.showDate(dateList.get(0));
+        }
+    }
 
 }

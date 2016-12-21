@@ -40,6 +40,29 @@
             android:singleLine="true" />
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/invitationHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/app_header_height"
+        android:background="@color/view_meeting"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/alert_icon"
+            android:drawableRight="@drawable/arrow"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:text="@string/view_invitation"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
     <LinearLayout
         android:id="@+id/dateBtnLay"
         android:layout_width="match_parent"
@@ -63,7 +86,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="26-11-2016" />
+            android:text="" />
 
         <ImageButton
             android:id="@+id/nextBtn"

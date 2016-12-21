@@ -20,4 +20,9 @@
 
     <color name="exhibitor_buttons_blue">#0080FF</color>
     <color name="red">#ff0000</color>
+
+    <color name="view_meeting">#c9ffff</color>
+
+    <color name="calendar_grey">#cacad9</color>
+
 </resources>

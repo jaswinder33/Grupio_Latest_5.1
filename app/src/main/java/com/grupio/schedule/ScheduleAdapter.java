@@ -13,13 +13,12 @@ import com.grupio.base.BaseListAdapter;
 import com.grupio.dao.EventDAO;
 import com.grupio.data.ScheduleData;
 import com.grupio.db.EventTable;
-import com.grupio.interfaces.Person;
 
 /**
  * Created by JSN on 7/11/16.
  */
 
-public class ScheduleAdapter extends BaseListAdapter<Person, ScheduleAdapter.ViewHolder> {
+public class ScheduleAdapter extends BaseListAdapter<ScheduleData, ScheduleAdapter.ViewHolder> {
 
     protected boolean showTrackColor = false;
 
@@ -30,12 +29,7 @@ public class ScheduleAdapter extends BaseListAdapter<Person, ScheduleAdapter.Vie
 
     @Override
     public String getFirstName(int position) {
-
-        if (getItem(position) instanceof ScheduleData) {
-            return ((ScheduleData) getItem(position)).getName();
-        }
-
-        return "";
+        return getItem(position).getName();
     }
 
     @Override
@@ -49,7 +43,7 @@ public class ScheduleAdapter extends BaseListAdapter<Person, ScheduleAdapter.Vie
     }
 
     @Override
-    public void handleGetView(int position, ViewHolder mHolder) {
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
 
         SetSessionData<ScheduleAdapter> mSetSessionData = new SetSessionData(getContext());
         mSetSessionData.setAdapter(this);

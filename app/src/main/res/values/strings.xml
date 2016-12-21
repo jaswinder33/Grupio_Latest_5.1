@@ -119,6 +119,9 @@
     <string name="chat">chat</string>
     <string name="game">game</string>
 
+    <string name="invitation">invitation</string>
+    <string name="new_meeting">new_meeting</string>
+
     <!-- ################################################################### -->
     <!-- ################################################################### -->
 
@@ -280,4 +283,41 @@
 
     <!--Search Activity-->
     <string name="title_activity_search_activity">SearchActivity</string>
+
+    <!--Calendar Activity-->
+    <string name="view_invitation">View Invitations</string>
+    <string name="title_activity_calendar_activity">CalendarActivity</string>
+    <string name="title_activity_new_meeting_activity">NewMeetingActivity</string>
+    <string name="title_activity_view_invitation_activity">ViewInvitationActivity</string>
+    <string name="title_activity_meeting_details_activity">MeetingDetailsActivity</string>
+    <string name="setup_meeting">Set Up Meeting</string>
+    <string name="title">Title</string>
+    <string name="location">Location</string>
+    <string name="Description">Description</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="select_date">Select Date</string>
+    <string name="timezone">Timezone</string>
+    <string name="go_to_next_step">Go To Next Step</string>
+    <string name="cancel_return_to_calendar">Cancel and return to your calendar</string>
+    <string name="create_and_exit">Create and exit</string>
+
+
+    <!--Create Meeting messages-->
+    <string name="form_incomplete">Form Incomplete</string>
+    <string name="done">Done</string>
+
+
+    <!--Meeting Details-->
+    <string name="manage_meeting">Manage Meeting</string>
+    <string name="delete_meeting">Delete Meeting</string>
+    <string name="organizer">Organizer</string>
+    <string name="Invitiees">Invitiees</string>
+
+    <string name="meeting_status">Meeting Status</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="meeting_delete_permission">Delete Meeting?</string>
+    <string name="meeting_deleted">Meeting Deleted</string>
+
 </resources>

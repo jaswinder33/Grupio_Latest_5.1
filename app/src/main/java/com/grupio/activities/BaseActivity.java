@@ -41,6 +41,7 @@ import com.grupio.data.AdsData;
 import com.grupio.db.EventTable;
 import com.grupio.interfaces.BaseFunctionality;
 import com.grupio.interfaces.ClickHandler;
+import com.grupio.login.LoginActivity;
 import com.grupio.session.Preferences;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -424,6 +425,18 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
 
     public abstract void setUp();
 
+    @Override
+    public boolean loginRequired(String screenName) {
+        if (Preferences.getInstances(this).getUserInfo() == null) {
+            Bundle mBundle;
+            mBundle = new Bundle();
+            mBundle.putString("from", screenName);
+            goToNextScreen(mBundle, LoginActivity.class);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Navigate user to next screen
      *
@@ -493,6 +506,21 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showProgress(String msg) {
+        showProgressDialog(msg);
+    }
+
+    @Override
+    public void hideProgress() {
+        hideProgressDialog();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        showToast(msg);
     }
 
     public static class CustomDialog {
@@ -612,4 +640,5 @@ public abstract class BaseActivity<Presenter> extends AppCompatActivity implemen
             mGalleryBtn = (Button) view.findViewById(R.id.galleryBtn);
         }
     }
+
 }

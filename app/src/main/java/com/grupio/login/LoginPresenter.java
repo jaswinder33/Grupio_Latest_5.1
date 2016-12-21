@@ -164,6 +164,10 @@ public class LoginPresenter implements LoginPresenterImp, LoginInteractorImp.OnL
                 mListener.downloadDocument();
                 break;
 
+            case "new_meeting":
+                mListener.goToNewMeeting();
+                break;
+
         }
     }
 }

@@ -142,9 +142,31 @@ public abstract class BaseFragment<Presenter> extends Fragment implements BaseFu
         ((BaseActivity) getActivity()).goToNextScreen(bundle, className);
     }
 
+    @Override
+    public boolean loginRequired(String screenName) {
+        return ((BaseActivity) getActivity()).loginRequired(screenName);
+    }
+
     public abstract Presenter setPresenter();
 
     public abstract String getScreenName();
 
     public abstract String getBannerName();
+
+
+    @Override
+    public void showProgress(String msg) {
+        ((BaseActivity) getActivity()).showProgress(msg);
+    }
+
+    @Override
+    public void hideProgress() {
+        ((BaseActivity) getActivity()).hideProgress();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        ((BaseActivity) getActivity()).onFailure(msg);
+    }
+
 }

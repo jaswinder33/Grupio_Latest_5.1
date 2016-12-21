@@ -24,7 +24,7 @@ public class SpeakerAdapter extends ListBaseAdapter<SpeakerData> {
     }
 
     @Override
-    public void handleGetView(int position, ViewHolder mHolder) {
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
         mHolder.mButton.setVisibility(View.GONE);
         SetSpeakerData<SpeakerAdapter> mSetSpeakerData = new SetSpeakerData(getContext());
         mSetSpeakerData.setAdapter(this);

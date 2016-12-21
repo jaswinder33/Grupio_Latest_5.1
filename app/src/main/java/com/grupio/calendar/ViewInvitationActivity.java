@@ -2,28 +2,26 @@ package com.grupio.calendar;
 
 import android.view.View;
 
-import com.grupio.R;
-import com.grupio.Utils.Utility;
 import com.grupio.activities.BaseActivity;
 
 /**
- * Created by JSN on 12/12/16.
+ * Created by JSN on 19/12/16.
  */
 
-public class CalendarActivity extends BaseActivity<Void> {
-
+public class ViewInvitationActivity extends BaseActivity<Void> {
     @Override
     public int getLayout() {
-        return R.layout.layout_container;
+        return 0;
     }
 
     @Override
     public void initIds() {
+
     }
 
     @Override
     public boolean isHeaderForGridPage() {
-        return true;
+        return false;
     }
 
     @Override
@@ -43,18 +41,16 @@ public class CalendarActivity extends BaseActivity<Void> {
 
     @Override
     public void setListeners() {
+
     }
 
     @Override
     public void setUp() {
-        handleRightBtn(true, ADD);
-        Utility.replaceFragment(this, new CalendarFragment(), false);
+
     }
 
     @Override
     public void handleRightBtnClick(View view) {
-        if (!loginRequired(getString(R.string.new_meeting))) {
-            goToNextScreen(null, NewMeetingActivity.class);
-        }
+
     }
 }

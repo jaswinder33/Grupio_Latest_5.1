@@ -18,7 +18,7 @@
         android:padding="10dip"
         android:singleLine="true"
         android:text="Bio"
-        android:textColor="@color/black"
+        android:textColor="@color/list_header_text_color"
         android:textSize="@dimen/text_18"
         android:visibility="visible"
         grupio:font="Roboto-Bold.ttf" />

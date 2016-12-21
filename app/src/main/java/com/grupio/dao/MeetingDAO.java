@@ -1,5 +1,6 @@
 package com.grupio.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -9,6 +10,7 @@ import com.grupio.data.MeetingData;
 import com.grupio.db.ExhibitorLikeTable;
 import com.grupio.db.SessionTable;
 import com.grupio.helper.MeetingHelper;
+import com.grupio.session.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,16 @@ public class MeetingDAO extends BaseDAO {
         openDB(0);
         try {
             db.delete(MeetingTable.MEETING_TABLE, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        closeDb();
+    }
+
+    public void deleteMeeting(String id) {
+        openDB(0);
+        try {
+            db.delete(MeetingTable.MEETING_TABLE, MeetingTable.ID + "=?", new String[]{id});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,10 +189,24 @@ public class MeetingDAO extends BaseDAO {
 
         openDB(0);
 
-        String query = "select start_time from (" +
-                "select distinct date(" + SessionTable.START_TIME + ") as start_time from " + SessionTable.SESSION_TABLE + "  left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id where likes.isFav='1'  union select date(" + MeetingTable.MEETING_DATE + ") as start_time from " + MeetingTable.MEETING_TABLE +
-                " ) x" +
-                " order by start_time;";
+        String query;
+
+        if (Preferences.getInstances(mContext).getAttendeeId() != null) {
+            query = "select start_time from (" +
+                    "select distinct date(" + SessionTable.START_TIME + ") as start_time from " + SessionTable.SESSION_TABLE + "  left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id where likes.isFav='1'  union select date(" + MeetingTable.MEETING_DATE + ") as start_time from " + MeetingTable.MEETING_TABLE +
+                    " ) x" +
+                    " order by start_time;";
+        } else {
+//            query = "select start_time from (" +
+//                    "select distinct date(" + SessionTable.START_TIME + ") as start_time from " + SessionTable.SESSION_TABLE + "  left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id where likes.isFav='1'  union select date(" + MeetingTable.MEETING_DATE + ") as start_time from " + MeetingTable.MEETING_TABLE +
+//                    " ) x" +
+//                    " order by start_time;";
+
+
+            query = "select distinct date(" + SessionTable.START_TIME + ") as start_time from " + SessionTable.SESSION_TABLE + "  left join " + ExhibitorLikeTable.LIKE_TABLE + " on sessions.id=likes.id where likes.isFav='1' order by start_time;";
+
+        }
+
 
 //        String query = "Select " + MeetingTable.MEETING_DATE + " from " + MeetingTable.MEETING_TABLE + " order by " + MeetingTable.MEETING_DATE + ";";
 
@@ -224,5 +250,68 @@ public class MeetingDAO extends BaseDAO {
         }
         closeDb();
     }
+
+    public MeetingData getMeeting(String id) {
+
+        MeetingData meetingData = new MeetingData();
+        MeetingHelper mHelper = new MeetingHelper();
+
+        String query = "select * from " + MeetingTable.MEETING_TABLE + " where " + MeetingTable.ID + "='" + id + "';";
+
+        openDB(0);
+        Cursor mCursor = null;
+        try {
+            mCursor = db.rawQuery(query, null);
+
+            if (mCursor != null && mCursor.getCount() > 0) {
+                mCursor.moveToFirst();
+
+                meetingData.id = mCursor.getString(mCursor.getColumnIndex(MeetingTable.ID));
+                meetingData.currentDate = mCursor.getString(mCursor.getColumnIndex(MeetingTable.CURRENTDATE));
+                meetingData.meetingTime = mCursor.getString(mCursor.getColumnIndex(MeetingTable.MEETING_TIME));
+                meetingData.meetingDate = mCursor.getString(mCursor.getColumnIndex(MeetingTable.MEETING_DATE));
+                meetingData.title = mCursor.getString(mCursor.getColumnIndex(MeetingTable.TITLE));
+                meetingData.location = mCursor.getString(mCursor.getColumnIndex(MeetingTable.LOCATION));
+                meetingData.description = mCursor.getString(mCursor.getColumnIndex(MeetingTable.DESCRIPTION));
+                meetingData.creator = mCursor.getString(mCursor.getColumnIndex(MeetingTable.CREATOR_ID));
+                meetingData.invities = mCursor.getString(mCursor.getColumnIndex(MeetingTable.INVITIES));
+
+                String[] time = mHelper.parseMeetingTime(meetingData.meetingTime);
+                meetingData.startTime = time[0];
+                meetingData.endTime = time[1];
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (mCursor != null && !mCursor.isClosed()) {
+                mCursor.close();
+            }
+            closeDb();
+        }
+
+        return meetingData;
+    }
+
+    public void updateMeeting(MeetingData meetingData) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(MeetingTable.ID, meetingData.id);
+        cv.put(MeetingTable.MEETING_TIME, meetingData.meetingTime);
+        cv.put(MeetingTable.MEETING_DATE, meetingData.meetingDate);
+        cv.put(MeetingTable.CREATOR_ID, meetingData.creator);
+        cv.put(MeetingTable.INVITIES, meetingData.invities);
+        cv.put(MeetingTable.CURRENTDATE, meetingData.currentDate);
+        cv.put(MeetingTable.TITLE, meetingData.title);
+        cv.put(MeetingTable.LOCATION, meetingData.location);
+        cv.put(MeetingTable.DESCRIPTION, meetingData.description);
+
+        openDB(1);
+
+        db.update(MeetingTable.MEETING_TABLE, cv, MeetingTable.ID + "=?", new String[]{meetingData.id});
+
+        closeDb();
+    }
+
 }
 

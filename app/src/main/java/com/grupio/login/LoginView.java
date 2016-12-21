@@ -39,4 +39,6 @@ public interface LoginView {
     void goToMyAccountScreen();
 
     void goToListActivity(String type);
+
+    void goToNewMeeting();
 }

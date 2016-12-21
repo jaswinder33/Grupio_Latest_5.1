@@ -38,7 +38,7 @@ public class SponsorAdapter extends BaseListAdapter<SponsorData, SponsorAdapter.
     }
 
     @Override
-    public void handleGetView(int position, Holder mHolder) {
+    public void handleGetView(int position, View view, Holder mHolder) {
         mHolder.name.setText(getItem(position).name);
         String url = getContext().getString(R.string.base_url) + "/" + getItem(position).url;
         ImageLoader.getInstance().displayImage(url, mHolder.imageView, SponsorHelper.sponsorDisplayOptions());

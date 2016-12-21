@@ -195,7 +195,7 @@ public abstract class BaseListAdapter<T, Holder> extends ArrayAdapter<T> impleme
             mHolder = (Holder) convertView.getTag();
         }
 
-        handleGetView(position, mHolder);
+        handleGetView(position, convertView, mHolder);
 
         return convertView;
     }
@@ -214,7 +214,7 @@ public abstract class BaseListAdapter<T, Holder> extends ArrayAdapter<T> impleme
 
     public abstract int getLayout(int position);
 
-    public abstract void handleGetView(int position, Holder mHolder);
+    public abstract void handleGetView(int position, View view, Holder mHolder);
 
     public abstract Holder setViewHolder(View convertView, int position);
 

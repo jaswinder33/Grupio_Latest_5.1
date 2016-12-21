@@ -40,8 +40,19 @@ public class CalendarListPresenter extends BasePresenter<CalendarListContract.IV
     }
 
     @Override
+    public void refreshList(int counter, Context context) {
+        getInteractor().refreshList(counter, context, this);
+    }
+
+
+    @Override
     public void onListFetch(List<Person> mList) {
         getView().hideProgress();
         getView().showList(mList);
+    }
+
+    @Override
+    public void showDate(String date) {
+        getView().showDate(date);
     }
 }

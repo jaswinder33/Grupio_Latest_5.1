@@ -43,7 +43,7 @@ public class SessionAdapter extends BaseListAdapter<ScheduleData, SessionAdapter
     }
 
     @Override
-    public void handleGetView(int position, ViewHolder mHolder) {
+    public void handleGetView(int position, View view, ViewHolder mHolder) {
 
         if (showTrackColor) {
             mHolder.trackColor.setVisibility(View.VISIBLE);

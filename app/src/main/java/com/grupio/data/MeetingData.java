@@ -23,8 +23,27 @@ public class MeetingData implements Person {
 
     public String startTime;
     public String endTime;
+    public String status;
 
     public AttendeesData mCreatorData;
     public List<AttendeesData> invitiesList = new ArrayList<>();
 
+    public MeetingData(MeetingData data) {
+        this.id = data.id;
+        this.currentDate = data.currentDate;
+        this.meetingTime = data.meetingTime;
+        this.meetingDate = data.meetingDate;
+        this.invities = data.invities;
+        this.creator = data.creator;
+        this.title = data.title;
+        this.location = data.location;
+        this.description = data.description;
+        this.startTime = data.startTime;
+        this.endTime = data.endTime;
+        this.mCreatorData = data.mCreatorData;
+        this.invitiesList = data.invitiesList;
+    }
+
+    public MeetingData() {
+    }
 }

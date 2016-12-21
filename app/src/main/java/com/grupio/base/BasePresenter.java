@@ -32,6 +32,7 @@ public abstract class BasePresenter<V extends IBaseView, I extends IBaseInteract
 
     @Override
     public void onFailure(String msg) {
+        view.hideProgress();
         view.onFailure(msg);
     }
 

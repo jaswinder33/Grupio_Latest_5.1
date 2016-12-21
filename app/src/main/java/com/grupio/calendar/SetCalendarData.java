@@ -30,8 +30,7 @@ public class SetCalendarData<T> extends SetSessionData<T> {
 
         }
 
-        mHolder.mLikeBtn.setOnClickListener(null);
-        mHolder.addBtn.setOnClickListener(null);
+
     }
 
 }

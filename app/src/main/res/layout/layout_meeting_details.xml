@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grupio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:grupio="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include layout="@layout/layout_header" />
+
+        <include layout="@layout/layout_banner" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/detail_frame_height"
+            android:background="@drawable/pattern_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/meetingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="hiv"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/meetingDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Date: Jan 4, 2016"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/meetingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Time: 8:00AM - 9:00AM"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/meetingLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Location: cc"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    android:id="@+id/manageMeeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/divider"
+                    android:drawablePadding="5dp"
+                    android:text="@string/manage_meeting"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/deleteMeeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/divider"
+                    android:drawablePadding="5dp"
+
+                    android:text="@string/delete_meeting"
+                    android:textColor="@color/white" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <include
+            layout="@layout/layout_bio"
+            android:visibility="visible" />
+
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/orgaizerHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/greytransparent"
+            android:drawableLeft="@drawable/bio_icon_disable"
+            android:drawablePadding="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="@string/organizer"
+            android:textColor="@color/list_header_text_color"
+            android:textSize="@dimen/text_18"
+            android:visibility="visible"
+            grupio:font="Roboto-Bold.ttf" />
+
+        <include
+            android:id="@+id/organizerlay"
+            layout="@layout/layout_attendee_list_child" />
+
+
+        <com.grupio.Utils.CustomTextView
+            android:id="@+id/inviteesHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/greytransparent"
+            android:drawableLeft="@drawable/bio_icon_disable"
+            android:drawablePadding="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="@string/Invitiees"
+            android:textColor="@color/list_header_text_color"
+            android:textSize="@dimen/text_18"
+            android:visibility="visible"
+            grupio:font="Roboto-Bold.ttf" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/meeting_status" />
+
+        <ListView
+            android:id="@+id/inviteeeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+</ScrollView>
+

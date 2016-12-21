@@ -108,7 +108,7 @@ public class SearchAdapter extends BaseListAdapter<Person, BaseHolder> {
     }
 
     @Override
-    public void handleGetView(int position, BaseHolder mHolder) {
+    public void handleGetView(int position, View view, BaseHolder mHolder) {
 
         Person mData = getItem(position);
         if (mData instanceof AttendeesData) {
