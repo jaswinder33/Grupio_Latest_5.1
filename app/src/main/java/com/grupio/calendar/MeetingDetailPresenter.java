@@ -57,6 +57,11 @@ public class MeetingDetailPresenter extends BasePresenter<MeetingDetailContract.
     }
 
     @Override
+    public void showOrganizerControls() {
+        getView().showOrganizerControls();
+    }
+
+    @Override
     public void fetchData(MeetingData meetingData, Context context) {
         getInteractor().fetchData(meetingData, context, this);
     }

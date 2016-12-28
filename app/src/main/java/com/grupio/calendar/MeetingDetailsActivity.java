@@ -34,7 +34,8 @@ public class MeetingDetailsActivity extends BaseActivity<MeetingDetailPresenter>
     private TextView organizerName, organizerTitle;
     private TextView inviteeeHeader;
     private ListView inviteeeList;
-    private RelativeLayout organizerLayout;
+    private RelativeLayout organizerLayout, organizerPanelControls;
+
 
     @Override
     public int getLayout() {
@@ -59,6 +60,7 @@ public class MeetingDetailsActivity extends BaseActivity<MeetingDetailPresenter>
         inviteeeList = (ListView) findViewById(R.id.inviteeeList);
 
         organizerLayout = (RelativeLayout) findViewById(R.id.organizerlay);
+        organizerPanelControls = (RelativeLayout) findViewById(R.id.organizerControls);
     }
 
     @Override
@@ -95,7 +97,6 @@ public class MeetingDetailsActivity extends BaseActivity<MeetingDetailPresenter>
 
     @Override
     public void handleRightBtnClick(View view) {
-
     }
 
     @Override
@@ -167,6 +168,11 @@ public class MeetingDetailsActivity extends BaseActivity<MeetingDetailPresenter>
     public void onMeetingStatusUpdated(int position, String status) {
         ((AttendeesData) inviteeeList.getAdapter().getItem(position)).setMeetingStatus(status);
         ((InviteeAdapter) inviteeeList.getAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void showOrganizerControls() {
+        organizerPanelControls.setVisibility(View.VISIBLE);
     }
 
     public MeetingData getData() {

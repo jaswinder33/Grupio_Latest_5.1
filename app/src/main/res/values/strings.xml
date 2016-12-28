@@ -315,8 +315,14 @@
     <string name="Invitiees">Invitiees</string>
 
     <string name="meeting_status">Meeting Status</string>
+
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+
+    <string name="accepted">Accepted</string>
+    <string name="declined">Declined</string>
+    <string name="waiting">Waiting</string>
+
     <string name="meeting_delete_permission">Delete Meeting?</string>
     <string name="meeting_deleted">Meeting Deleted</string>
 

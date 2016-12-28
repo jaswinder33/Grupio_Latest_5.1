@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/greytransparent"
-        android:drawableLeft="@drawable/bio_icon_disable"
+        android:drawableLeft="@drawable/note_icon"
         android:drawablePadding="10dp"
         android:ellipsize="end"
         android:gravity="center_vertical"

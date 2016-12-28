@@ -1,5 +1,6 @@
 package com.grupio.calendar;
 
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.grupio.R;
 import com.grupio.activities.BaseActivity;
+import com.grupio.attendee.message.ChooseAttendeeActivity;
 import com.grupio.data.MeetingData;
 
 /**
@@ -74,6 +76,7 @@ public class NewMeetingActivity extends BaseActivity<NewMeetingPresenter> implem
 
     @Override
     public void setUp() {
+        getPresenter().showData(this, getData());
         getPresenter().fetchTimeZone(this);
     }
 
@@ -136,13 +139,39 @@ public class NewMeetingActivity extends BaseActivity<NewMeetingPresenter> implem
     }
 
     @Override
-    public void goToNextScreen() {
-//        goToNextScreen(new Bundle(), ChooseAttendeeActivity.class);
+    public void goToNextScreen(MeetingData data) {
+
+        Bundle mBundle = new Bundle();
+        mBundle.putSerializable("data", data);
+        mBundle.putString("from", "calendar");
+
+        goToNextScreen(mBundle, ChooseAttendeeActivity.class);
         showToast("Functionality Pending...");
+    }
+
+    @Override
+    public void showData(MeetingData data) {
+        title.setText(data.title);
+        location.setText(data.location);
+        description.setText(data.description);
+        meetingDate.setText(data.meetingDate);
     }
 
     public void setDate(String date) {
         meetingDate.setText(date);
+    }
+
+    public MeetingData getData() {
+
+        MeetingData mMeetingData = null;
+        Bundle mBundle = getIntent().getExtras();
+
+        if (mBundle != null) {
+            mMeetingData = (MeetingData) mBundle.getSerializable("data");
+        }
+
+        return mMeetingData;
+
     }
 
     public class DatePickerHolder {

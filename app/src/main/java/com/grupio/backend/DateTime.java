@@ -114,6 +114,32 @@ public class DateTime {
 
 
     /**
+     * This method takes date and its actual format with required date.
+     * @param data  date as String
+     * @param oldFormat format of date
+     * @param newFormat required format of date
+     * @return
+     */
+    public String formatDatTime(String data, String oldFormat, String newFormat) {
+
+        String result = "";
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat(oldFormat);
+
+        try {
+            Date date = sdf1.parse(data);
+
+            SimpleDateFormat sdf2 = new SimpleDateFormat(newFormat);
+            result = sdf2.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
      * Convert UTC to local time
      *
      * @param time

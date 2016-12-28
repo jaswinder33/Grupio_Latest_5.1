@@ -70,7 +70,6 @@ public class SetAttendeeData<T> extends BaseSetData<AttendeesData, ListBaseAdapt
 
         } else {
             mHolder.image.setVisibility(View.GONE);
-
         }
 
         if (enableChat) {

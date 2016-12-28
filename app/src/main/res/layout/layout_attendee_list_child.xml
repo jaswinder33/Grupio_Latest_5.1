@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/addItem"
+        android:layout_toLeftOf="@+id/rightBtnLay"
         android:layout_toRightOf="@+id/imageLayoutId">
 
         <com.grupio.Utils.CustomTextView
@@ -75,15 +75,33 @@
             grupio:font="Roboto-Bold.ttf" />
     </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/addItem"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <LinearLayout
+        android:id="@+id/rightBtnLay"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"
-        android:background="@color/transparent"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_minus" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/addItem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_minus" />
+
+        <TextView
+            android:id="@+id/textBelowBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accepted"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

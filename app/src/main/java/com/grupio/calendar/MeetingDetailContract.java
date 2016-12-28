@@ -33,6 +33,8 @@ public interface MeetingDetailContract {
         void updateMeetingStatus(AttendeesData mAttendeeData, int attendeePosition, String status);
 
         void onMeetingStatusUpdated(int position, String status);
+
+        void showOrganizerControls();
     }
 
     interface Presenter extends IBasePresenter {
@@ -69,6 +71,8 @@ public interface MeetingDetailContract {
         void setGraphics(String headerColor);
 
         void onMeetingStatusUpdate(int position, String status);
+
+        void showOrganizerControls();
     }
 
 

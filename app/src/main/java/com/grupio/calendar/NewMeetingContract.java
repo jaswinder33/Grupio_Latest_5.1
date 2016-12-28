@@ -19,24 +19,38 @@ public interface NewMeetingContract {
 
         void showTimeZone(String timezone);
 
-        void goToNextScreen();
+        void goToNextScreen(MeetingData data);
+
+        void showData(MeetingData data);
     }
 
     interface Presenter extends IBasePresenter {
+
+        void showData(Context context, MeetingData data);
+
         void validateGoToNext(Context context, MeetingData data);
 
         void createMeeting(Context context, MeetingData data);
 
         void fetchTimeZone(Context context);
+
+        MeetingData getMeetingData(Context context);
     }
 
     interface Interactor extends IBaseInteractor {
+        void showData(Context context, MeetingData data, OnInteraction listener);
+
         void createMeeting(Context context, MeetingData data, OnInteraction listener);
 
         void fetchTimeZone(Context context, OnInteraction listener);
+
+        MeetingData getMeetingData(Context context);
     }
 
     interface OnInteraction extends BaseOnInteraction {
+
+        void onDataValidated(MeetingData data);
+
         void onMeetingCreated();
 
         void onTimeZone(String timezone);

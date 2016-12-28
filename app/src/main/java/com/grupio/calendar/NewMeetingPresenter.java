@@ -19,7 +19,13 @@ public class NewMeetingPresenter extends BasePresenter<NewMeetingContract.View, 
     }
 
     @Override
+    public void onDataValidated(MeetingData data) {
+        getView().showData(data);
+    }
+
+    @Override
     public void onMeetingCreated() {
+
     }
 
     @Override
@@ -28,11 +34,26 @@ public class NewMeetingPresenter extends BasePresenter<NewMeetingContract.View, 
     }
 
     @Override
+    public void showData(Context context, MeetingData data) {
+        getInteractor().showData(context, data, this);
+    }
+
+    @Override
     public void validateGoToNext(Context context, MeetingData data) {
         if (TextUtils.isEmpty(data.title) || TextUtils.isEmpty(data.location) || TextUtils.isEmpty(data.description) || data.meetingDate.equals(context.getString(R.string.date))) {
             getView().showErrorMessage(context.getString(R.string.form_incomplete));
         } else {
-            getView().goToNextScreen();
+
+            MeetingData olderData = getInteractor().getMeetingData(context);
+
+            if (olderData != null) {
+                olderData.title = data.title;
+                olderData.location = data.location;
+                olderData.description = data.description;
+                olderData.meetingDate = data.meetingDate;
+            }
+
+            getView().goToNextScreen(olderData);
         }
     }
 
@@ -43,6 +64,11 @@ public class NewMeetingPresenter extends BasePresenter<NewMeetingContract.View, 
     @Override
     public void fetchTimeZone(Context context) {
         getInteractor().fetchTimeZone(context, this);
+    }
+
+    @Override
+    public MeetingData getMeetingData(Context context) {
+        return getInteractor().getMeetingData(context);
     }
 
 }

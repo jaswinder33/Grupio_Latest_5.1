@@ -65,7 +65,7 @@ public abstract class ListBaseAdapter<T> extends BaseListAdapter<T, ListBaseAdap
     }
 
     public static class ViewHolder implements BaseHolder {
-        public TextView name, title;
+        public TextView name, title, textBelowBtn;
         public ImageView image;
         public TextView presenceTextView;
         public ImageButton mButton;
@@ -77,6 +77,7 @@ public abstract class ListBaseAdapter<T> extends BaseListAdapter<T, ListBaseAdap
             presenceTextView = (TextView) convertView.findViewById(R.id.presenceTextView);
 
             mButton = (ImageButton) convertView.findViewById(R.id.addItem);
+            textBelowBtn = (TextView) convertView.findViewById(R.id.textBelowBtn);
         }
     }
 }

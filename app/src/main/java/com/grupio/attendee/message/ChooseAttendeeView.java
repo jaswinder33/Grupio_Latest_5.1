@@ -1,5 +1,6 @@
 package com.grupio.attendee.message;
 
+import com.grupio.base.IBaseView;
 import com.grupio.data.AttendeesData;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by JSN on 19/10/16.
  */
 
-public interface ChooseAttendeeView {
+public interface ChooseAttendeeView extends IBaseView {
 
     void showProgress();
 

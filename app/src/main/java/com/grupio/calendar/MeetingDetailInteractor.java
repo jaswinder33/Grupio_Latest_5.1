@@ -16,6 +16,7 @@ import com.grupio.data.MeetingData;
 import com.grupio.db.EventTable;
 import com.grupio.helper.MeetingHelper;
 import com.grupio.message.apis.APICallBack;
+import com.grupio.session.Preferences;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,10 @@ public class MeetingDetailInteractor extends BaseInteractor implements MeetingDe
         listener.setDescription(context.getString(R.string.description), meetingData.description);
         listener.showOrganizer(meetingData.mCreatorData, EventDAO.getInstance(context).getValue(EventTable.NAME_ORDER).equals("firstname_lastname"));
         listener.showInvitieeList(meetingData.invitiesList);
+
+        if (meetingData.creator.equals(Preferences.getInstances(context).getAttendeeId())) {
+            listener.showOrganizerControls();
+        }
 
         mMeetingData = new MeetingData(meetingData);
     }

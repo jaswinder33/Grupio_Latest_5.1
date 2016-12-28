@@ -32,14 +32,21 @@ public class InviteeAdapter extends AttendeeListAdapter {
     public void handleGetView(int position, View view, ViewHolder mHolder) {
         super.handleGetView(position, view, mHolder);
 
+        mHolder.presenceTextView.setVisibility(View.GONE);
+
         String status = getItem(position).getMeetingStatus();
+        mHolder.textBelowBtn.setVisibility(View.VISIBLE);
+        mHolder.textBelowBtn.setTextColor(getContext().getResources().getColor(R.color.exhibitor_buttons_blue));
 
         if (status.equals(DECLINE)) {
             mHolder.mButton.setImageResource(R.drawable.ic_cross_mark);
+            mHolder.textBelowBtn.setText(getContext().getString(R.string.declined));
         } else if (status.equals(ACCEPT)) {
             mHolder.mButton.setImageResource(R.drawable.ic_success);
+            mHolder.textBelowBtn.setText(getContext().getString(R.string.accepted));
         } else {
             mHolder.mButton.setImageResource(R.drawable.ic_clock);
+            mHolder.textBelowBtn.setText(getContext().getString(R.string.waiting));
         }
 
         mHolder.mButton.setColorFilter(getContext().getResources().getColor(R.color.exhibitor_buttons_blue));
